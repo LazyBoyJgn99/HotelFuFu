@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="top.jglo.ant9.JgnAnt9ApplicationTests" time="0.008" tests="1" errors="1" skipped="0" failures="0">
+  <properties>
+    <property name="idea.version" value="2018.2.4"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib"/>
+    <property name="java.vm.version" value="25.181-b13"/>
+    <property name="gopherProxySet" value="false"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/jingening/User/jgn/软件工程/项目工程/rjgc2"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="CN"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/Users/jingening/User/jgn/软件工程/项目工程/rjgc2"/>
+    <property name="java.runtime.version" value="1.8.0_181-b13"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/endorsed"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.io.tmpdir" value="/var/folders/d3/4395htln5vz5by31yfc9nyv00000gn/T/"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="classworlds.conf" value="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/jingening/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.14.4"/>
+    <property name="user.home" value="/Users/jingening"/>
+    <property name="user.timezone" value="Asia/Shanghai"/>
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="jingening"/>
+    <property name="java.class.path" value="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/boot/plexus-classworlds-2.5.2.jar:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre"/>
+    <property name="sun.java.command" value="org.codehaus.classworlds.Launcher -Didea.version=2018.2.4 package"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="zh"/>
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_181"/>
+    <property name="java.ext.dirs" value="/Users/jingening/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="/Applications/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase name="initializationError" classname="top.jglo.ant9.JgnAnt9ApplicationTests" time="0.008">
+    <error message="Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test" type="java.lang.IllegalStateException"><![CDATA[java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
+	at org.springframework.util.Assert.state(Assert.java:70)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.getOrFindConfigurationClasses(SpringBootTestContextBootstrapper.java:173)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.processMergedContextConfiguration(SpringBootTestContextBootstrapper.java:133)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:409)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:323)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:277)
+	at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:112)
+	at org.springframework.boot.test.context.SpringBootTestContextBootstrapper.buildTestContext(SpringBootTestContextBootstrapper.java:78)
+	at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:120)
+	at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:105)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTestContextManager(SpringJUnit4ClassRunner.java:152)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.<init>(SpringJUnit4ClassRunner.java:143)
+	at org.springframework.test.context.junit4.SpringRunner.<init>(SpringRunner.java:49)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.junit.internal.builders.AnnotatedBuilder.buildRunner(AnnotatedBuilder.java:104)
+	at org.junit.internal.builders.AnnotatedBuilder.runnerForClass(AnnotatedBuilder.java:86)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:33)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:283)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:173)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:128)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:203)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:103)
+]]></error>
+    <system-out><![CDATA[21:14:43.083 [main] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class top.jglo.ant9.JgnAnt9ApplicationTests]
+21:14:43.087 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+21:14:43.093 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+21:14:43.107 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [top.jglo.ant9.JgnAnt9ApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+21:14:43.118 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [top.jglo.ant9.JgnAnt9ApplicationTests], using SpringBootContextLoader
+21:14:43.122 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: class path resource [top/jglo/ant9/JgnAnt9ApplicationTests-context.xml] does not exist
+21:14:43.123 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: class path resource [top/jglo/ant9/JgnAnt9ApplicationTestsContext.groovy] does not exist
+21:14:43.123 [main] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+21:14:43.123 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: JgnAnt9ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:14:43.155 [main] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [top.jglo.ant9.JgnAnt9ApplicationTests]
+21:14:43.163 [main] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemProperties] PropertySource with lowest search precedence
+21:14:43.164 [main] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemEnvironment] PropertySource with lowest search precedence
+21:14:43.164 [main] DEBUG org.springframework.core.env.StandardEnvironment - Initialized StandardEnvironment with PropertySources [systemProperties,systemEnvironment]
+21:14:43.174 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/jglo/ant9/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/jglo/ant9/]]
+21:14:43.175 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9]
+21:14:43.175 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9/*.class]
+21:14:43.178 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/jglo/ant9/*.class] to resources [file [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9/JgnAnt9ApplicationTests.class]]
+21:14:43.194 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/jglo/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/jglo/], URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/classes/top/jglo/]]
+21:14:43.194 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo]
+21:14:43.194 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/*.class]
+21:14:43.194 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo]
+21:14:43.194 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo/*.class]
+21:14:43.195 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/jglo/*.class] to resources []
+21:14:43.195 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/], URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/classes/top/]]
+21:14:43.195 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top]
+21:14:43.195 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/*.class]
+21:14:43.196 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top]
+21:14:43.196 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/*.class]
+21:14:43.196 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/*.class] to resources []
+21:14:43.200 [main] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class top.jglo.ant9.JgnAnt9ApplicationTests]
+21:14:43.200 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+21:14:43.200 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+21:14:43.200 [main] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [top.jglo.ant9.JgnAnt9ApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+21:14:43.201 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [top.jglo.ant9.JgnAnt9ApplicationTests], using SpringBootContextLoader
+21:14:43.201 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: class path resource [top/jglo/ant9/JgnAnt9ApplicationTests-context.xml] does not exist
+21:14:43.202 [main] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: class path resource [top/jglo/ant9/JgnAnt9ApplicationTestsContext.groovy] does not exist
+21:14:43.202 [main] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+21:14:43.202 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [top.jglo.ant9.JgnAnt9ApplicationTests]: JgnAnt9ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:14:43.207 [main] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [top.jglo.ant9.JgnAnt9ApplicationTests]
+21:14:43.207 [main] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemProperties] PropertySource with lowest search precedence
+21:14:43.207 [main] DEBUG org.springframework.core.env.StandardEnvironment - Adding [systemEnvironment] PropertySource with lowest search precedence
+21:14:43.207 [main] DEBUG org.springframework.core.env.StandardEnvironment - Initialized StandardEnvironment with PropertySources [systemProperties,systemEnvironment]
+21:14:43.207 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/jglo/ant9/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/jglo/ant9/]]
+21:14:43.208 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9]
+21:14:43.208 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9/*.class]
+21:14:43.209 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/jglo/ant9/*.class] to resources [file [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/ant9/JgnAnt9ApplicationTests.class]]
+21:14:43.210 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/jglo/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/jglo/], URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/classes/top/jglo/]]
+21:14:43.210 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo]
+21:14:43.210 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/jglo/*.class]
+21:14:43.211 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo]
+21:14:43.211 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/jglo/*.class]
+21:14:43.211 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/jglo/*.class] to resources []
+21:14:43.212 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved classpath location [top/] to resources [URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/test-classes/top/], URL [file:/Users/jingening/User/jgn/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b/%e9%a1%b9%e7%9b%ae%e5%b7%a5%e7%a8%8b/rjgc2/target/classes/top/]]
+21:14:43.212 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top]
+21:14:43.212 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/test-classes/top/*.class]
+21:14:43.213 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Looking for matching resources in directory tree [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top]
+21:14:43.213 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Searching directory [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top] for files matching pattern [/Users/jingening/User/jgn/软件工程/项目工程/rjgc2/target/classes/top/*.class]
+21:14:43.213 [main] DEBUG org.springframework.core.io.support.PathMatchingResourcePatternResolver - Resolved location pattern [classpath*:top/*.class] to resources []
+]]></system-out>
+  </testcase>
+</testsuite>

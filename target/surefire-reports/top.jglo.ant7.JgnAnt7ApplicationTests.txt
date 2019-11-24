@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: top.jglo.ant7.JgnAnt7ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.407 sec - in top.jglo.ant7.JgnAnt7ApplicationTests
