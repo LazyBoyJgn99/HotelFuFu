@@ -2,7 +2,8 @@ package top.jglo.hotel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import top.jglo.hotel.test.FaceEngineTest;
+import top.jglo.hotel.test.FaceEngineTest22;
+
 
 @SpringBootApplication
 public class HotelFuFuApplication {
@@ -11,7 +12,7 @@ public class HotelFuFuApplication {
 		SpringApplication.run(HotelFuFuApplication.class, args);
 
 		System.out.println(System.getProperty("java.library.path"));
-		new FaceEngineTest();
+		new FaceEngineTest22();
 
 	}
 }

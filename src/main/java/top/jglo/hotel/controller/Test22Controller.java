@@ -3,10 +3,7 @@
 //
 //import com.arcsoft.face.*;
 //import com.arcsoft.face.enums.DetectMode;
-//import com.arcsoft.face.enums.DetectOrient;
-//import com.arcsoft.face.enums.ErrorInfo;
 //import com.arcsoft.face.enums.ImageFormat;
-////import com.arcsoft.face.toolkit.ImageInfo;
 //import io.swagger.annotations.*;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -22,6 +19,8 @@
 //import java.util.Arrays;
 //import java.util.List;
 //
+////import com.arcsoft.face.toolkit.ImageInfo;
+//
 ////import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 //
 ///**
@@ -33,7 +32,7 @@
 //@Controller
 //@RequestMapping(value = {""})
 //@Scope(name = "test", description = "session")
-//public class TestController {
+//public class Test22Controller {
 //
 //    @Autowired
 //    private FuUserRepository fuUserRepository;
@@ -119,17 +118,36 @@
 //    public ServerResult test3(@RequestParam String url) throws Exception {
 //        ServerResult result=new ServerResult();
 //        FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-//        FaceEngine faceEngine = faceEngineUtil.getFaceEngine();
+//        FaceEngine faceEngine = new FaceEngine();
+//        //引擎配置
+//        EngineConfiguration engineConfiguration = new EngineConfiguration();
+//        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
+//        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_0_HIGHER_EXT);
 //
+//        //功能配置
+//        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
+//        functionConfiguration.setSupportAge(true);//获取年龄信息
+//        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
+//        functionConfiguration.setSupportFaceDetect(true);
+//        functionConfiguration.setSupportFaceRecognition(true);
+//        functionConfiguration.setSupportGender(true);//获取性别信息
+//        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
+//        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
+//        engineConfiguration.setFunctionConfiguration(functionConfiguration);
+//        //初始化引擎
+//        int initCode = faceEngine.init(engineConfiguration);
+//        if (initCode != ErrorInfo.MOK.getValue()) {
+//            System.out.println("初始化引擎失败"+initCode);
+//        }
 //        File file1= faceEngineUtil.newImgFile(url);
-//        FaceEngineUtil.ImageInfo imageInfo = faceEngineUtil.getRGBData(file1);
+//        ImageInfo imageInfo = getRGBData(file1);
 //        //人脸检测
 //        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-//        int detectCode = faceEngine.detectFaces(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
+//        int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
 //        System.out.println(faceInfoList);
 //        //特征提取
 //        FaceFeature faceFeature = new FaceFeature();
-//        int extractCode = faceEngine.extractFaceFeature(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
+//        int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
 //        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
 //
 //        faceFeature.setFeatureData(faceFeature.getFeatureData());
@@ -143,7 +161,6 @@
 //        String similar=faceSimilar.toString();
 //        System.out.println(similar);
 //        result.setMessage(similar);
-//
 //        faceEngine.unInit();
 //        return result;
 //    }
@@ -157,58 +174,6 @@
 //        System.out.println(fuUser.toString());
 //        result.setMessage(fuUser.toString());
 //        result.setData(fuUser);
-//        return result;
-//    }
-//
-//    @PostMapping(value = {"test5"})
-//    @ApiOperation(value = "测试5", notes = "采用RequestParam的形式", produces = "application/json")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "url", value = "图片url", required = true, dataType = "String", paramType = "query")
-//    })
-//    @ResponseBody
-//    public ServerResult test5(@RequestParam String url) throws Exception {
-//        ServerResult result=new ServerResult();
-//        FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-//        FaceEngine faceEngine = new FaceEngine();
-//        //激活引擎
-//        faceEngine.active(FaceEngineUtil.appId, FaceEngineUtil.sdkKey);
-//
-//        EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
-//                FunctionConfiguration.builder()
-//                        .supportAge(true)
-//                        .supportFace3dAngle(true)
-//                        .supportFaceDetect(true)
-//                        .supportFaceRecognition(true)
-//                        .supportGender(true)
-//                        .build()).build();
-//        //初始化引擎
-//        faceEngine.init(engineConfiguration);
-//        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
-//
-//        File file1= faceEngineUtil.newImgFile(url);
-//        FaceEngineUtil.ImageInfo imageInfo = faceEngineUtil.getRGBData(file1);
-//        //人脸检测
-//        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-//        int detectCode = faceEngine.detectFaces(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
-//        System.out.println(faceInfoList);
-//        //特征提取
-//        FaceFeature faceFeature = new FaceFeature();
-//        int extractCode = faceEngine.extractFaceFeature(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
-//        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
-//
-//        faceFeature.setFeatureData(faceFeature.getFeatureData());
-//
-//        FaceFeature faceFeature2 = new FaceFeature();
-//        FuUser fuUser=fuUserRepository.findById(1);
-//        byte[] target = fuUser.getFaceDetail();
-//        faceFeature2.setFeatureData(target);
-//        FaceSimilar faceSimilar = new FaceSimilar();
-//        faceEngine.compareFaceFeature(faceFeature, faceFeature2, faceSimilar);
-//        String similar=faceSimilar.toString();
-//        System.out.println(similar);
-//        result.setMessage(similar);
-//
-//        faceEngine.unInit();
 //        return result;
 //    }
 //

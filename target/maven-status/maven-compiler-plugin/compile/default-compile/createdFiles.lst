@@ -3,15 +3,16 @@ top/jglo/hotel/model/FuHouseClassPrice.class
 top/jglo/hotel/model/FuEquip.class
 top/jglo/hotel/model/FuPayItems.class
 top/jglo/hotel/model/FuHotel.class
-top/jglo/hotel/controller/TestController.class
 top/jglo/hotel/model/FuRegHouClaSerRelation.class
 top/jglo/hotel/model/FuHouseClassService.class
 top/jglo/hotel/model/FuPaySingle.class
 top/jglo/hotel/model/FuUserRegisterRelation.class
 top/jglo/hotel/model/FuHouse.class
 top/jglo/hotel/model/FuService.class
+top/jglo/hotel/test/FaceEngineTest.class
 top/jglo/hotel/model/FuUserHoldUserRelation.class
 top/jglo/hotel/repository/TRepository.class
 top/jglo/hotel/model/FuHouseClass.class
 top/jglo/hotel/util/BinaryConversion.class
 top/jglo/hotel/model/FuUser.class
+top/jglo/hotel/test/FaceEngineTest22.class

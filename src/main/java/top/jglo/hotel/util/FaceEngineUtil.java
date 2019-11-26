@@ -23,23 +23,38 @@ public class FaceEngineUtil {
 
     public static String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     public static String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
-    public FaceEngine faceEngine = new FaceEngine();
+
+    public FaceEngine faceEngine ;
+
+    public FaceEngine getFaceEngine() {
+        return faceEngine;
+    }
+
+    public void setFaceEngine(FaceEngine faceEngine) {
+        this.faceEngine = faceEngine;
+    }
 
     public FaceEngineUtil(){
+        faceEngine= new FaceEngine();
 //        //激活引擎
 //        faceEngine.active(appId, sdkKey);
-//
-//        EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
-//                FunctionConfiguration.builder()
-//                        .supportFaceDetect(true)
-//                        .supportFaceRecognition(true)
-//                        .build()).build();
-//        //初始化引擎
-//        faceEngine.init(engineConfiguration);
+
+        EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
+                FunctionConfiguration.builder()
+                        .supportFaceDetect(true)
+                        .supportFaceRecognition(true)
+                        .build()).build();
+        //初始化引擎
+        faceEngine.init(engineConfiguration);
+
+        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
     }
     public FaceEngineUtil(boolean all){
         //激活引擎
-        faceEngine.activeOnline(appId, sdkKey);
+        //2.2
+//        faceEngine.activeOnline(appId, sdkKey);
+        //2.0
+        faceEngine.active(appId, sdkKey);
 
         EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
                 FunctionConfiguration.builder()
@@ -51,10 +66,10 @@ public class FaceEngineUtil {
                         .build()).build();
         //初始化引擎
         faceEngine.init(engineConfiguration);
-        int initCode = faceEngine.init(engineConfiguration);
-        if (initCode != ErrorInfo.MOK.getValue()) {
-            System.out.println("初始化引擎失败"+initCode);
-        }
+//        int initCode = faceEngine.init(engineConfiguration);
+//        if (initCode != ErrorInfo.MOK.getValue()) {
+//            System.out.println("初始化引擎失败"+initCode);
+//        }
     }
 
 
@@ -200,5 +215,7 @@ public class FaceEngineUtil {
 
     public void unInit(){
         this.faceEngine.unInit();
+        System.out.println("注销");
     }
+
 }
