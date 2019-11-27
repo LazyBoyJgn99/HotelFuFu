@@ -55,7 +55,7 @@ public class FaceEngineTest22 {
             if (this.getEngineNum()>=0){
                 break;
             }else {
-                wait(100);
+                wait(1000);
             }
         }
         System.out.println("选择：引擎"+n);
