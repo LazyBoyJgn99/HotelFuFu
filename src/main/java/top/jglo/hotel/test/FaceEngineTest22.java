@@ -29,6 +29,28 @@ public class FaceEngineTest22 {
 //    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
+    static int engineNum=2;
+    //使用引擎之前先访问资源
+    public synchronized FaceEngine useEngine(){
+        engineNum--;
+        while (engineNum<0){
+            System.out.println(engineNum);
+        };
+        FaceEngine faceEngine;
+        switch (getId()){
+            case 2:
+                faceEngine=faceEngine2;
+                break;
+            default:
+                faceEngine=faceEngine1;
+        }
+        return faceEngine;
+    }
+    //用完引擎释放资源
+    public synchronized int backEngine(){
+        engineNum++;
+        return engineNum;
+    }
     int i=1;
     public synchronized int getId(){
         i++;
@@ -279,20 +301,8 @@ public class FaceEngineTest22 {
     }
 
     public synchronized ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
-        FaceEngine faceEngine;
-        switch (getId()){
-            case 2:
-                faceEngine=faceEngine2;
-                break;
-//            case 3:
-//                faceEngine=faceEngine3;
-//                break;
-//            case 4:
-//                faceEngine=faceEngine4;
-//                break;
-            default:
-                faceEngine=faceEngine1;
-        }
+        FaceEngine faceEngine=useEngine();
+
         ServerResult result = new ServerResult();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
 //        System.out.println("使用引擎：" + src);
@@ -345,6 +355,7 @@ public class FaceEngineTest22 {
 
 //        int unInitCode = faceEngine.unInit();
 //        System.out.println("卸载" + unInitCode);
+        System.out.println("归还引擎资源，剩余：" + backEngine());
         return result;
     }
 
