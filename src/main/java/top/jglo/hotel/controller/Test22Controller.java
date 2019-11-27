@@ -50,6 +50,8 @@ public class Test22Controller {
     private FuUserRepository fuUserRepository;
     @Autowired
     private FuEngineRepository fuEngineRepository;
+    @Autowired
+    FaceEngineTest22 faceEngineTest;
 
 //    //新建引擎
 //    private FaceEngine faceEngine ;
@@ -125,72 +127,19 @@ public class Test22Controller {
 
     @PostMapping(value = {"test3"})
     @ApiOperation(value = "测试3", notes = "采用RequestParam的形式", produces = "application/json")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "url", value = "图片url", required = true, dataType = "String", paramType = "query")
-    })
     @ResponseBody
-    public ServerResult test3(@RequestParam String url) throws Exception {
+    public ServerResult test3(@RequestParam String url,@RequestParam int id) throws Exception {
         ServerResult result=new ServerResult();
-        FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
         //找一个引擎
-        FuEngine fuEngine=fuEngineRepository.findByName("yes");
-        FuEngine nextFuEngine=fuEngineRepository.findOne(fuEngine.getNextId());
+        FuEngine fuEngine = fuEngineRepository.findByName("yes");
+        FuEngine nextFuEngine = fuEngineRepository.findOne(fuEngine.getNextId());
         fuEngine.setName("no");
         nextFuEngine.setName("yes");
         fuEngineRepository.save(fuEngine);
         fuEngineRepository.save(nextFuEngine);
-        System.out.println("使用引擎："+fuEngine.getSrc());
-        FaceEngine faceEngine = new FaceEngine(fuEngine.getSrc());
-        //引擎配置
-        EngineConfiguration engineConfiguration = new EngineConfiguration();
-        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
-
-        //功能配置
-        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
-        functionConfiguration.setSupportAge(true);//获取年龄信息
-        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
-        functionConfiguration.setSupportFaceDetect(true);
-        functionConfiguration.setSupportFaceRecognition(true);
-        functionConfiguration.setSupportGender(true);//获取性别信息
-        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
-        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
-        engineConfiguration.setFunctionConfiguration(functionConfiguration);
-        //初始化引擎
-        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
-        int initCode = faceEngine.init(engineConfiguration);
-        System.out.println(initCode);
-        if (initCode != ErrorInfo.MOK.getValue()) {
-            System.out.println("初始化引擎失败"+initCode);
-
-        }
-        File file1= faceEngineUtil.newImgFile(url);
-        ImageInfo imageInfo =  getRGBData(file1);
-        file1.delete();
-        //人脸检测
-        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-        int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
-        System.out.println(detectCode);
-        System.out.println(faceInfoList);
-        //特征提取
-        FaceFeature faceFeature = new FaceFeature();
-        int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
-        System.out.println(extractCode);
-        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
-
-        faceFeature.setFeatureData(faceFeature.getFeatureData());
-
-        FaceFeature faceFeature2 = new FaceFeature();
-        FuUser fuUser=fuUserRepository.findById(1);
-        byte[] target = fuUser.getFaceDetail();
-        faceFeature2.setFeatureData(target);
-        FaceSimilar faceSimilar = new FaceSimilar();
-        faceEngine.compareFaceFeature(faceFeature, faceFeature2, faceSimilar);
-        String similar=faceSimilar.toString();
-        System.out.println(similar);
-        result.setMessage(similar);
-        int unInitCode = faceEngine.unInit();
-        System.out.println("卸载"+unInitCode);
+        
+        FuUser fuUser=fuUserRepository.findById(id);
+        faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
         return result;
     }
 
@@ -206,8 +155,7 @@ public class Test22Controller {
         return result;
     }
 
-    @Autowired
-    FaceEngineTest22 faceEngineTest;
+
 
     @PostMapping(value = {"test6"})
     @ApiOperation(value = "测试6", notes = "测试FaceEngine", produces = "人脸识别")
