@@ -154,15 +154,8 @@ public class Test22Controller {
     @ResponseBody
     public ServerResult test6(@RequestParam String url,@RequestParam int id) throws Exception {
         ServerResult result=new ServerResult();
-        //找一个引擎
-        FuEngine fuEngine = fuEngineRepository.findByName("yes");
-        FuEngine nextFuEngine = fuEngineRepository.findOne(fuEngine.getNextId());
-        fuEngine.setName("no");
-        nextFuEngine.setName("yes");
-        fuEngineRepository.save(fuEngine);
-        fuEngineRepository.save(nextFuEngine);
+
         FuUser fuUser=fuUserRepository.findById(id);
-        faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
 
         ExecutorService executorService = new ThreadPoolExecutor(
                 10, 10, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
@@ -170,10 +163,11 @@ public class Test22Controller {
         Future<String> FutureResult = executorService.submit(new Callable<String>(){
             @Override
             public String call() throws Exception {
-                return faceEngineTest.test3(url,fuUser,fuEngine.getSrc()).getMessage();
+                return faceEngineTest.test3(url,fuUser,"").getMessage();
             }
         } );
         System.out.println("aaaaaaaaaaaaa"+FutureResult.get());
+        result.setMessage(FutureResult.get());
         return result;
     }
 
