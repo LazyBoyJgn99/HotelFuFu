@@ -24,9 +24,9 @@ import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 @Service
 public class FaceEngineTest22 {
 
+    public FaceEngine faceEngine = new FaceEngine("/usr/local/lib/arcsoft2.2/");
 
     public static void main(String[] args) {
-
 
     }
     public  FaceEngineTest22(int i) {
@@ -36,7 +36,7 @@ public class FaceEngineTest22 {
         String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
         String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
 
-        FaceEngine faceEngine = new FaceEngine("/usr/local/lib/arcsoft2.2/");
+//        FaceEngine faceEngine = new FaceEngine("/usr/local/lib/arcsoft2.2/");
 //        FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/");
         //激活引擎
         int activeCode = faceEngine.activeOnline(appId, sdkKey);
@@ -197,34 +197,32 @@ public class FaceEngineTest22 {
         System.out.println(unInitCode);
         System.out.println("卸载");
     }
-    public ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
+    public synchronized ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
         ServerResult result = new ServerResult();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-        System.out.println("使用引擎：" + src);
-        FaceEngine faceEngine = new FaceEngine(src);
-        //引擎配置
-        EngineConfiguration engineConfiguration = new EngineConfiguration();
-        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
-
-        //功能配置
-        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
-        functionConfiguration.setSupportAge(true);//获取年龄信息
-        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
-        functionConfiguration.setSupportFaceDetect(true);
-        functionConfiguration.setSupportFaceRecognition(true);
-        functionConfiguration.setSupportGender(true);//获取性别信息
-        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
-        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
-        engineConfiguration.setFunctionConfiguration(functionConfiguration);
-        //初始化引擎
-        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
-        int initCode = faceEngine.init(engineConfiguration);
-        System.out.println(initCode);
-        if (initCode != ErrorInfo.MOK.getValue()) {
-            System.out.println("初始化引擎失败" + initCode);
-
-        }
+//        System.out.println("使用引擎：" + src);
+//        //引擎配置
+//        EngineConfiguration engineConfiguration = new EngineConfiguration();
+//        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
+//        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
+//
+//        //功能配置
+//        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
+//        functionConfiguration.setSupportAge(true);//获取年龄信息
+//        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
+//        functionConfiguration.setSupportFaceDetect(true);
+//        functionConfiguration.setSupportFaceRecognition(true);
+//        functionConfiguration.setSupportGender(true);//获取性别信息
+//        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
+//        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
+//        engineConfiguration.setFunctionConfiguration(functionConfiguration);
+//        //初始化引擎
+//        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
+//        int initCode = faceEngine.init(engineConfiguration);
+//        System.out.println(initCode);
+//        if (initCode != ErrorInfo.MOK.getValue()) {
+//            System.out.println("初始化引擎失败" + initCode);
+//        }
         File file1 = faceEngineUtil.newImgFile(url);
         ImageInfo imageInfo = getRGBData(file1);
         file1.delete();
@@ -249,8 +247,9 @@ public class FaceEngineTest22 {
         String similar = faceSimilar.toString();
         System.out.println(similar);
         result.setMessage(similar);
-        int unInitCode = faceEngine.unInit();
-        System.out.println("卸载" + unInitCode);
+
+//        int unInitCode = faceEngine.unInit();
+//        System.out.println("卸载" + unInitCode);
         return result;
     }
 

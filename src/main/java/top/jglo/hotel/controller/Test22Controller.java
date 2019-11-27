@@ -2,11 +2,7 @@ package top.jglo.hotel.controller;
 
 
 import com.arcsoft.face.*;
-import com.arcsoft.face.enums.DetectMode;
-import com.arcsoft.face.enums.DetectOrient;
-import com.arcsoft.face.enums.ErrorInfo;
 import com.arcsoft.face.enums.ImageFormat;
-import com.arcsoft.face.toolkit.ImageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -137,7 +133,6 @@ public class Test22Controller {
         nextFuEngine.setName("yes");
         fuEngineRepository.save(fuEngine);
         fuEngineRepository.save(nextFuEngine);
-        
         FuUser fuUser=fuUserRepository.findById(id);
         faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
         return result;
@@ -160,29 +155,28 @@ public class Test22Controller {
     @PostMapping(value = {"test6"})
     @ApiOperation(value = "测试6", notes = "测试FaceEngine", produces = "人脸识别")
     @ResponseBody
-    public String test6(@RequestParam int i) throws Exception{
-//           方法一
-//        Thread a = new Thread(){
-//            @Override
-//            public void run() {
-//                String s;
-//                s=faceEngineTest.play();
-//            }
-//        };
-//        a.start();
-//        String s=a.toString();
-//        return s;
+    public ServerResult test6(@RequestParam String url,@RequestParam int id) throws Exception {
+        ServerResult result=new ServerResult();
+        //找一个引擎
+        FuEngine fuEngine = fuEngineRepository.findByName("yes");
+        FuEngine nextFuEngine = fuEngineRepository.findOne(fuEngine.getNextId());
+        fuEngine.setName("no");
+        nextFuEngine.setName("yes");
+        fuEngineRepository.save(fuEngine);
+        fuEngineRepository.save(nextFuEngine);
+        FuUser fuUser=fuUserRepository.findById(id);
+        faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-        Future<String> result = executorService.submit(new Callable<String>(){
+        Future<String> FutureResult = executorService.submit(new Callable<String>(){
             @Override
-            public String call(){
-                FaceEngineTest22 faceEngineTest22 = new FaceEngineTest22(1);
-                return faceEngineTest22.faceSimilar(i);
+            public String call() throws Exception {
+                return faceEngineTest.test3(url,fuUser,fuEngine.getSrc()).getMessage();
             }
         } );
-        System.out.println("aaaaaaaaaaaaa"+result.get());
-        return "a";
+        System.out.println("aaaaaaaaaaaaa"+FutureResult.get());
+        return result;
     }
+
 }
