@@ -45,19 +45,19 @@ public class FaceEngineTest22 {
         FunctionConfiguration functionConfiguration = new FunctionConfiguration();
 
         //获取年龄信息
-        functionConfiguration.setSupportAge(false);
+        functionConfiguration.setSupportAge(true);
         //获取人脸三维角度信息
-        functionConfiguration.setSupportFace3dAngle(false);
+        functionConfiguration.setSupportFace3dAngle(true);
         //
         functionConfiguration.setSupportFaceDetect(true);
         //
         functionConfiguration.setSupportFaceRecognition(true);
         //获取性别信息
-        functionConfiguration.setSupportGender(false);
+        functionConfiguration.setSupportGender(true);
         //获取新的RGB活体信息对象
-        functionConfiguration.setSupportLiveness(false);
+        functionConfiguration.setSupportLiveness(true);
         //获取新的IR活体信息对象
-        functionConfiguration.setSupportIRLiveness(false);
+        functionConfiguration.setSupportIRLiveness(true);
 
         engineConfiguration.setFunctionConfiguration(functionConfiguration);
 
@@ -101,7 +101,7 @@ public class FaceEngineTest22 {
 
         //特征比对
         FaceFeature targetFaceFeature = new FaceFeature();
-//        targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
+        targetFaceFeature.setFeatureData(faceFeature.getFeatureData());
         FaceFeature sourceFaceFeature = new FaceFeature();
         sourceFaceFeature.setFeatureData(faceFeature2.getFeatureData());
         FaceSimilar faceSimilar = new FaceSimilar();
@@ -111,60 +111,82 @@ public class FaceEngineTest22 {
 
         //人脸属性检测
         FunctionConfiguration configuration = new FunctionConfiguration();
+        //年龄
         configuration.setSupportAge(true);
+        //角度
         configuration.setSupportFace3dAngle(true);
+        //性别
         configuration.setSupportGender(true);
+        //活体
         configuration.setSupportLiveness(true);
         int processCode = faceEngine.process(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList, configuration);
+        System.out.println("processCode："+processCode );
 
 
         //性别检测
         List<GenderInfo> genderInfoList = new ArrayList<GenderInfo>();
         int genderCode = faceEngine.getGender(genderInfoList);
-    //        assertEquals("性别检测失败", genderCode, ErrorInfo.MOK.getValue());
-        System.out.println("性别：" + genderInfoList.get(0).getGender());
+        System.out.println("genderCode："+genderCode );
+
+        //        assertEquals("性别检测失败", genderCode, ErrorInfo.MOK.getValue());
+        System.out.println("性别：" + (genderInfoList.get(0).getGender() == 0 ? "男" : "女"));
 
         //年龄检测
         List<AgeInfo> ageInfoList = new ArrayList<AgeInfo>();
         int ageCode = faceEngine.getAge(ageInfoList);
-    //        assertEquals("年龄检测失败", ageCode, ErrorInfo.MOK.getValue());
+        System.out.println("ageCode："+ageCode );
+
+        //        assertEquals("年龄检测失败", ageCode, ErrorInfo.MOK.getValue());
         System.out.println("年龄：" + ageInfoList.get(0).getAge());
 
         //3D信息检测
         List<Face3DAngle> face3DAngleList = new ArrayList<Face3DAngle>();
         int face3dCode = faceEngine.getFace3DAngle(face3DAngleList);
+        System.out.println("face3dCode："+face3dCode );
+
         System.out.println("3D角度：" + face3DAngleList.get(0).getPitch() + "," + face3DAngleList.get(0).getRoll() + "," + face3DAngleList.get(0).getYaw());
 
-        //活体检测
-        List<LivenessInfo> livenessInfoList = new ArrayList<LivenessInfo>();
-        int livenessCode = faceEngine.getLiveness(livenessInfoList);
-        System.out.println("活体：" + livenessInfoList.get(0).getLiveness());
+//        //活体检测
+//        List<LivenessInfo> livenessInfoList = new ArrayList<LivenessInfo>();
+//        int livenessCode = faceEngine.getLiveness(livenessInfoList);
+//        System.out.println("livenessCode："+livenessCode );
+//
+//        //RGB活体值，未知=-1 、非活体=0 、活体=1、超出人脸=2
+//        System.out.println("活体：" + livenessInfoList.get(0).getLiveness()=="1"?"活体":"其它");
+//
+//
+//        //IR属性处理
+//        ImageInfo imageInfoGray = getGrayData(new File("/usr/share/nginx/image/HotelFuFu/test/CD000205C1740C4235ECD97E3CDBCCFA.jpg"));
+//        List<FaceInfo> faceInfoListGray = new ArrayList<FaceInfo>();
+//        int detectCodeGray = faceEngine.detectFaces(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray);
+//        System.out.println("detectCodeGray："+detectCodeGray );
+//
+//
+//        FunctionConfiguration configuration2 = new FunctionConfiguration();
+//        configuration2.setSupportIRLiveness(true);
+//        int processCode2 = faceEngine.processIr(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray, configuration2);
+//        System.out.println("detectCodeGray："+processCode2 );
+//
+//        //IR活体检测
+//        List<IrLivenessInfo> irLivenessInfo = new ArrayList<>();
+//        int livenessIr = faceEngine.getLivenessIr(irLivenessInfo);
+//        System.out.println("livenessIr："+livenessIr );
+//
+//        System.out.println("IR活体：" + irLivenessInfo.get(0).getLiveness());
+//
+//
+//        //设置活体检测参数
+//        int paramCode = faceEngine.setLivenessParam(0.8f, 0.8f);
+//
+//
+//        //获取激活文件信息
+//        ActiveFileInfo activeFileInfo = new ActiveFileInfo();
+//        int activeFileCode = faceEngine.getActiveFileInfo(activeFileInfo);
 
-
-        //IR属性处理
-        ImageInfo imageInfoGray = getGrayData(new File("d:\\1.jpg"));
-        List<FaceInfo> faceInfoListGray = new ArrayList<FaceInfo>();
-        int detectCodeGray = faceEngine.detectFaces(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray);
-
-        FunctionConfiguration configuration2 = new FunctionConfiguration();
-        configuration2.setSupportIRLiveness(true);
-        int processCode2 = faceEngine.processIr(imageInfoGray.getImageData(), imageInfoGray.getWidth(), imageInfoGray.getHeight(), ImageFormat.CP_PAF_GRAY, faceInfoListGray, configuration2);
-        //IR活体检测
-        List<IrLivenessInfo> irLivenessInfo = new ArrayList<>();
-        int livenessIr = faceEngine.getLivenessIr(irLivenessInfo);
-        System.out.println("IR活体：" + irLivenessInfo.get(0).getLiveness());
-
-
-        //设置活体检测参数
-        int paramCode = faceEngine.setLivenessParam(0.8f, 0.8f);
-
-
-        //获取激活文件信息
-        ActiveFileInfo activeFileInfo = new ActiveFileInfo();
-        int activeFileCode = faceEngine.getActiveFileInfo(activeFileInfo);
-
-        //引擎卸载
+//        引擎卸载
         int unInitCode = faceEngine.unInit();
+        System.out.println(unInitCode);
+        System.out.println("卸载");
     }
 
 }

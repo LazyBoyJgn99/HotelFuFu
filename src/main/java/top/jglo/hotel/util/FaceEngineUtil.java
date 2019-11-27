@@ -35,19 +35,19 @@ public class FaceEngineUtil {
     }
 
     public FaceEngineUtil(){
-        faceEngine= new FaceEngine();
-//        //激活引擎
-//        faceEngine.active(appId, sdkKey);
-
-        EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
-                FunctionConfiguration.builder()
-                        .supportFaceDetect(true)
-                        .supportFaceRecognition(true)
-                        .build()).build();
-        //初始化引擎
-        faceEngine.init(engineConfiguration);
-
-        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
+//        faceEngine= new FaceEngine();
+////        //激活引擎
+////        faceEngine.active(appId, sdkKey);
+//
+//        EngineConfiguration engineConfiguration = EngineConfiguration.builder().functionConfiguration(
+//                FunctionConfiguration.builder()
+//                        .supportFaceDetect(true)
+//                        .supportFaceRecognition(true)
+//                        .build()).build();
+//        //初始化引擎
+//        faceEngine.init(engineConfiguration);
+//
+//        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
     }
     public FaceEngineUtil(boolean all){
         //激活引擎
