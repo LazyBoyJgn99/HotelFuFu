@@ -22,10 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 //import com.arcsoft.face.toolkit.ImageInfo;
 
@@ -167,7 +164,8 @@ public class Test22Controller {
         FuUser fuUser=fuUserRepository.findById(id);
         faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
 
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = new ThreadPoolExecutor(
+                10, 10, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
 
         Future<String> FutureResult = executorService.submit(new Callable<String>(){
             @Override
