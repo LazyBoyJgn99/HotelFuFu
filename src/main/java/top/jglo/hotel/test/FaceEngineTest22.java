@@ -32,9 +32,13 @@ public class FaceEngineTest22 {
     static int engineNum=2;
     //使用引擎之前先访问资源
     public synchronized FaceEngine useEngine(){
+        int i=0;
         engineNum--;
         while (engineNum<0){
-            System.out.println(engineNum);
+            if(i==0){
+                i++;
+                System.out.println(engineNum);
+            }
         };
         FaceEngine faceEngine;
         switch (getId()){
