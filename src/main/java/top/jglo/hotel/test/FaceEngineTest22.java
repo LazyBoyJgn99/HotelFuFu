@@ -300,7 +300,7 @@ public class FaceEngineTest22 {
 //        System.out.println("卸载");
     }
 
-    public synchronized ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
+    public ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
         FaceEngine faceEngine=useEngine();
 
         ServerResult result = new ServerResult();
