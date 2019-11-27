@@ -16,8 +16,6 @@ import top.jglo.hotel.model.result.ServerResult;
 @RequestMapping(value = {"example"})
 public class ExController {
 
-
-
     @PostMapping(value = {"test1"})
     @ApiOperation(value = "测试1", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
     @ApiImplicitParams({
