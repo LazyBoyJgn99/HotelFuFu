@@ -33,12 +33,12 @@ public class FaceEngineTest22 {
 
         FaceEngine faceEngine = new FaceEngine("/usr/local/lib/arcsoft2.2/");
 //        FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/");
-//        //激活引擎
-//        int activeCode = faceEngine.activeOnline(appId, sdkKey);
-//        System.out.println(activeCode);
-//        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-//            System.out.println("引擎激活失败");
-//        }
+        //激活引擎
+        int activeCode = faceEngine.activeOnline(appId, sdkKey);
+        System.out.println(activeCode);
+        if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+            System.out.println("引擎激活失败");
+        }
 
         //引擎配置
         EngineConfiguration engineConfiguration = new EngineConfiguration();
