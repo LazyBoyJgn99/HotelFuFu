@@ -23,37 +23,57 @@ import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 
 @Service
 public class FaceEngineTest22 {
+    private final Object balLock
+            = new Object();
     public FaceEngine faceEngine1 = new FaceEngine("/usr/local/lib/arcsoft2.2/");
     public FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/arcsoft2.2.2/");
 //    public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
 //    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
-    static int engineNum=2;
+    int engineNum=2;
+
+    public int getEngineNum() {
+        synchronized(balLock){
+            return engineNum;
+        }
+    }
+
+    public void setEngineNum(int engineNum) {
+        synchronized(balLock){
+            this.engineNum = engineNum;
+        }
+    }
+
     //使用引擎之前先访问资源
-    public synchronized FaceEngine useEngine(){
-        int i=0;
-        engineNum--;
-        while (engineNum<0){
-            if(i==0){
-                i++;
-                System.out.println(engineNum);
-            }
-        };
+    public synchronized FaceEngine useEngine() throws InterruptedException {
         FaceEngine faceEngine;
-        switch (getId()){
+        int i=this.getEngineNum();
+        this.setEngineNum(i-1);
+        int n=getId();
+        while (true){
+            if (this.getEngineNum()>=0){
+                break;
+            }else {
+                wait(100);
+            }
+        }
+        System.out.println("选择：引擎"+n);
+        switch (n){
             case 2:
                 faceEngine=faceEngine2;
                 break;
             default:
                 faceEngine=faceEngine1;
         }
+
         return faceEngine;
     }
     //用完引擎释放资源
     public synchronized int backEngine(){
-        engineNum++;
-        return engineNum;
+        int i=this.getEngineNum();
+        this.setEngineNum(i+1);
+        return this.getEngineNum();
     }
     int i=1;
     public synchronized int getId(){
