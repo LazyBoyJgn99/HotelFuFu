@@ -51,13 +51,6 @@ public class FaceEngineTest22 {
         int i=this.getEngineNum();
         this.setEngineNum(i-1);
         int n=getId();
-        while (true){
-            if (this.getEngineNum()>=0){
-                break;
-            }else {
-                wait(1000);
-            }
-        }
         System.out.println("选择：引擎"+n);
         switch (n){
             case 2:
