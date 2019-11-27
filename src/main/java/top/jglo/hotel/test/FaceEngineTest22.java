@@ -17,6 +17,7 @@ import top.jglo.hotel.util.FaceEngineUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import static com.arcsoft.face.toolkit.ImageFactory.getGrayData;
 import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
@@ -31,42 +32,40 @@ public class FaceEngineTest22 {
 //    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
-    int engineNum=2;
-
-    public int getEngineNum() {
-        synchronized(balLock){
-            return engineNum;
-        }
-    }
-
-    public void setEngineNum(int engineNum) {
-        synchronized(balLock){
-            this.engineNum = engineNum;
-        }
-    }
-
-    //使用引擎之前先访问资源
-    public synchronized FaceEngine useEngine() throws InterruptedException {
+    //互斥资源2
+    Semaphore position=new Semaphore(2);
+    //使用之前访问资源
+    public FaceEngine useEngine() {
         FaceEngine faceEngine;
-        int i=this.getEngineNum();
-        this.setEngineNum(i-1);
-        int n=getId();
-        System.out.println("选择：引擎"+n);
-        switch (n){
-            case 2:
-                faceEngine=faceEngine2;
-                break;
-            default:
-                faceEngine=faceEngine1;
+        try {
+            if (position.availablePermits() > 0) {
+                System.out.println("进入厕所，有空位");
+            } else {
+                System.out.println( "进入厕所，没空位，排队");
+            }
+            position.acquire();
+            System.out.println("获得坑位");
+            int n=getId();
+            System.out.println("选择：引擎"+n);
+            switch (n){
+                case 2:
+                    faceEngine=faceEngine2;
+                    break;
+                default:
+                    faceEngine=faceEngine1;
+            }
+        } catch (Exception e) {
+            faceEngine=null;
+            e.printStackTrace();
         }
-
         return faceEngine;
     }
     //用完引擎释放资源
-    public synchronized int backEngine(){
-        int i=this.getEngineNum();
-        this.setEngineNum(i+1);
-        return this.getEngineNum();
+    public int backEngine(){
+        position.release();
+        int i=position.availablePermits();
+        System.out.println("使用完毕,剩余："+i);
+        return i;
     }
     int i=1;
     public synchronized int getId(){
