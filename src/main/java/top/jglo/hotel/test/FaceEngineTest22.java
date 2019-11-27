@@ -34,9 +34,10 @@ public class FaceEngineTest22 {
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
     //互斥资源2
     Semaphore position=new Semaphore(2);
+    //目前有个小问题，getId获取到的Id不一定对应释放掉的引擎
     //使用之前访问资源
-    public FaceEngine useEngine() {
-        FaceEngine faceEngine;
+    public int useEngine() {
+        int n=0;
         try {
             if (position.availablePermits() > 0) {
                 System.out.println("进入厕所，有空位");
@@ -45,35 +46,60 @@ public class FaceEngineTest22 {
             }
             position.acquire();
             System.out.println("获得坑位");
-            int n=getId();
+            n=getId();
             System.out.println("选择：引擎"+n);
-            switch (n){
-                case 2:
-                    faceEngine=faceEngine2;
-                    break;
-                default:
-                    faceEngine=faceEngine1;
-            }
+            engineList.get(n).setStatus(1);
         } catch (Exception e) {
-            faceEngine=null;
             e.printStackTrace();
         }
-        return faceEngine;
+        return n;
     }
     //用完引擎释放资源
-    public int backEngine(){
+    public int backEngine(int i){
+        engineList.get(i).setStatus(0);
         position.release();
-        int i=position.availablePermits();
-        System.out.println("使用完毕,剩余："+i);
-        return i;
+        int n=position.availablePermits();
+        System.out.println("使用完毕,剩余："+n);
+        return n;
     }
     int i=1;
+    List<Engine> engineList=new ArrayList<>();
     public synchronized int getId(){
-        i++;
-        if(i>2){
-            i=1;
+        for(int i=0;i<engineList.size();i++){
+            if (engineList.get(i).getStatus()==0){
+                return i;
+            }
         }
-        return i;
+        return 0;
+    }
+    class Engine {
+        private int id;
+        private int status=0;
+        private FaceEngine faceEngine;
+
+        public FaceEngine getFaceEngine() {
+            return faceEngine;
+        }
+
+        public void setFaceEngine(FaceEngine faceEngine) {
+            this.faceEngine = faceEngine;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
     }
     public static void main(String[] args) {
 
@@ -82,6 +108,7 @@ public class FaceEngineTest22 {
 
     }
     public  FaceEngineTest22() {
+
         int activeCode = faceEngine1.activeOnline(appId, sdkKey);
         System.out.println(activeCode);
         if (activeCode != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
@@ -150,6 +177,16 @@ public class FaceEngineTest22 {
 //        if (initCode4 != ErrorInfo.MOK.getValue()) {
 //            System.out.println("初始化引擎4失败");
 //        }
+        Engine engine1=new Engine();
+        Engine engine2=new Engine();
+        engine1.setId(1);
+        engine1.setStatus(0);
+        engine1.setFaceEngine(faceEngine1);
+        engine2.setId(2);
+        engine2.setStatus(0);
+        engine2.setFaceEngine(faceEngine2);
+        engineList.add(engine1);
+        engineList.add(engine2);
     }
     public  FaceEngineTest22(String test){
 
@@ -317,7 +354,8 @@ public class FaceEngineTest22 {
     }
 
     public ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
-        FaceEngine faceEngine=useEngine();
+        int n=useEngine();
+        FaceEngine faceEngine=engineList.get(n).getFaceEngine();
 
         ServerResult result = new ServerResult();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
@@ -371,7 +409,7 @@ public class FaceEngineTest22 {
 
 //        int unInitCode = faceEngine.unInit();
 //        System.out.println("卸载" + unInitCode);
-        System.out.println("归还引擎资源，剩余：" + backEngine());
+        System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return result;
     }
 
