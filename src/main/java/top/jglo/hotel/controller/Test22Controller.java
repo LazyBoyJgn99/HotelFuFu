@@ -16,6 +16,8 @@ import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
 import top.jglo.hotel.repository.FuUserRepository;
+import top.jglo.hotel.test.FaceEngineTest;
+import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.FaceEngineUtil;
 
@@ -25,6 +27,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 //import com.arcsoft.face.toolkit.ImageInfo;
 
@@ -201,4 +207,33 @@ public class Test22Controller {
         return result;
     }
 
+    @Autowired
+    FaceEngineTest22 faceEngineTest;
+
+    @PostMapping(value = {"test1"})
+    @ApiOperation(value = "测试1", notes = "测试FaceEngine", produces = "人脸识别")
+    @ResponseBody
+    public String test1() throws Exception{
+//           方法一
+//        Thread a = new Thread(){
+//            @Override
+//            public void run() {
+//                String s;
+//                s=faceEngineTest.play();
+//            }
+//        };
+//        a.start();
+//        String s=a.toString();
+//        return s;
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        Future<String> result = executorService.submit(new Callable<String>(){
+            public String call(){
+                return faceEngineTest.play();
+            }
+        } );
+        System.out.println("aaaaaaaaaaaaa"+result.get());
+        return "a";
+    }
 }
