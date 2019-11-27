@@ -28,12 +28,12 @@ public class FaceEngineTest22 {
             = new Object();
     public FaceEngine faceEngine1 = new FaceEngine("/usr/local/lib/arcsoft2.2/");
     public FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/arcsoft2.2.2/");
-//    public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
-//    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
+    public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
+    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
     //互斥资源2
-    Semaphore position=new Semaphore(2);
+    Semaphore position;
     //目前有个小问题，getId获取到的Id不一定对应释放掉的引擎
     //使用之前访问资源
     public int useEngine() {
@@ -119,16 +119,16 @@ public class FaceEngineTest22 {
         if (activeCode2 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
             System.out.println("引擎2激活失败");
         }
-//        int activeCode3 = faceEngine3.activeOnline(appId, sdkKey);
-//        System.out.println(activeCode3);
-//        if (activeCode3 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-//            System.out.println("引擎3激活失败");
-//        }
-//        int activeCode4 = faceEngine4.activeOnline(appId, sdkKey);
-//        System.out.println(activeCode4);
-//        if (activeCode4 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-//            System.out.println("引擎激4活失败");
-//        }
+        int activeCode3 = faceEngine3.activeOnline(appId, sdkKey);
+        System.out.println(activeCode3);
+        if (activeCode3 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+            System.out.println("引擎3激活失败");
+        }
+        int activeCode4 = faceEngine4.activeOnline(appId, sdkKey);
+        System.out.println(activeCode4);
+        if (activeCode4 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+            System.out.println("引擎激4活失败");
+        }
 
         //引擎配置
         EngineConfiguration engineConfiguration = new EngineConfiguration();
@@ -156,37 +156,56 @@ public class FaceEngineTest22 {
         engineConfiguration.setFunctionConfiguration(functionConfiguration);
 
 
+        Engine engine1=new Engine();
+        Engine engine2=new Engine();
+        Engine engine3=new Engine();
+        Engine engine4=new Engine();
+        //成功数量
+        int num=0;
         //初始化引擎
         int initCode = faceEngine1.init(engineConfiguration);
         System.out.println(initCode);
         if (initCode != ErrorInfo.MOK.getValue()) {
             System.out.println("初始化引擎1失败");
+        }else {
+            engine1.setStatus(0);
+            engine1.setFaceEngine(faceEngine1);
+            engineList.add(engine1);
+            num++;
         }
         int initCode2 = faceEngine2.init(engineConfiguration);
         System.out.println(initCode2);
         if (initCode2 != ErrorInfo.MOK.getValue()) {
             System.out.println("初始化引擎2失败");
+        }else {
+            engine2.setStatus(0);
+            engine2.setFaceEngine(faceEngine2);
+            engineList.add(engine2);
+            num++;
         }
-//        int initCode3 = faceEngine3.init(engineConfiguration);
-//        System.out.println(initCode3);
-//        if (initCode3 != ErrorInfo.MOK.getValue()) {
-//            System.out.println("初始化引擎3失败");
-//        }
-//        int initCode4 = faceEngine4.init(engineConfiguration);
-//        System.out.println(initCode4);
-//        if (initCode4 != ErrorInfo.MOK.getValue()) {
-//            System.out.println("初始化引擎4失败");
-//        }
-        Engine engine1=new Engine();
-        Engine engine2=new Engine();
-        engine1.setId(1);
-        engine1.setStatus(0);
-        engine1.setFaceEngine(faceEngine1);
-        engine2.setId(2);
-        engine2.setStatus(0);
-        engine2.setFaceEngine(faceEngine2);
-        engineList.add(engine1);
-        engineList.add(engine2);
+        int initCode3 = faceEngine3.init(engineConfiguration);
+        System.out.println(initCode3);
+        if (initCode3 != ErrorInfo.MOK.getValue()) {
+            System.out.println("初始化引擎3失败");
+        }else {
+            engine3.setStatus(0);
+            engine3.setFaceEngine(faceEngine3);
+            engineList.add(engine3);
+            num++;
+        }
+        int initCode4 = faceEngine4.init(engineConfiguration);
+        System.out.println(initCode4);
+        if (initCode4 != ErrorInfo.MOK.getValue()) {
+            System.out.println("初始化引擎4失败");
+        }else {
+            engine4.setStatus(0);
+            engine4.setFaceEngine(faceEngine4);
+            engineList.add(engine4);
+            num++;
+        }
+
+        position=new Semaphore(num);
+
     }
     public  FaceEngineTest22(String test){
 
