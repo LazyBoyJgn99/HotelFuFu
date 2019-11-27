@@ -16,7 +16,6 @@ import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
 import top.jglo.hotel.repository.FuUserRepository;
-import top.jglo.hotel.test.FaceEngineTest;
 import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.FaceEngineUtil;
@@ -210,10 +209,10 @@ public class Test22Controller {
     @Autowired
     FaceEngineTest22 faceEngineTest;
 
-    @PostMapping(value = {"test1"})
-    @ApiOperation(value = "测试1", notes = "测试FaceEngine", produces = "人脸识别")
+    @PostMapping(value = {"test6"})
+    @ApiOperation(value = "测试6", notes = "测试FaceEngine", produces = "人脸识别")
     @ResponseBody
-    public String test1() throws Exception{
+    public String test6(@RequestParam int i) throws Exception{
 //           方法一
 //        Thread a = new Thread(){
 //            @Override
@@ -229,8 +228,10 @@ public class Test22Controller {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         Future<String> result = executorService.submit(new Callable<String>(){
+            @Override
             public String call(){
-                return faceEngineTest.play();
+                FaceEngineTest22 faceEngineTest22 = new FaceEngineTest22(1);
+                return faceEngineTest22.faceSimilar(i);
             }
         } );
         System.out.println("aaaaaaaaaaaaa"+result.get());
