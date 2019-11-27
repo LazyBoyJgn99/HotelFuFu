@@ -193,9 +193,9 @@ public class FaceEngineTest22 {
 //        int activeFileCode = faceEngine.getActiveFileInfo(activeFileInfo);
 
 //        引擎卸载
-        int unInitCode = faceEngine.unInit();
-        System.out.println(unInitCode);
-        System.out.println("卸载");
+//        int unInitCode = faceEngine.unInit();
+//        System.out.println(unInitCode);
+//        System.out.println("卸载");
     }
     public synchronized ServerResult test3(String url, FuUser fuUser,String src) throws Exception {
         ServerResult result = new ServerResult();

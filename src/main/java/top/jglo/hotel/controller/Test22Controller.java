@@ -47,7 +47,7 @@ public class Test22Controller {
     @Autowired
     private FuEngineRepository fuEngineRepository;
     @Autowired
-    FaceEngineTest22 faceEngineTest;
+    private FaceEngineTest22 faceEngineTest;
 
 //    //新建引擎
 //    private FaceEngine faceEngine ;

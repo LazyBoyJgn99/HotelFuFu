@@ -12,7 +12,7 @@ public class HotelFuFuApplication {
 		SpringApplication.run(HotelFuFuApplication.class, args);
 
 		System.out.println(System.getProperty("java.library.path"));
-		new FaceEngineTest22();
+//		new FaceEngineTest22();
 
 	}
 }
