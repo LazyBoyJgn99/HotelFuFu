@@ -1,7 +1,9 @@
 package top.jglo.hotel.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import top.jglo.hotel.model.FuWorker;
 
 import java.io.Serializable;
 
