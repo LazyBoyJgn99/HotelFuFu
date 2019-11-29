@@ -26,7 +26,7 @@ public class WorkerController {
     FuWorkerRepository fuWorkerRepository;
 
     @PostMapping(value = {"login"})
-    @ApiOperation(value = "登录", notes = "输入参数是username和pwd")
+    @ApiOperation(value = "登录", notes = "输入参数是username（phone或username或workNum）和pwd")
     @ResponseBody
     public ServerResult login(@RequestParam String username,@RequestParam String pwd) {
         ServerResult result=new ServerResult();

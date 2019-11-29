@@ -16,9 +16,9 @@ public class FuRole {
     @JoinTable(
         name="fu_role_power_relation",
 //        joinColumns = {@JoinColumn(name="ITEM_ID",referencedColumnName="I_ID")},
-        joinColumns = {@JoinColumn(name="power_id")},
+        joinColumns = {@JoinColumn(name="role_id",referencedColumnName="id")},
 //        inverseJoinColumns= {@JoinColumn(name="CATEGORY_ID", referencedColumnName="C_ID")})
-        inverseJoinColumns= {@JoinColumn(name="role_id")}
+        inverseJoinColumns= {@JoinColumn(name="power_id",referencedColumnName="id")}
     )
     public List<FuPower> getPowerList() {
         return powerList;
