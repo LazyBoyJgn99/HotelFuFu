@@ -11,6 +11,7 @@ public class FuRegHouClaSerRelation {
     private Integer houClaSerId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

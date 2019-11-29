@@ -82,7 +82,7 @@ public class WorkerController {
         return result;
     }
     @PostMapping(value = {"deleteRole"})
-    @ApiOperation(value = "给酒店添加角色", notes = "给酒店添加角色，role类中的id")
+    @ApiOperation(value = "删除角色", notes = "删除角色，role类中的id")
     @ResponseBody
     public ServerResult deleteRole(@RequestBody FuRole role) {
         ServerResult result=new ServerResult();

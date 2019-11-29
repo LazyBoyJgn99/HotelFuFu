@@ -18,6 +18,7 @@ public class FuRegister {
     private Timestamp endDate;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

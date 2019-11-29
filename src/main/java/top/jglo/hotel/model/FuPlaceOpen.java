@@ -16,6 +16,7 @@ public class FuPlaceOpen {
     private Timestamp endTime;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

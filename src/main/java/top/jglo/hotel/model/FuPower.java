@@ -11,6 +11,7 @@ public class FuPower {
     private Integer hotelId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

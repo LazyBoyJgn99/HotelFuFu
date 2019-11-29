@@ -18,6 +18,7 @@ public class FuHouseOpen {
     private Integer workerId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
