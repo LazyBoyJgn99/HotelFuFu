@@ -2,7 +2,7 @@ package top.jglo.hotel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import top.jglo.hotel.test.FaceEngineTest22;
+//import top.jglo.hotel.test.FaceEngineTest22;
 
 
 @SpringBootApplication
