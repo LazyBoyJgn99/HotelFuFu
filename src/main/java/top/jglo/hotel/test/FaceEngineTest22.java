@@ -16,6 +16,7 @@ import top.jglo.hotel.util.FaceEngineUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -256,7 +257,7 @@ public class FaceEngineTest22 {
         //人脸检测
         ImageInfo imageInfo = getRGBData(new File("/usr/share/nginx/image/HotelFuFu/test/DEED1C122F9DCF9878CD0193CE723826.jpg"));
         List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-        System.out.println(imageInfo.getImageData());
+        System.out.println(Arrays.toString(imageInfo.getImageData()));
         System.out.println(imageInfo.getWidth());
         System.out.println(imageInfo.getHeight());
         System.out.println();
@@ -641,11 +642,11 @@ public class FaceEngineTest22 {
         int n=useEngine();
         FaceEngine faceEngine=engineList.get(n).getFaceEngine();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-        File file1 = faceEngineUtil.newImgFile(url);
-        ImageInfo imageInfo = getRGBData(file1);
-        file1.delete();
+        File file = faceEngineUtil.newImgFile(url);
+        ImageInfo imageInfo = getRGBData(file);
+        file.delete();
         //人脸检测
-        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
+        List<FaceInfo> faceInfoList = new ArrayList<>();
         int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
         System.out.println(detectCode);
         System.out.println(faceInfoList);

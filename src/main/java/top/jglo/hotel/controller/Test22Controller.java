@@ -93,7 +93,7 @@ public class Test22Controller {
     }
 
     @PostMapping(value = {"test2"})
-    @ApiOperation(value = "测试1", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
+    @ApiOperation(value = "测试2", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
     @ResponseBody
     public ServerResult test2() throws Exception {
 
@@ -192,6 +192,22 @@ public class Test22Controller {
             result.setMessage("注册成功");
         }
         result.setData(findUser);
+        return result;
+    }
+    @PostMapping(value = {"test10"})
+    @ApiOperation(value = "测试10", notes = "测试FaceEngine,用户与用户相似度比较", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test8(@RequestParam int id1,@RequestParam int id2) throws Exception {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        FuUser fuUser1=fuUserRepository.findOne(id1);
+        FuUser fuUser2=fuUserRepository.findOne(id2);
+        byte[] target1=fuUser1.getFaceDetail();
+        byte[] target2=fuUser2.getFaceDetail();
+        float s=faceEngineTest.faceSimilar(target1,target2);
+        System.out.println(String.valueOf(s));
+        result.setData(s);
+        result.setMessage("相似度:"+s);
         return result;
     }
 
