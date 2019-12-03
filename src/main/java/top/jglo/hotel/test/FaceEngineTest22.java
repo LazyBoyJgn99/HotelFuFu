@@ -229,19 +229,19 @@ public class FaceEngineTest22 {
         FunctionConfiguration functionConfiguration = new FunctionConfiguration();
 
         //获取年龄信息
-        functionConfiguration.setSupportAge(false);
+        functionConfiguration.setSupportAge(true);
         //获取人脸三维角度信息
-        functionConfiguration.setSupportFace3dAngle(false);
+        functionConfiguration.setSupportFace3dAngle(true);
         //
         functionConfiguration.setSupportFaceDetect(true);
         //
         functionConfiguration.setSupportFaceRecognition(true);
         //获取性别信息
-        functionConfiguration.setSupportGender(false);
+        functionConfiguration.setSupportGender(true);
         //获取新的RGB活体信息对象
-        functionConfiguration.setSupportLiveness(false);
+        functionConfiguration.setSupportLiveness(true);
         //获取新的IR活体信息对象
-        functionConfiguration.setSupportIRLiveness(false);
+        functionConfiguration.setSupportIRLiveness(true);
 
         engineConfiguration.setFunctionConfiguration(functionConfiguration);
 
