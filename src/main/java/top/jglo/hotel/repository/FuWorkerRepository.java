@@ -18,9 +18,9 @@ public interface FuWorkerRepository extends JpaRepository<FuWorker,Integer> { //
 
     @Query("SELECT new top.jglo.hotel.model.result.WorkerInfo(w,r) " +
             "FROM FuWorker w , FuRole r ,FuWorkerRoleRelation wr " +
-            "WHERE w.phone=?1 or w.username=?1 or w.workNum=?1 AND w.pwd=?2 " +
-            "AND w.id=wr.workerId AND r.id=wr.roleId ")
-    WorkerInfo findByUsernameAndPwd(String username, String pwd);
+            "WHERE (w.phone=?1 or w.username=?1 or w.workNum=?1) AND w.pwd=?2 " +
+            "AND w.id=wr.workerId AND r.id=wr.roleId")
+    List<WorkerInfo> findByUsernameAndPwd(String username, String pwd);
 
     List<FuWorker> findByHotelId(int hotelId);
 

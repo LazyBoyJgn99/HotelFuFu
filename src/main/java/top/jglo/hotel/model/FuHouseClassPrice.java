@@ -12,6 +12,7 @@ public class FuHouseClassPrice {
     private int price;
     private Integer weekCon;
     private Timestamp dayCon;
+    private Integer status;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,5 +80,15 @@ public class FuHouseClassPrice {
     @Override
     public int hashCode() {
         return Objects.hash(id, classId, price, weekCon, dayCon);
+    }
+
+    @Basic
+    @Column(name = "status")
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

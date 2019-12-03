@@ -1,16 +1,67 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "fu_house_class", schema = "HotelFuFu", catalog = "")
 public class FuHouseClass {
     private int id;
+    private String name;
     private String content;
     private int hotelId;
     private int bedCapacity;
     private int userCapacity;
+    private List<FuHouse> houseList;
+    private List<FuHouseClassImg> houseClassImgList;
+    private List<FuService> services;
+    private List<FuHouseClassPrice> houseClassPrices;
+
+    @ManyToMany
+    @JoinTable(
+            name="fu_house_class_service",
+//        joinColumns = {@JoinColumn(name="ITEM_ID",referencedColumnName="I_ID")},
+            joinColumns = {@JoinColumn(name="house_class_id",referencedColumnName="id")},
+//        inverseJoinColumns= {@JoinColumn(name="CATEGORY_ID", referencedColumnName="C_ID")})
+            inverseJoinColumns= {@JoinColumn(name="service_id",referencedColumnName="id")}
+    )
+    public List<FuService> getServices() {
+        return services;
+    }
+
+    public void setServices(List<FuService> services) {
+        this.services = services;
+    }
+    @OneToMany
+    @JoinColumn(name = "class_id",referencedColumnName = "id")
+    public List<FuHouseClassPrice> getHouseClassPrices() {
+        return houseClassPrices;
+    }
+
+    public void setHouseClassPrices(List<FuHouseClassPrice> houseClassPrices) {
+        this.houseClassPrices = houseClassPrices;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "class_id",referencedColumnName = "id")
+    public List<FuHouseClassImg> getHouseClassImgList() {
+        return houseClassImgList;
+    }
+
+    public void setHouseClassImgList(List<FuHouseClassImg> houseClassImgList) {
+        this.houseClassImgList = houseClassImgList;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "class_id",referencedColumnName = "id")
+    public List<FuHouse> getHouseList() {
+        return houseList;
+    }
+
+    public void setHouseList(List<FuHouse> houseList) {
+        this.houseList = houseList;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,5 +129,15 @@ public class FuHouseClass {
     @Override
     public int hashCode() {
         return Objects.hash(id, content, hotelId, bedCapacity, userCapacity);
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

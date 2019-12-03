@@ -2,7 +2,6 @@ package top.jglo.hotel.controller.hotel;
 
 
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
@@ -15,7 +14,7 @@ import top.jglo.hotel.model.result.WorkerInfo;
 import top.jglo.hotel.repository.FuPowerRepository;
 import top.jglo.hotel.repository.FuRoleRepository;
 import top.jglo.hotel.repository.FuWorkerRepository;
-import top.jglo.hotel.repository.TRepository;
+import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.util.MD5;
 import top.jglo.hotel.util.RedisTools;
 import top.jglo.hotel.util.token.TokenGenerator;
@@ -35,16 +34,18 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = {"admin"})
 public class WorkerController {
 
-    @Autowired
-    FuWorkerRepository fuWorkerRepository;
-    @Autowired
-    FuPowerRepository fuPowerRepository;
-    @Autowired
-    FuRoleRepository fuRoleRepository;
+    @Resource
+    private FuWorkerRepository fuWorkerRepository;
+    @Resource
+    private FuPowerRepository fuPowerRepository;
+    @Resource
+    private FuRoleRepository fuRoleRepository;
     @Resource
     private TokenGenerator tokenGenerator;
     @Resource
     private RedisTools redisTools;
+    @Resource
+    private TokenService tokenService;
 
     @ApiOperation("token验证")
     @PostMapping("token")
@@ -61,28 +62,34 @@ public class WorkerController {
         ServerResult result=new ServerResult();
         String username=fuWorker.getUsername();
         String pwd=fuWorker.getPwd();
-        String pwdMD5= MD5.MD5(pwd);
-        System.out.println(pwdMD5);
-        WorkerInfo workerInfo=fuWorkerRepository.findByUsernameAndPwd(username,pwdMD5);
-        String id="";
-        String token = "";
-        if(workerInfo==null){
+        String pwdMd5 = MD5.MD5(pwd);
+        System.out.println(pwdMd5);
+        List<WorkerInfo> workerInfoList=fuWorkerRepository.findByUsernameAndPwd(username,pwdMd5 );
+        String id ;
+        String token ;
+        WorkerInfo workerInfo;
+        if(workerInfoList==null||workerInfoList.size()==0){
             result.setMessage("用户名或密码不正确!");
             result.setStatus(false);
+            return result;
         }else {
+            workerInfo=workerInfoList.get(0);
             id=String.valueOf(workerInfo.getWorker().getId());
-            token = tokenGenerator.generate(id, pwdMD5);
+            token = tokenGenerator.generate(id, pwdMd5 );
+            String hotel=String.valueOf(workerInfo.getWorker().getHotelId());
             //获取到登录信息，从数据库获取到账号信息，或者像微信端发起请求得到session_key和openid
             //开始将信息加密，生成token，并存入redis
 
             //存入radis。分别存入username为key，token为value，token为key，username为value，并设置一样的过期时间，最后设置key为
             //token+username，value为当前时间，方便检查过期
+            redisTools.set(id+"hotel",hotel);
+            redisTools.expire(id+"hotel", TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
             redisTools.set(id,token);
             redisTools.expire(id, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
             redisTools.set(token,id);
             redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
-            Long currentTime = System.currentTimeMillis();
-            redisTools.set(token + id,currentTime.toString());
+            long currentTime = System.currentTimeMillis();
+            redisTools.set(token + id, Long.toString(currentTime));
         }
         result.setData(workerInfo);
         result.setMessage(token);
@@ -108,11 +115,14 @@ public class WorkerController {
         result.setData(roleList);
         return result;
     }
-    @PostMapping(value = {"addRole"})
-    @ApiOperation(value = "给酒店添加角色", notes = "给酒店添加角色，role类")
+    @PostMapping(value = {"saveRole"})
+    @ApiOperation(value = "给酒店添加/修改角色", notes = "给酒店添加角色，role类")
     @ResponseBody
-    public ServerResult addRole(@RequestBody FuRole role) {
+    @AuthToken
+    public ServerResult saveRole(@RequestBody FuRole role,HttpServletRequest request) {
         ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        role.setHotelId(hotelId);
         role=fuRoleRepository.save(role);
         result.setData(role);
         return result;
@@ -132,12 +142,10 @@ public class WorkerController {
     @ApiOperation("显示员工列表(带权限)")
     @PostMapping("showWorkerInfo")
     @ResponseBody
+    @AuthToken
     public ServerResult showWorkerInfo(HttpServletRequest request) {
         ServerResult result=new ServerResult();
-        String token = request.getHeader("Authorization");
-        String id=redisTools.get(token);
-        FuWorker worker=fuWorkerRepository.findOne(Integer.valueOf(id));
-        int hotelId=worker.getHotelId();
+        int hotelId=tokenService.getHotelId(request);
         List<WorkerInfo> workerInfoList=fuWorkerRepository.findInfoListByHotelId(hotelId);
         result.setData(workerInfoList);
         return result;
@@ -147,18 +155,15 @@ public class WorkerController {
     @ResponseBody
     public ServerResult showWorker(HttpServletRequest request) {
         ServerResult result=new ServerResult();
-        String token = request.getHeader("Authorization");
-        String id=redisTools.get(token);
-        FuWorker worker=fuWorkerRepository.findOne(Integer.valueOf(id));
-        int hotelId=worker.getHotelId();
+        int hotelId=tokenService.getHotelId(request);
         List<FuWorker> workerList=fuWorkerRepository.findByHotelId(hotelId);
         result.setData(workerList);
         return result;
     }
-    @PostMapping(value = {"addWorker"})
-    @ApiOperation(value = "给酒店添加员工", notes = "给酒店添加角色，worker类")
+    @PostMapping(value = {"saveWorker"})
+    @ApiOperation(value = "给酒店添加/修改员工", notes = "给酒店添加/修改员工，worker类")
     @ResponseBody
-    public ServerResult addRole(@RequestBody FuWorker worker) {
+    public ServerResult saveWorker(@RequestBody FuWorker worker) {
         ServerResult result=new ServerResult();
         worker=fuWorkerRepository.save(worker);
         result.setData(worker);

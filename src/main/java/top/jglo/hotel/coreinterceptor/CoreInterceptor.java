@@ -1,8 +1,6 @@
 package top.jglo.hotel.coreinterceptor;
 
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -19,8 +17,6 @@ import top.jglo.hotel.util.RedisTools;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotNull;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
@@ -73,6 +69,7 @@ public class CoreInterceptor implements HandlerInterceptor {
                     Long diff = System.currentTimeMillis() - tokeBirthTime;
                     System.out.println("token is exist : "+ diff +" ms");
                     if (diff > TokenConstant.TOKEN_RESET_TIME) {
+                        redisTools.expire(username+"hotel", TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
                         redisTools.expire(username, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
                         redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
                         System.out.println("Reset expire time success!");
@@ -93,7 +90,7 @@ public class CoreInterceptor implements HandlerInterceptor {
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
                     jsonObject.put("code", response.getStatus());
-                    jsonObject.put("message", HttpStatus.UNAUTHORIZED);
+                    jsonObject.put("message", HttpStatus.UNAUTHORIZED+".token验证失败");
                     out = response.getWriter();
                     out.println(jsonObject);
 
