@@ -187,7 +187,7 @@ public class Test22Controller {
         FuUser findUser=faceEngineTest.findUser(faceDetail,fuUserList);
         if(findUser.getId()==0){
             findUser=new FuUser();
-            findUser.setFaceDetail(faceDetail);
+            findUser.setFaceDetail(faceEngineTest.getFaceDetail(url));
             fuUserRepository.save(findUser);
             result.setMessage("注册成功");
         }
