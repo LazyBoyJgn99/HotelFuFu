@@ -181,10 +181,12 @@ public class Test22Controller {
     @ResponseBody
     public ServerResult test8(@RequestParam String url) throws Exception {
         ServerResult result=new ServerResult();
-        byte[] faceDetail=faceEngineTest.getFaceDetail(url);
+//        byte[] faceDetail=faceEngineTest.getFaceDetail(url);
+        FuUser findUser=new FuUser();
+        findUser.setFaceDetail(faceEngineTest.getFaceDetail(url));
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
-        FuUser findUser=faceEngineTest.findUser(faceDetail,fuUserList);
+         findUser=faceEngineTest.findUser(findUser.getFaceDetail(),fuUserList);
         if(findUser.getId()==0){
             findUser=new FuUser();
             findUser.setFaceDetail(faceEngineTest.getFaceDetail(url));
