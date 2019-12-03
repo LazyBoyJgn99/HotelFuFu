@@ -120,39 +120,8 @@ public class Test22Controller {
         return result;
     }
 
-    @PostMapping(value = {"test3"})
-    @ApiOperation(value = "测试3", notes = "采用RequestParam的形式", produces = "application/json")
-    @ResponseBody
-    public ServerResult test3(@RequestParam String url,@RequestParam int id) throws Exception {
-        ServerResult result=new ServerResult();
-        //找一个引擎
-        FuEngine fuEngine = fuEngineRepository.findByName("yes");
-        FuEngine nextFuEngine = fuEngineRepository.findOne(fuEngine.getNextId());
-        fuEngine.setName("no");
-        nextFuEngine.setName("yes");
-        fuEngineRepository.save(fuEngine);
-        fuEngineRepository.save(nextFuEngine);
-        FuUser fuUser=fuUserRepository.findById(id);
-        faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
-        return result;
-    }
-
-    @PostMapping(value = {"test4"})
-    @ApiOperation(value = "测试4", notes = "采用RequestParam的形式", produces = "application/json")
-    @ResponseBody
-    public ServerResult test4(@RequestParam int id)  {
-        ServerResult result=new ServerResult();
-        FuUser fuUser=fuUserRepository.findOne(1);
-        System.out.println(fuUser.toString());
-        result.setMessage(fuUser.toString());
-        result.setData(fuUser);
-        return result;
-    }
-
-
-
     @PostMapping(value = {"test6"})
-    @ApiOperation(value = "测试6", notes = "测试FaceEngine", produces = "人脸识别")
+    @ApiOperation(value = "测试6", notes = "测试FaceEngine，多线程，已被淘汰", produces = "人脸识别")
     @ResponseBody
     public ServerResult test6(@RequestParam String url,@RequestParam int id) throws Exception {
         ServerResult result=new ServerResult();
@@ -187,28 +156,42 @@ public class Test22Controller {
     @PostMapping(value = {"test7"})
     @ApiOperation(value = "测试7", notes = "测试FaceEngine,特征值比较", produces = "人脸识别")
     @ResponseBody
-    public ServerResult test7(@RequestParam FuUser user) throws Exception {
+    public ServerResult test7(@RequestParam byte[] target1,@RequestParam byte[] target2) throws Exception {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        float similar=faceEngineTest.faceSimilar(target1,target2);
+        System.out.println(similar);
+        result.setMessage(String.valueOf(similar));
+        return result;
+    }
+    @PostMapping(value = {"test8"})
+    @ApiOperation(value = "测试8", notes = "测试FaceEngine,特征值比较,查找用户", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test8(@RequestBody FuUser user)  {
         ServerResult result=new ServerResult();
         byte[] target =user.getFaceDetail();
-        ExecutorService executorService = new ThreadPoolExecutor(
-                10, 10, 60, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
+        //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
-
-        Future<String> FutureResult = executorService.submit(new Callable<String>(){
-            @Override
-            public String call() throws Exception {
-                //获取所有人脸信息，循环比较
-                for (int i=0;i<fuUserList.size();i++){
-                    float similar=faceEngineTest.faceSimilar(target,fuUserList.get(i).getFaceDetail());
-                    if (similar>0.9){
-                        return String.valueOf(i);
-                    }
-                }
-                return "";
-            }
-        } );
-        System.out.println("aaaaaaaaaaaaa"+FutureResult.get());
-        result.setMessage(FutureResult.get());
+        FuUser findUser=faceEngineTest.findUser(target,fuUserList);
+        result.setData(findUser);
+        return result;
+    }
+    @PostMapping(value = {"test9"})
+    @ApiOperation(value = "测试9", notes = "测试FaceEngine,查找用户/新建用户", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test8(@RequestParam String url) throws Exception {
+        ServerResult result=new ServerResult();
+        byte[] faceDetail=faceEngineTest.getFaceDetail(url);
+        //获取所有人脸信息，循环比较
+        List<FuUser> fuUserList=fuUserRepository.findAll();
+        FuUser findUser=faceEngineTest.findUser(faceDetail,fuUserList);
+        if(findUser.getId()==0){
+            findUser=new FuUser();
+            findUser.setFaceDetail(faceDetail);
+            fuUserRepository.save(findUser);
+            result.setMessage("注册成功");
+        }
+        result.setData(findUser);
         return result;
     }
 

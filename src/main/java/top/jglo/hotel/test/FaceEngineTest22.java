@@ -636,4 +636,25 @@ public class FaceEngineTest22 {
         System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return user;
     }
+
+    public byte[] getFaceDetail(String url) throws Exception {
+        int n=useEngine();
+        FaceEngine faceEngine=engineList.get(n).getFaceEngine();
+        FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
+        File file1 = faceEngineUtil.newImgFile(url);
+        ImageInfo imageInfo = getRGBData(file1);
+        file1.delete();
+        //人脸检测
+        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
+        int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
+        System.out.println(detectCode);
+        System.out.println(faceInfoList);
+        //特征提取
+        FaceFeature faceFeature = new FaceFeature();
+        int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
+        System.out.println(extractCode);
+        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
+        System.out.println("归还引擎资源，剩余：" + backEngine(n));
+        return faceFeature.getFeatureData();
+    }
 }
