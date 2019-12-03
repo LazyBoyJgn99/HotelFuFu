@@ -379,29 +379,6 @@ public class FaceEngineTest22 {
 
         ServerResult result = new ServerResult();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-//        System.out.println("使用引擎：" + src);
-//        //引擎配置
-//        EngineConfiguration engineConfiguration = new EngineConfiguration();
-//        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-//        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
-//
-//        //功能配置
-//        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
-//        functionConfiguration.setSupportAge(true);//获取年龄信息
-//        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
-//        functionConfiguration.setSupportFaceDetect(true);
-//        functionConfiguration.setSupportFaceRecognition(true);
-//        functionConfiguration.setSupportGender(true);//获取性别信息
-//        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
-//        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
-//        engineConfiguration.setFunctionConfiguration(functionConfiguration);
-//        //初始化引擎
-//        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
-//        int initCode = faceEngine.init(engineConfiguration);
-//        System.out.println(initCode);
-//        if (initCode != ErrorInfo.MOK.getValue()) {
-//            System.out.println("初始化引擎失败" + initCode);
-//        }
         File file1 = faceEngineUtil.newImgFile(url);
         ImageInfo imageInfo = getRGBData(file1);
         file1.delete();
@@ -654,6 +631,7 @@ public class FaceEngineTest22 {
         FaceFeature faceFeature = new FaceFeature();
         int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
         System.out.println(extractCode);
+        System.out.println(faceFeature.getFeatureData());
         System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
         System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return faceFeature.getFeatureData();
