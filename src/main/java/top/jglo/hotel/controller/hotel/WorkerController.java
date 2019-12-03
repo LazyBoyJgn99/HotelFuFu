@@ -55,6 +55,17 @@ public class WorkerController {
         System.out.println((String) request.getAttribute("REQUEST_CURRENT_KEY"));
         return new ServerResult();
     }
+    @ApiOperation("获取当前登录中的管理员信息")
+    @PostMapping("getUserInfo")
+    @AuthToken
+    @ResponseBody
+    public ServerResult getUserInfo(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        FuWorker worker=fuWorkerRepository.findOne(id);
+        result.setData(worker);
+        return result;
+    }
     @PostMapping(value = {"login"})
     @ApiOperation(value = "登录", notes = "输入参数是username（phone或username或workNum）和pwd")
     @ResponseBody
@@ -75,7 +86,7 @@ public class WorkerController {
         }else {
             workerInfo=workerInfoList.get(0);
             id=String.valueOf(workerInfo.getWorker().getId());
-            token = tokenGenerator.generate(id, pwdMd5 );
+            token = tokenGenerator.generate(id, pwdMd5);
             String hotel=String.valueOf(workerInfo.getWorker().getHotelId());
             //获取到登录信息，从数据库获取到账号信息，或者像微信端发起请求得到session_key和openid
             //开始将信息加密，生成token，并存入redis

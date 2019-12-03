@@ -56,28 +56,28 @@ public class CoreInterceptor implements HandlerInterceptor {
 
             String token = request.getHeader(httpHeaderName);
             System.out.println("token is "+ token);
-            String username = "";
+            String id = "";
             if (token != null && token.length() != 0) {
-                username = redisTools.get(token);
-                System.out.println("username is "+ username);
+                id = redisTools.get(token);
+                System.out.println("id is "+ id);
             }
-            if (username != null && !GeneralConstant.STRING_NULL.equals(username.trim())) {
-                String timeString = redisTools.get(token + username);
+            if (id != null && !GeneralConstant.STRING_NULL.equals(id.trim())) {
+                String timeString = redisTools.get(token + id);
                 if (timeString != null) {
                     Long tokeBirthTime = Long.valueOf(timeString);
                     System.out.println("token Birth time is: "+ tokeBirthTime);
                     Long diff = System.currentTimeMillis() - tokeBirthTime;
                     System.out.println("token is exist : "+ diff +" ms");
                     if (diff > TokenConstant.TOKEN_RESET_TIME) {
-                        redisTools.expire(username+"hotel", TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
-                        redisTools.expire(username, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+                        redisTools.expire(id+"hotel", TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+                        redisTools.expire(id, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
                         redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
                         System.out.println("Reset expire time success!");
                         long newBirthTime = System.currentTimeMillis();
-                        redisTools.set(token + username, Long.toString(newBirthTime));
+                        redisTools.set(token + id, Long.toString(newBirthTime));
                     }
                 }
-                request.setAttribute(REQUEST_CURRENT_KEY, username);
+                request.setAttribute(REQUEST_CURRENT_KEY, id);
                 return true;
 
 

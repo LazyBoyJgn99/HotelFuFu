@@ -20,4 +20,10 @@ public class TokenService {
         int hotelId=Integer.valueOf(redisTools.get(id+"hotel"));
         return hotelId;
     }
+
+    public int getId(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        String id=redisTools.get(token);
+        return Integer.valueOf(id);
+    }
 }
