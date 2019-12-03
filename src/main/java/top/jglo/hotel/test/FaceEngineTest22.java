@@ -229,19 +229,19 @@ public class FaceEngineTest22 {
         FunctionConfiguration functionConfiguration = new FunctionConfiguration();
 
         //获取年龄信息
-        functionConfiguration.setSupportAge(true);
+        functionConfiguration.setSupportAge(false);
         //获取人脸三维角度信息
-        functionConfiguration.setSupportFace3dAngle(true);
+        functionConfiguration.setSupportFace3dAngle(false);
         //
         functionConfiguration.setSupportFaceDetect(true);
         //
         functionConfiguration.setSupportFaceRecognition(true);
         //获取性别信息
-        functionConfiguration.setSupportGender(true);
+        functionConfiguration.setSupportGender(false);
         //获取新的RGB活体信息对象
-        functionConfiguration.setSupportLiveness(true);
+        functionConfiguration.setSupportLiveness(false);
         //获取新的IR活体信息对象
-        functionConfiguration.setSupportIRLiveness(true);
+        functionConfiguration.setSupportIRLiveness(false);
 
         engineConfiguration.setFunctionConfiguration(functionConfiguration);
 
@@ -626,6 +626,7 @@ public class FaceEngineTest22 {
         List<FaceInfo> faceInfoList = new ArrayList<>();
         int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
         System.out.println(detectCode);
+        System.out.println(faceInfoList.size());
         System.out.println(faceInfoList);
         //特征提取
         FaceFeature faceFeature = new FaceFeature();
