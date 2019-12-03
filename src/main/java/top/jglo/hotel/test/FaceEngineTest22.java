@@ -631,7 +631,7 @@ public class FaceEngineTest22 {
         FaceFeature faceFeature = new FaceFeature();
         int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
         System.out.println(extractCode);
-        System.out.println(faceFeature.getFeatureData());
+        System.out.println(Arrays.toString(faceFeature.getFeatureData()));
         System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
         System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return faceFeature.getFeatureData();
