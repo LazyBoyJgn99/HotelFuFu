@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author jingening
  */
-@Api(tags = "房间控制层")
+@Api(tags = "服务控制层")
 @CrossOrigin
 @Controller
 @RequestMapping(value = {"service"})
