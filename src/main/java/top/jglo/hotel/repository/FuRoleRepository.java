@@ -13,6 +13,5 @@ import java.util.List;
  */
 @Repository
 public interface FuRoleRepository extends JpaRepository<FuRole,Integer> { //id序列化,传入id的类型
-
     List<FuRole> findByHotelId(int hotelId);
 }
