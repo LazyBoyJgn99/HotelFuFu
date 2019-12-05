@@ -23,7 +23,6 @@ public class LoginService {
 
     public void userLogin(FuUser user, ServerResult result){
         if(user.getId()==0){
-            user=new FuUser();
             user.setFaceDetail(user.getFaceDetail());
             user=fuUserRepository.save(user);
             result.setMessage("注册成功");

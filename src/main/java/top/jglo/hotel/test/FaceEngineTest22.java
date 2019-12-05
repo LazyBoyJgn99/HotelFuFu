@@ -611,6 +611,7 @@ public class FaceEngineTest22 {
         }
         FuUser user=new FuUser();
         user.setId(0);
+        user.setFaceDetail(face);
         System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return user;
     }
