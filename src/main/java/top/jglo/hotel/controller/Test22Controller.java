@@ -12,6 +12,7 @@ import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
 import top.jglo.hotel.repository.FuUserRepository;
+import top.jglo.hotel.service.LoginService;
 import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.FaceEngineUtil;
@@ -47,6 +48,8 @@ public class Test22Controller {
     private FuEngineRepository fuEngineRepository;
     @Resource
     private FaceEngineTest22 faceEngineTest;
+    @Resource
+    private LoginService loginService;
 
 //    //新建引擎
 //    private FaceEngine faceEngine ;
@@ -221,12 +224,7 @@ public class Test22Controller {
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
         user=faceEngineTest.findUser(user.getFaceDetail(),fuUserList);
-        if(user.getId()==0){
-            user=new FuUser();
-            user.setFaceDetail(user.getFaceDetail());
-            fuUserRepository.save(user);
-            result.setMessage("注册成功");
-        }
+        loginService.userLogin(user,result);
         result.setData(user);
         return result;
     }
