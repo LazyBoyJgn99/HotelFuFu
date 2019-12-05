@@ -40,5 +40,4 @@ public class LoginService {
         redisTools.set(token + id, Long.toString(currentTime));
         result.setMessage(token);
     }
-
 }
