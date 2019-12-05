@@ -12,7 +12,7 @@ public class FuHouseClassPrice {
     private int classId;
     private int price;
     private Integer weekCon;
-    private Date dayCon;
+    private String dayCon;
     private Integer status;
 
     @Id
@@ -58,11 +58,11 @@ public class FuHouseClassPrice {
 
     @Basic
     @Column(name = "day_con")
-    public Date getDayCon() {
+    public String getDayCon() {
         return dayCon;
     }
 
-    public void setDayCon(Date dayCon) {
+    public void setDayCon(String dayCon) {
         this.dayCon = dayCon;
     }
 
