@@ -119,8 +119,9 @@ public class WorkerController {
     @PostMapping(value = {"showRoleList"})
     @ApiOperation(value = "显示角色列表", notes = "显示该酒店的角色列表，输入hotelId")
     @ResponseBody
-    public ServerResult showRoleList(@RequestBody FuRole fuRole) {
-        int hotelId=fuRole.getHotelId();
+    @AuthToken
+    public ServerResult showRoleList(HttpServletRequest request) {
+        int hotelId=tokenService.getHotelId(request);
         ServerResult result=new ServerResult();
         List<FuRole> roleList=fuRoleRepository.findByHotelId(hotelId);
         result.setData(roleList);

@@ -11,9 +11,9 @@ public class FuPlaceOpen {
     private int placeId;
     private int userId;
     private int status;
-    private Timestamp startTime;
+    private String startTime;
     private Integer lastTime;
-    private Timestamp endTime;
+    private String endTime;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,11 +58,11 @@ public class FuPlaceOpen {
 
     @Basic
     @Column(name = "start_time")
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
@@ -78,11 +78,11 @@ public class FuPlaceOpen {
 
     @Basic
     @Column(name = "end_time")
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

@@ -8,8 +8,8 @@ import java.util.Objects;
 @Table(name = "fu_pay_bill", schema = "HotelFuFu", catalog = "")
 public class FuPayBill {
     private int id;
-    private Timestamp time;
-    private int collecterId;
+    private String time;
+    private int collectorId;
     private int checkerId;
     private int sumPay;
     private Integer status;
@@ -29,22 +29,22 @@ public class FuPayBill {
 
     @Basic
     @Column(name = "time")
-    public Timestamp getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
     @Basic
-    @Column(name = "collecter_id")
-    public int getCollecterId() {
-        return collecterId;
+    @Column(name = "collector_id")
+    public int getCollectorId() {
+        return collectorId;
     }
 
-    public void setCollecterId(int collecterId) {
-        this.collecterId = collecterId;
+    public void setCollectorId(int collectorId) {
+        this.collectorId = collectorId;
     }
 
     @Basic
@@ -103,7 +103,7 @@ public class FuPayBill {
         if (o == null || getClass() != o.getClass()) return false;
         FuPayBill fuPayBill = (FuPayBill) o;
         return id == fuPayBill.id &&
-                collecterId == fuPayBill.collecterId &&
+                collectorId == fuPayBill.collectorId &&
                 checkerId == fuPayBill.checkerId &&
                 sumPay == fuPayBill.sumPay &&
                 Objects.equals(time, fuPayBill.time) &&
@@ -114,6 +114,6 @@ public class FuPayBill {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, collecterId, checkerId, sumPay, status, payType, free);
+        return Objects.hash(id, time, collectorId, checkerId, sumPay, status, payType, free);
     }
 }

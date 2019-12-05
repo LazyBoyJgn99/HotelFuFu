@@ -11,10 +11,10 @@ public class FuHouseOpen {
     private int userId;
     private int houseId;
     private int status;
-    private Timestamp startTime;
+    private String startTime;
     private Integer lastTime;
-    private Timestamp endTime;
-    private Timestamp commitTime;
+    private String endTime;
+    private String commitTime;
     private Integer workerId;
 
     @Id
@@ -60,11 +60,11 @@ public class FuHouseOpen {
 
     @Basic
     @Column(name = "start_time")
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
@@ -80,21 +80,21 @@ public class FuHouseOpen {
 
     @Basic
     @Column(name = "end_time")
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
     @Basic
     @Column(name = "commit_time")
-    public Timestamp getCommitTime() {
+    public String getCommitTime() {
         return commitTime;
     }
 
-    public void setCommitTime(Timestamp commitTime) {
+    public void setCommitTime(String commitTime) {
         this.commitTime = commitTime;
     }
 
