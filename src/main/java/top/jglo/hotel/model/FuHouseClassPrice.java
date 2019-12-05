@@ -2,6 +2,7 @@ package top.jglo.hotel.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -11,7 +12,7 @@ public class FuHouseClassPrice {
     private int classId;
     private int price;
     private Integer weekCon;
-    private Timestamp dayCon;
+    private Date dayCon;
     private Integer status;
 
     @Id
@@ -57,11 +58,11 @@ public class FuHouseClassPrice {
 
     @Basic
     @Column(name = "day_con")
-    public Timestamp getDayCon() {
+    public Date getDayCon() {
         return dayCon;
     }
 
-    public void setDayCon(Timestamp dayCon) {
+    public void setDayCon(Date dayCon) {
         this.dayCon = dayCon;
     }
 

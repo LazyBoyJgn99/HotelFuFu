@@ -113,8 +113,5 @@ public class HouseController {
         fuHouseClassPriceRepository.delete(houseClassPrice.getId());
         return result;
     }
-    
-
-
 
 }
