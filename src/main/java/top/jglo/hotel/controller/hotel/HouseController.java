@@ -126,9 +126,12 @@ public class HouseController {
     @ResponseBody
     @PostMapping("fileUpdate")
     public void comImgUpdate(HttpServletRequest httpServletRequest,@RequestParam("file") MultipartFile multipartFile ) throws Exception {
+        String hotelId="1";
+        String houseClassId="1";
+        String id="1";
 //        "/usr/share/nginx/image"
 //        "commodity/"+sellerId+"/"+comId
 //        "first.jpg"
-        fileUtil.upLoadFile(multipartFile,",","","");
+        fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","house/"+hotelId+"/"+houseClassId,id+".jpg");
     }
 }
