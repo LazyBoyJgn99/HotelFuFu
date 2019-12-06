@@ -49,7 +49,7 @@ public class ServiceController {
         return result;
     }
     @PostMapping(value = {"saveService"})
-    @ApiOperation(value = "给酒店添加/修改服务", notes = "给酒店添加服务，role类")
+    @ApiOperation(value = "给酒店添加/修改服务", notes = "给酒店添加服务，service类")
     @ResponseBody
     @AuthToken
     public ServerResult saveRole(@RequestBody FuService service,HttpServletRequest request) {
@@ -61,7 +61,7 @@ public class ServiceController {
         return result;
     }
     @PostMapping(value = {"deleteService"})
-    @ApiOperation(value = "删除服务", notes = "删除服务，role类中的id")
+    @ApiOperation(value = "删除服务", notes = "删除服务，service类中的id")
     @ResponseBody
     public ServerResult deleteRole(@RequestBody FuService service) {
         ServerResult result=new ServerResult();
@@ -71,7 +71,5 @@ public class ServiceController {
         result.setData(service);
         return result;
     }
-
-
 
 }

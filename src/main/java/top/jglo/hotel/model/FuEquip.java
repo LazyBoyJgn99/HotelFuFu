@@ -12,6 +12,7 @@ public class FuEquip {
     private String type;
     private Integer houseId;
     private Integer placeId;
+    private Integer hotelId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,6 +75,16 @@ public class FuEquip {
         this.placeId = placeId;
     }
 
+    @Basic
+    @Column(name = "hotel_id")
+    public Integer getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(Integer hotelId) {
+        this.hotelId = hotelId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,11 +95,12 @@ public class FuEquip {
                 Objects.equals(equipUid, fuEquip.equipUid) &&
                 Objects.equals(type, fuEquip.type) &&
                 Objects.equals(houseId, fuEquip.houseId) &&
-                Objects.equals(placeId, fuEquip.placeId);
+                Objects.equals(placeId, fuEquip.placeId) &&
+                Objects.equals(hotelId, fuEquip.hotelId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, equipUid, type, houseId, placeId);
+        return Objects.hash(id, name, equipUid, type, houseId, placeId, hotelId);
     }
 }

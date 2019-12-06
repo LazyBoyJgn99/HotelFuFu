@@ -66,6 +66,16 @@ public class WorkerController {
         result.setData(worker);
         return result;
     }
+    @ApiOperation("修改当前登录中的管理员信息")
+    @PostMapping("saveUserInfo")
+    @AuthToken
+    @ResponseBody
+    public ServerResult getUserInfo(@RequestBody FuWorker worker) {
+        ServerResult result=new ServerResult();
+        worker=fuWorkerRepository.save(worker);
+        result.setData(worker);
+        return result;
+    }
     @PostMapping(value = {"login"})
     @ApiOperation(value = "登录", notes = "输入参数是username（phone或username或workNum）和pwd")
     @ResponseBody
