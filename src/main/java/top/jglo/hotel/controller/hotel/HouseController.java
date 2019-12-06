@@ -1,11 +1,13 @@
 package top.jglo.hotel.controller.hotel;
 
 
+import com.jcraft.jsch.SftpException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.FuHouse;
 import top.jglo.hotel.model.FuHouseClass;
@@ -14,11 +16,15 @@ import top.jglo.hotel.model.FuRole;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
 import top.jglo.hotel.service.TokenService;
+import top.jglo.hotel.util.FileUtil;
 import top.jglo.hotel.util.RedisTools;
+import top.jglo.hotel.util.ResizeImg;
+import top.jglo.hotel.util.SFTPUtil;
 import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -41,6 +47,8 @@ public class HouseController {
     private FuHouseRepository fuHouseRepository;
     @Resource
     private TokenService tokenService;
+    @Resource
+    private FileUtil fileUtil;
 
     @ApiOperation("获取房型列表")
     @PostMapping("getHouseClassList")
@@ -114,4 +122,13 @@ public class HouseController {
         return result;
     }
 
+    //文件上传
+    @ResponseBody
+    @PostMapping("fileUpdate")
+    public void comImgUpdate(HttpServletRequest httpServletRequest,@RequestParam("file") MultipartFile multipartFile ) throws Exception {
+//        "/usr/share/nginx/image"
+//        "commodity/"+sellerId+"/"+comId
+//        "first.jpg"
+        fileUtil.upLoadFile(multipartFile,",","","");
+    }
 }
