@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.jglo.hotel.annotation.AuthToken;
-import top.jglo.hotel.model.FuHouse;
-import top.jglo.hotel.model.FuHouseClass;
-import top.jglo.hotel.model.FuHouseClassPrice;
-import top.jglo.hotel.model.FuRole;
+import top.jglo.hotel.model.*;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
 import top.jglo.hotel.service.TokenService;
@@ -39,6 +36,8 @@ public class HouseController {
 
 //    @Resource
 //    private FuWorkerRepository fuWorkerRepository;
+    @Resource
+    private FuHouseClassImgRepository fuHouseClassImgRepository;
     @Resource
     private FuHouseClassPriceRepository fuHouseClassPriceRepository;
     @Resource
@@ -122,14 +121,35 @@ public class HouseController {
         return result;
     }
 
-    //文件上传
+
+
+    /**
+     *
+     * 文件上传
+     */
     @ResponseBody
-    @PostMapping("fileUpdate")
+    @PostMapping("saveFile")
+    @AuthToken
     public void comImgUpdate(HttpServletRequest request,@RequestParam("file") MultipartFile multipartFile,@RequestParam int houseClassId,@RequestParam int id) throws Exception {
         int hotelId=tokenService.getHotelId(request);
-//        "/usr/share/nginx/image"
-//        "commodity/"+sellerId+"/"+comId
-//        "first.jpg"
+        FuHouseClassImg houseClassImg=new FuHouseClassImg();
+        houseClassImg.setClassId(houseClassId);
+        houseClassImg.setId(id);
+        houseClassImg=fuHouseClassImgRepository.save(houseClassImg);
+        id=houseClassImg.getId();
+        houseClassImg.setSrc("https://jglo.top:8091/HotelFuFu/house/"+hotelId+"/"+houseClassId+"/"+id+".jpg");
+        fuHouseClassImgRepository.save(houseClassImg);
+        //        "/usr/share/nginx/image"
+        //        "commodity/"+sellerId+"/"+comId
+        //        "first.jpg"
         fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","house/"+hotelId+"/"+houseClassId,id+".jpg");
     }
+    @ResponseBody
+    @PostMapping("deleteFile")
+    public void deleteFile(@RequestParam int id)  {
+        FuHouseClassImg houseClassImg=fuHouseClassImgRepository.findOne(id);
+        houseClassImg.setClassId(-houseClassImg.getClassId());
+        fuHouseClassImgRepository.save(houseClassImg);
+    }
+
 }
