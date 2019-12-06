@@ -4,6 +4,7 @@ import com.jcraft.jsch.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -12,13 +13,15 @@ import java.util.Vector;
 
 /**
  * 类说明 文件工具类
+ * @author jingening
  */
+@Component
 public class FileUtil {
 
     public void upLoadFile(MultipartFile multipartFile,String basePath,String directory,String sftpFileName) throws Exception {
         int n;
         // 得到MultipartFile文件
-        File f = null;
+        File f ;
         // 输出文件的新name 就是指上传后的文件名称
         System.out.println("getName:"+multipartFile.getName());
         // 输出源文件名称 就是指上传前的文件名称
