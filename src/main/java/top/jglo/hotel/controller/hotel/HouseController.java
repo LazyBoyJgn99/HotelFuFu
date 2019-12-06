@@ -125,10 +125,8 @@ public class HouseController {
     //文件上传
     @ResponseBody
     @PostMapping("fileUpdate")
-    public void comImgUpdate(HttpServletRequest httpServletRequest,@RequestParam("file") MultipartFile multipartFile ) throws Exception {
-        String hotelId="1";
-        String houseClassId="1";
-        String id="1";
+    public void comImgUpdate(HttpServletRequest request,@RequestParam("file") MultipartFile multipartFile,@RequestParam int houseClassId,@RequestParam int id) throws Exception {
+        int hotelId=tokenService.getHotelId(request);
 //        "/usr/share/nginx/image"
 //        "commodity/"+sellerId+"/"+comId
 //        "first.jpg"
