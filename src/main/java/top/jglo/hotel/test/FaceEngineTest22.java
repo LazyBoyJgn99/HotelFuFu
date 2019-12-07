@@ -16,6 +16,7 @@ import top.jglo.hotel.util.FaceEngineUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
@@ -26,12 +27,12 @@ import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 public class FaceEngineTest22 {
     private final Object balLock
             = new Object();
-    public FaceEngine faceEngine1 = new FaceEngine("/usr/local/lib/arcsoft2.2/");
-    public FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/arcsoft2.2.2/");
-    public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
-    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
+    public FaceEngine faceEngine1 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine1");
+    public FaceEngine faceEngine2 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine2");
+    public FaceEngine faceEngine3 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine3");
+    public FaceEngine faceEngine4 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine4");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
-    String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
+    String sdkKey = "4NJX6tXzizb3pitgdTU9FXc26ftq7iR9Qc4NrQar6riy";
     //互斥资源2
     Semaphore position;
     //目前有个小问题，getId获取到的Id不一定对应释放掉的引擎
@@ -256,7 +257,7 @@ public class FaceEngineTest22 {
         //人脸检测
         ImageInfo imageInfo = getRGBData(new File("/usr/share/nginx/image/HotelFuFu/test/DEED1C122F9DCF9878CD0193CE723826.jpg"));
         List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
-        System.out.println(imageInfo.getImageData());
+        System.out.println(Arrays.toString(imageInfo.getImageData()));
         System.out.println(imageInfo.getWidth());
         System.out.println(imageInfo.getHeight());
         System.out.println();
@@ -378,29 +379,6 @@ public class FaceEngineTest22 {
 
         ServerResult result = new ServerResult();
         FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
-//        System.out.println("使用引擎：" + src);
-//        //引擎配置
-//        EngineConfiguration engineConfiguration = new EngineConfiguration();
-//        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-//        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
-//
-//        //功能配置
-//        FunctionConfiguration functionConfiguration = new FunctionConfiguration();
-//        functionConfiguration.setSupportAge(true);//获取年龄信息
-//        functionConfiguration.setSupportFace3dAngle(true);//获取人脸三维角度信息
-//        functionConfiguration.setSupportFaceDetect(true);
-//        functionConfiguration.setSupportFaceRecognition(true);
-//        functionConfiguration.setSupportGender(true);//获取性别信息
-//        functionConfiguration.setSupportLiveness(true);//获取新的RGB活体信息对象
-//        functionConfiguration.setSupportIRLiveness(true);//获取新的IR活体信息对象
-//        engineConfiguration.setFunctionConfiguration(functionConfiguration);
-//        //初始化引擎
-//        System.out.println("初始化引擎！！！！！！！！！！！！！！！！！！！！！！！！");
-//        int initCode = faceEngine.init(engineConfiguration);
-//        System.out.println(initCode);
-//        if (initCode != ErrorInfo.MOK.getValue()) {
-//            System.out.println("初始化引擎失败" + initCode);
-//        }
         File file1 = faceEngineUtil.newImgFile(url);
         ImageInfo imageInfo = getRGBData(file1);
         file1.delete();
@@ -599,5 +577,65 @@ public class FaceEngineTest22 {
         System.out.println("卸载");
 
         return "相似度：" + faceSimilar.getScore();
+    }
+
+    public float faceSimilar(byte[] face1,byte[] face2) throws Exception {
+        int n=useEngine();
+        FaceEngine faceEngine=engineList.get(n).getFaceEngine();
+        FaceFeature faceFeature1 = new FaceFeature();
+        FaceFeature faceFeature2 = new FaceFeature();
+        faceFeature1.setFeatureData(face1);
+        faceFeature2.setFeatureData(face2);
+        FaceSimilar faceSimilar = new FaceSimilar();
+        faceEngine.compareFaceFeature(faceFeature1, faceFeature2, faceSimilar);
+        float similar = faceSimilar.getScore();
+        System.out.println(similar);
+        System.out.println("归还引擎资源，剩余：" + backEngine(n));
+        return similar;
+    }
+    public FuUser findUser(byte[] face,List<FuUser> userList)  {
+        FuUser user=new FuUser();
+        user.setId(0);
+        user.setFaceDetail(face);
+        int n=useEngine();
+        FaceEngine faceEngine=engineList.get(n).getFaceEngine();
+        FaceFeature faceFeature1 = new FaceFeature();
+        FaceFeature faceFeature2 = new FaceFeature();
+        faceFeature1.setFeatureData(face);
+        for(int i=0;i<userList.size();i++){
+            faceFeature2.setFeatureData(userList.get(i).getFaceDetail());
+            FaceSimilar faceSimilar = new FaceSimilar();
+            faceEngine.compareFaceFeature(faceFeature1, faceFeature2, faceSimilar);
+            float similar = faceSimilar.getScore();
+            if(similar>0.9){
+                System.out.println("归还引擎资源，剩余：" + backEngine(n));
+                return userList.get(i);
+            }
+        }
+        System.out.println("归还引擎资源，剩余：" + backEngine(n));
+        return user;
+    }
+
+    public byte[] getFaceDetail(String url) throws Exception {
+        int n=useEngine();
+        FaceEngine faceEngine=engineList.get(n).getFaceEngine();
+        FaceEngineUtil faceEngineUtil = new FaceEngineUtil();
+        File file = faceEngineUtil.newImgFile(url);
+        ImageInfo imageInfo = getRGBData(file);
+        file.delete();
+        //人脸检测
+        List<FaceInfo> faceInfoList = new ArrayList<>();
+        int detectCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
+        System.out.println(detectCode);
+        System.out.println(faceInfoList.size());
+        System.out.println(faceInfoList);
+        //特征提取
+        FaceFeature faceFeature = new FaceFeature();
+        int extractCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList.get(0), faceFeature);
+        System.out.println(extractCode);
+        System.out.println(Arrays.toString(faceFeature.getFeatureData()));
+        System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
+        System.out.println("归还引擎资源，剩余：" + backEngine(n));
+        return faceFeature.getFeatureData();
     }
 }

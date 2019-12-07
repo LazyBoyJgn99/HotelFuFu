@@ -12,9 +12,12 @@ import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
 import top.jglo.hotel.repository.FuUserRepository;
+import top.jglo.hotel.service.LoginService;
 import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.FaceEngineUtil;
+
+import javax.annotation.Resource;
 
 import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 
@@ -39,12 +42,14 @@ import java.util.concurrent.*;
 @Scope(name = "test", description = "session")
 public class Test22Controller {
 
-    @Autowired
+    @Resource
     private FuUserRepository fuUserRepository;
-    @Autowired
+    @Resource
     private FuEngineRepository fuEngineRepository;
-    @Autowired
+    @Resource
     private FaceEngineTest22 faceEngineTest;
+    @Resource
+    private LoginService loginService;
 
 //    //新建引擎
 //    private FaceEngine faceEngine ;
@@ -91,7 +96,7 @@ public class Test22Controller {
     }
 
     @PostMapping(value = {"test2"})
-    @ApiOperation(value = "测试1", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
+    @ApiOperation(value = "测试2", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
     @ResponseBody
     public ServerResult test2() throws Exception {
 
@@ -103,7 +108,7 @@ public class Test22Controller {
         File file1= faceEngineUtil.newImgFile("https://jglo.top:8091/HotelFuFu/test/DEED1C122F9DCF9878CD0193CE723826.jpg");
         FaceEngineUtil.ImageInfo imageInfo = faceEngineUtil.getRGBData(file1);
         //人脸检测
-        List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
+        List<FaceInfo> faceInfoList = new ArrayList<>();
         faceEngineUtil.faceEngine.detectFaces(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
 
         //提取人脸特征
@@ -118,39 +123,8 @@ public class Test22Controller {
         return result;
     }
 
-    @PostMapping(value = {"test3"})
-    @ApiOperation(value = "测试3", notes = "采用RequestParam的形式", produces = "application/json")
-    @ResponseBody
-    public ServerResult test3(@RequestParam String url,@RequestParam int id) throws Exception {
-        ServerResult result=new ServerResult();
-        //找一个引擎
-        FuEngine fuEngine = fuEngineRepository.findByName("yes");
-        FuEngine nextFuEngine = fuEngineRepository.findOne(fuEngine.getNextId());
-        fuEngine.setName("no");
-        nextFuEngine.setName("yes");
-        fuEngineRepository.save(fuEngine);
-        fuEngineRepository.save(nextFuEngine);
-        FuUser fuUser=fuUserRepository.findById(id);
-        faceEngineTest.test3(url,fuUser,fuEngine.getSrc());
-        return result;
-    }
-
-    @PostMapping(value = {"test4"})
-    @ApiOperation(value = "测试4", notes = "采用RequestParam的形式", produces = "application/json")
-    @ResponseBody
-    public ServerResult test4(@RequestParam int id)  {
-        ServerResult result=new ServerResult();
-        FuUser fuUser=fuUserRepository.findOne(1);
-        System.out.println(fuUser.toString());
-        result.setMessage(fuUser.toString());
-        result.setData(fuUser);
-        return result;
-    }
-
-
-
     @PostMapping(value = {"test6"})
-    @ApiOperation(value = "测试6", notes = "测试FaceEngine", produces = "人脸识别")
+    @ApiOperation(value = "测试6", notes = "测试FaceEngine，多线程，已被淘汰", produces = "人脸识别")
     @ResponseBody
     public ServerResult test6(@RequestParam String url,@RequestParam int id) throws Exception {
         ServerResult result=new ServerResult();
@@ -168,6 +142,90 @@ public class Test22Controller {
         } );
         System.out.println("aaaaaaaaaaaaa"+FutureResult.get());
         result.setMessage(FutureResult.get());
+        return result;
+    }
+    @PostMapping(value = {"test6.5"})
+    @ApiOperation(value = "测试6.5", notes = "测试FaceEngine", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test65(@RequestParam String url,@RequestParam int id) throws Exception {
+        ServerResult result=new ServerResult();
+        FuUser fuUser=fuUserRepository.findById(id);
+        String s=faceEngineTest.test3(url,fuUser,"").getMessage();
+        System.out.println("aaaaaaaaaaaaa"+s);
+        result.setMessage(s);
+        return result;
+    }
+
+    @PostMapping(value = {"test7"})
+    @ApiOperation(value = "测试7", notes = "测试FaceEngine,特征值比较", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test7(@RequestParam byte[] target1,@RequestParam byte[] target2) throws Exception {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        float similar=faceEngineTest.faceSimilar(target1,target2);
+        System.out.println(similar);
+        result.setMessage(String.valueOf(similar));
+        return result;
+    }
+    @PostMapping(value = {"test8"})
+    @ApiOperation(value = "测试8", notes = "测试FaceEngine,特征值比较,查找用户", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test8(@RequestBody FuUser user)  {
+        ServerResult result=new ServerResult();
+        byte[] target =user.getFaceDetail();
+        //获取所有人脸信息，循环比较
+        List<FuUser> fuUserList=fuUserRepository.findAll();
+        FuUser findUser=faceEngineTest.findUser(target,fuUserList);
+        result.setData(findUser);
+        return result;
+    }
+    @PostMapping(value = {"test9"})
+    @ApiOperation(value = "测试9", notes = "测试FaceEngine,查找用户/新建用户", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test9(@RequestParam String url) throws Exception {
+        ServerResult result=new ServerResult();
+//        byte[] faceDetail=faceEngineTest.getFaceDetail(url);
+        FuUser findUser=new FuUser();
+        findUser.setFaceDetail(faceEngineTest.getFaceDetail(url));
+        //获取所有人脸信息，循环比较
+        List<FuUser> fuUserList=fuUserRepository.findAll();
+         findUser=faceEngineTest.findUser(findUser.getFaceDetail(),fuUserList);
+        if(findUser.getId()==0){
+            findUser=new FuUser();
+            findUser.setFaceDetail(faceEngineTest.getFaceDetail(url));
+            fuUserRepository.save(findUser);
+            result.setMessage("注册成功");
+        }
+        result.setData(findUser);
+        return result;
+    }
+    @PostMapping(value = {"test91"})
+    @ApiOperation(value = "测试91", notes = "测试FaceEngine,用户与用户相似度比较", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test8(@RequestParam int id1,@RequestParam int id2) throws Exception {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        FuUser fuUser1=fuUserRepository.findOne(id1);
+        FuUser fuUser2=fuUserRepository.findOne(id2);
+        byte[] target1=fuUser1.getFaceDetail();
+        byte[] target2=fuUser2.getFaceDetail();
+        float s=faceEngineTest.faceSimilar(target1,target2);
+        System.out.println(String.valueOf(s));
+        result.setData(s);
+        result.setMessage("相似度:"+s);
+        return result;
+    }
+
+    @PostMapping(value = {"test92"})
+    @ApiOperation(value = "测试92", notes = "安卓端输入用户,查找用户/新建用户", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult test92(@RequestBody FuUser user) {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        List<FuUser> fuUserList=fuUserRepository.findAll();
+        user=faceEngineTest.findUser(user.getFaceDetail(),fuUserList);
+        loginService.userLogin(user,result);
+        result.setData(user);
         return result;
     }
 

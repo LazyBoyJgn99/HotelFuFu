@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5 {
 
 
-    public String MD5(String plainText) {
+    public static String MD5(String plainText) {
 
         byte[] secretBytes = null;
 

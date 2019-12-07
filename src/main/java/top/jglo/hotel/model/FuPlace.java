@@ -14,6 +14,7 @@ public class FuPlace {
     private Integer peopleNum;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;

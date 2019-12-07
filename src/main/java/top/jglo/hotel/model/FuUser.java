@@ -17,8 +17,18 @@ public class FuUser {
     private String phone;
     private int vipLevel;
     private int balance;
+    private String name;
+
+    public void setVipLevel(Integer vipLevel) {
+        this.vipLevel = vipLevel;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -111,5 +121,38 @@ public class FuUser {
                 ", vipLevel=" + vipLevel +
                 ", balance=" + balance +
                 '}';
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FuUser fuUser = (FuUser) o;
+        return id == fuUser.id &&
+                vipLevel == fuUser.vipLevel &&
+                balance == fuUser.balance &&
+                Objects.equals(cardId, fuUser.cardId) &&
+                Objects.equals(faceAddress, fuUser.faceAddress) &&
+                Arrays.equals(faceDetail, fuUser.faceDetail) &&
+                Objects.equals(sex, fuUser.sex) &&
+                Objects.equals(phone, fuUser.phone) &&
+                Objects.equals(name, fuUser.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(id, name, cardId, faceAddress, sex, phone, vipLevel, balance);
+        result = 31 * result + Arrays.hashCode(faceDetail);
+        return result;
     }
 }

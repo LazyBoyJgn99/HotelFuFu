@@ -11,12 +11,13 @@ public class FuService {
     private String content;
     private int hotelId;
     private int price;
-    private int show;
+    private int isShow;
     private int remind;
     private Integer time;
     private Integer placeId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -67,13 +68,13 @@ public class FuService {
     }
 
     @Basic
-    @Column(name = "show")
+    @Column(name = "is_show")
     public int getShow() {
-        return show;
+        return isShow;
     }
 
-    public void setShow(int show) {
-        this.show = show;
+    public void setShow(int isShow) {
+        this.isShow = isShow;
     }
 
     @Basic
@@ -114,7 +115,7 @@ public class FuService {
         return id == fuService.id &&
                 hotelId == fuService.hotelId &&
                 price == fuService.price &&
-                show == fuService.show &&
+                isShow == fuService.isShow &&
                 remind == fuService.remind &&
                 Objects.equals(name, fuService.name) &&
                 Objects.equals(content, fuService.content) &&
@@ -124,6 +125,6 @@ public class FuService {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, content, hotelId, price, show, remind, time, placeId);
+        return Objects.hash(id, name, content, hotelId, price, isShow, remind, time, placeId);
     }
 }
