@@ -32,7 +32,7 @@ public class FaceEngineTest22 {
     public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
     public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
-    String sdkKey = "4NJX6tXzizb3pitgdTU9FXc26ftq7iR9Qc4NrQar6riy";
+    String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
     //互斥资源2
     Semaphore position;
     //目前有个小问题，getId获取到的Id不一定对应释放掉的引擎
