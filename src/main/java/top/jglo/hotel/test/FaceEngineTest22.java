@@ -27,10 +27,10 @@ import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 public class FaceEngineTest22 {
     private final Object balLock
             = new Object();
-    public FaceEngine faceEngine1 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine1");
-    public FaceEngine faceEngine2 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine2");
-    public FaceEngine faceEngine3 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine3");
-    public FaceEngine faceEngine4 = new FaceEngine("E:\\HotelFuFu\\ArcSoft_2.2\\libs\\engine4");
+    public FaceEngine faceEngine1 = new FaceEngine("/usr/local/lib/arcsoft2.2/");
+    public FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/arcsoft2.2.2/");
+    public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
+    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc26ftq7iR9Qc4NrQar6riy";
     //互斥资源2
