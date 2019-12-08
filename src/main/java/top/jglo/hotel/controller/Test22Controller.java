@@ -107,6 +107,7 @@ public class Test22Controller {
         fuUser.setId(1);
         File file1= faceEngineUtil.newImgFile("https://jglo.top:8091/HotelFuFu/test/DEED1C122F9DCF9878CD0193CE723826.jpg");
         FaceEngineUtil.ImageInfo imageInfo = faceEngineUtil.getRGBData(file1);
+        file1.delete();
         //人脸检测
         List<FaceInfo> faceInfoList = new ArrayList<>();
         faceEngineUtil.faceEngine.detectFaces(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
