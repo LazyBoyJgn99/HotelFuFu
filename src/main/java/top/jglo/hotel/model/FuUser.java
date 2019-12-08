@@ -1,7 +1,5 @@
 package top.jglo.hotel.model;
 
-import groovy.lang.Lazy;
-
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Objects;
