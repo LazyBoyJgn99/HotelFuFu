@@ -30,7 +30,7 @@ public class FaceEngineTest22 {
     public FaceEngine faceEngine1 = new FaceEngine("/usr/local/lib/arcsoft2.2/");
     public FaceEngine faceEngine2 = new FaceEngine("/usr/local/lib/arcsoft2.2.2/");
     public FaceEngine faceEngine3 = new FaceEngine("/usr/local/lib/arcsoft2.2.3/");
-    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
+//    public FaceEngine faceEngine4 = new FaceEngine("/usr/local/lib/arcsoft2.2.4/");
     String appId = "7Dx94XkaRfbsuC7BfdPtApwjeUXjBHeh7TanYUDjAYgQ";
     String sdkKey = "4NJX6tXzizb3pitgdTU9FXc1xZKg5ejSjUDKz3QYQTpc";
     //互斥资源2
@@ -125,11 +125,11 @@ public class FaceEngineTest22 {
         if (activeCode3 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
             System.out.println("引擎3激活失败");
         }
-        int activeCode4 = faceEngine4.activeOnline(appId, sdkKey);
-        System.out.println(activeCode4);
-        if (activeCode4 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
-            System.out.println("引擎激4活失败");
-        }
+//        int activeCode4 = faceEngine4.activeOnline(appId, sdkKey);
+//        System.out.println(activeCode4);
+//        if (activeCode4 != ErrorInfo.MOK.getValue() && activeCode != ErrorInfo.MERR_ASF_ALREADY_ACTIVATED.getValue()) {
+//            System.out.println("引擎激4活失败");
+//        }
 
         //引擎配置
         EngineConfiguration engineConfiguration = new EngineConfiguration();
@@ -194,16 +194,16 @@ public class FaceEngineTest22 {
             engineList.add(engine3);
             num++;
         }
-        int initCode4 = faceEngine4.init(engineConfiguration);
-        System.out.println(initCode4);
-        if (initCode4 != ErrorInfo.MOK.getValue()) {
-            System.out.println("初始化引擎4失败");
-        }else {
-            engine4.setStatus(0);
-            engine4.setFaceEngine(faceEngine4);
-            engineList.add(engine4);
-            num++;
-        }
+//        int initCode4 = faceEngine4.init(engineConfiguration);
+//        System.out.println(initCode4);
+//        if (initCode4 != ErrorInfo.MOK.getValue()) {
+//            System.out.println("初始化引擎4失败");
+//        }else {
+//            engine4.setStatus(0);
+//            engine4.setFaceEngine(faceEngine4);
+//            engineList.add(engine4);
+//            num++;
+//        }
 
         position=new Semaphore(num);
 
