@@ -48,7 +48,17 @@ public class HouseController {
     private TokenService tokenService;
     @Resource
     private FileUtil fileUtil;
-
+    @ApiOperation("获取房间列表")
+    @PostMapping("getHouseList")
+    @AuthToken
+    @ResponseBody
+    public ServerResult getHouseList(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        List<FuHouse> houseList=fuHouseRepository.findByHotelId(hotelId);
+        result.setData(houseList);
+        return result;
+    }
     @ApiOperation("获取房型列表")
     @PostMapping("getHouseClassList")
     @AuthToken
@@ -86,8 +96,11 @@ public class HouseController {
     @PostMapping(value = {"saveHouse"})
     @ApiOperation(value = "给房型添加/修改房间", notes = "给房型添加/修改房间，house类")
     @ResponseBody
-    public ServerResult saveHouse(@RequestBody FuHouse house) {
+    @AuthToken
+    public ServerResult saveHouse(@RequestBody FuHouse house,HttpServletRequest request) {
         ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        house.setHotelId(hotelId);
         house=fuHouseRepository.save(house);
         result.setData(house);
         return result;
@@ -120,8 +133,6 @@ public class HouseController {
         fuHouseClassPriceRepository.delete(houseClassPrice.getId());
         return result;
     }
-
-
 
     /**
      *
