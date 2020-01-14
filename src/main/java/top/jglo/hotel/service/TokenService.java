@@ -7,6 +7,9 @@ import top.jglo.hotel.util.token.TokenGenerator;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author jingening
+ */
 @Service
 public class TokenService {
     @Resource
@@ -14,6 +17,11 @@ public class TokenService {
     @Resource
     private TokenGenerator tokenGenerator;
 
+    /**
+     * 获取token中的酒店ID
+     * @param request
+     * @return
+     */
     public int getHotelId(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         String id=redisTools.get(token);
@@ -21,6 +29,11 @@ public class TokenService {
         return hotelId;
     }
 
+    /**
+     * 获取token中的管理员ID
+     * @param request
+     * @return
+     */
     public int getId(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         String id=redisTools.get(token);

@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.*;
+import top.jglo.hotel.model.result.CheckInInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
+import top.jglo.hotel.service.HouseService;
 import top.jglo.hotel.service.TokenService;
-import top.jglo.hotel.util.FileUtil;
-import top.jglo.hotel.util.RedisTools;
-import top.jglo.hotel.util.ResizeImg;
-import top.jglo.hotel.util.SFTPUtil;
+import top.jglo.hotel.util.*;
 import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
@@ -47,7 +46,101 @@ public class HouseController {
     @Resource
     private TokenService tokenService;
     @Resource
+    private HouseService houseService;
+    @Resource
     private FileUtil fileUtil;
+    @Resource
+    private FuHouseOpenRepository fuHouseOpenRepository;
+
+    @PostMapping("checkIn")
+    @ApiOperation(value = "直接入住（check in）", notes = "直接入住（check in），房间ID不用输入 自动分配，输入 房型ID, 最晚退房时间yyyy-MM-dd HH:mm:ss，入住人ID列表")
+    @ResponseBody
+    @AuthToken
+    public ServerResult checkIn(@RequestBody CheckInInfo checkInInfo,HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int workerId=tokenService.getId(request);
+        int houseClassId=checkInInfo.getHouseClassId();
+        List<FuHouse> houseList=fuHouseRepository.findByStatusAndClassId(1,houseClassId);
+        if(houseList.size()>0){
+            List<Integer> userIdList =checkInInfo.getUserIdList();
+            FuHouse house=houseList.get(0);
+            String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
+            houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
+            result.setMessage("房间分配成功");
+            result.setData(house);
+        }else {
+            result.setMessage("暂无可用房间");
+
+        }
+
+        return result;
+    }
+    @PostMapping("checkInByHouse")
+    @ApiOperation(value = "选房入住（check in）", notes = "选房入住（check in），输入 房间ID，最晚退房时间yyyy-MM-dd HH:mm:ss，入住人ID列表")
+    @ResponseBody
+    @AuthToken
+    public ServerResult checkInByHouse(@RequestBody CheckInInfo checkInInfo,HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int workerId=tokenService.getId(request);
+        int houseId=checkInInfo.getHouseId();
+        List<Integer> userIdList =checkInInfo.getUserIdList();
+        FuHouse house=fuHouseRepository.findOne(houseId);
+        if(house.getStatus()==1){
+            String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
+            houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
+            result.setMessage("房间分配成功");
+        }else {
+            result.setMessage("该房间不可分配");
+        }
+        result.setData(house);
+        return result;
+    }
+    @PostMapping("checkInSupply")
+    @ApiOperation(value = "已开房间加人（check in）", notes = "已开房间加人（check in），输入 房间ID，最晚退房时间yyyy-MM-dd HH:mm:ss，入住人ID列表")
+    @ResponseBody
+    @AuthToken
+    public ServerResult supplyCheckIn(@RequestBody CheckInInfo checkInInfo,HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int workerId=tokenService.getId(request);
+        int houseId=checkInInfo.getHouseId();
+        List<Integer> userIdList =checkInInfo.getUserIdList();
+        FuHouse house=fuHouseRepository.findOne(houseId);
+        String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
+        houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
+        result.setData(house);
+        return result;
+    }
+    @PostMapping("houseReturn")
+    @ApiOperation(value = "退房", notes = "退房，输入房间id")
+    @ResponseBody
+    public ServerResult houseReturn(@RequestBody FuHouse house) {
+        ServerResult result=new ServerResult();
+        int houseId=house.getId();
+        house=fuHouseRepository.findOne(houseId);
+        if(house.getStatus()==0){
+            //0在住1干净2脏房3停售
+            house.setStatus(2);
+            //更改房间状态
+            fuHouseRepository.save(house);
+            //撤除权限
+            fuHouseOpenRepository.returnByHouse(houseId);
+            result.setMessage("退房成功");
+        }else {
+            result.setMessage("该房间不可退");
+        }
+        result.setData(house);
+        return result;
+    }
+    @PostMapping("houseReturnByUser")
+    @ApiOperation(value = "退房(根据用户)", notes = "退房，输入用户id")
+    @ResponseBody
+    public ServerResult houseReturn(@RequestBody FuUser user) {
+        ServerResult result=new ServerResult();
+        int userId=user.getId();
+        fuHouseOpenRepository.returnByUser(userId);
+        result.setMessage("用户退房成功");
+        return result;
+    }
     @ApiOperation("获取房间列表")
     @PostMapping("getHouseList")
     @AuthToken
@@ -94,7 +187,7 @@ public class HouseController {
         return result;
     }
     @PostMapping(value = {"saveHouse"})
-    @ApiOperation(value = "给房型添加/修改房间", notes = "给房型添加/修改房间，house类")
+    @ApiOperation(value = "添加/修改房间", notes = "给房型添加/修改房间，house类")
     @ResponseBody
     @AuthToken
     public ServerResult saveHouse(@RequestBody FuHouse house,HttpServletRequest request) {

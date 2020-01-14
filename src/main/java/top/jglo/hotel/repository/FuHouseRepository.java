@@ -13,5 +13,8 @@ import java.util.List;
  */
 @Repository
 public interface FuHouseRepository extends JpaRepository<FuHouse,Integer> { //id序列化,传入id的类型
+
     List<FuHouse> findByHotelId(int hotelId);
+
+    List<FuHouse> findByStatusAndClassId(int status,int classId);
 }

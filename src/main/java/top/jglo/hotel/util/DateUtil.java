@@ -99,6 +99,7 @@ public class DateUtil {
         return sdf.format(new Date(timestamp*1000L));
     }
 
+
     public static String formatTimestampToDate(int timestamp,String... format){
         //String... excludeProperty表示不定参数，也就是调用这个方法的时候这里可以传入多个String对象
         if(timestamp==0){
@@ -210,6 +211,7 @@ public class DateUtil {
     public static void main(String[] args) {
         System.out.println(DateUtil.getWeek());
         System.out.println(DateUtil.formatTimestamp(DateUtil.getNowTimestamp()+60*60*24));
+        System.out.println(DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateUtil.dateToWeek("2017-01-01"));
     }
 }
