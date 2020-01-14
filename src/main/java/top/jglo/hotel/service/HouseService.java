@@ -56,5 +56,4 @@ public class HouseService {
             fuHouseRepository.save(house);
         }
     }
-
 }
