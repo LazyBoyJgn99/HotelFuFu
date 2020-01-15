@@ -14,4 +14,6 @@ import java.io.Serializable;
 @Repository
 public interface FuUserRepository extends JpaRepository<FuUser,Integer> { //id序列化,传入id的类型
     FuUser findById(int id);
+
+    FuUser findByCardId(String cardId);
 }

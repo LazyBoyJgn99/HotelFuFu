@@ -62,15 +62,13 @@ public class HouseController {
         int houseClassId=checkInInfo.getHouseClassId();
         List<FuHouse> houseList=fuHouseRepository.findByStatusAndClassId(1,houseClassId);
         if(houseList.size()>0){
-            List<Integer> userIdList =checkInInfo.getUserIdList();
+            List<String> userIdList =checkInInfo.getUserIdList();
             FuHouse house=houseList.get(0);
             String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-            houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
-            result.setMessage("房间分配成功");
+            result.setMessage(houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
             result.setData(house);
         }else {
             result.setMessage("暂无可用房间");
-
         }
 
         return result;
@@ -83,12 +81,11 @@ public class HouseController {
         ServerResult result=new ServerResult();
         int workerId=tokenService.getId(request);
         int houseId=checkInInfo.getHouseId();
-        List<Integer> userIdList =checkInInfo.getUserIdList();
+        List<String> userIdList =checkInInfo.getUserIdList();
         FuHouse house=fuHouseRepository.findOne(houseId);
         if(house.getStatus()==1){
             String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-            houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
-            result.setMessage("房间分配成功");
+            result.setMessage(houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
         }else {
             result.setMessage("该房间不可分配");
         }
@@ -103,13 +100,15 @@ public class HouseController {
         ServerResult result=new ServerResult();
         int workerId=tokenService.getId(request);
         int houseId=checkInInfo.getHouseId();
-        List<Integer> userIdList =checkInInfo.getUserIdList();
+        List<String> userCardIdList =checkInInfo.getUserIdList();
         FuHouse house=fuHouseRepository.findOne(houseId);
         String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-        houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house);
+        result.setMessage(houseService.checkIn(userCardIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
+
         result.setData(house);
         return result;
     }
+
     @PostMapping("houseReturn")
     @ApiOperation(value = "退房", notes = "退房，输入房间id")
     @ResponseBody

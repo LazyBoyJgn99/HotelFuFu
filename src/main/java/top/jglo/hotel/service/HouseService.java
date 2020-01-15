@@ -4,13 +4,16 @@ import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 import top.jglo.hotel.model.FuHouse;
 import top.jglo.hotel.model.FuHouseOpen;
+import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.repository.FuHouseOpenRepository;
 import top.jglo.hotel.repository.FuHouseRepository;
+import top.jglo.hotel.repository.FuUserRepository;
 import top.jglo.hotel.util.RedisTools;
 import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,18 +25,28 @@ public class HouseService {
     private FuHouseRepository fuHouseRepository;
     @Resource
     private FuHouseOpenRepository fuHouseOpenRepository;
-
+    @Resource
+    private FuUserRepository fuUserRepository;
     /**
      * 根据房型ID获取干净的房间列表
      * @param classId
      * @return
      */
     public List<FuHouse> getCleanHouseByClassId(int classId){
-        List<FuHouse> houseList = fuHouseRepository.findByStatusAndClassId(1,classId);
-        return houseList;
+        return fuHouseRepository.findByStatusAndClassId(1,classId);
     }
-    public void checkIn(List<Integer> userIdList,String commitTime,String endTime,int workerId,FuHouse house){
-        for(int i=0;i<userIdList.size();i++) {
+    public String checkIn(List<String> userIdCardList,String commitTime,String endTime,int workerId,FuHouse house){
+        String flag="check in成功";
+        int i=0;
+        for (String anUserIdCardList : userIdCardList) {
+            i++;
+            FuUser user = fuUserRepository.findByCardId(anUserIdCardList);
+            if(user==null){
+                if (flag.equals("check in成功")) {
+                    flag = "";
+                }
+                flag += "用户"+i+"未注册账号。";
+            }
             //0在住1干净2脏房3停售
             FuHouseOpen fuHouseOpen = new FuHouseOpen();
             //提交时间
@@ -43,7 +56,7 @@ public class HouseService {
             //结束时间
             fuHouseOpen.setEndTime(endTime);
             //用户ID
-            fuHouseOpen.setUserId(userIdList.get(i));
+            fuHouseOpen.setUserId(user.getId());
             //操作人ID
             fuHouseOpen.setWorkerId(workerId);
             //状态 0就绪 1限定时间 2结束
@@ -55,5 +68,6 @@ public class HouseService {
             house.setStatus(0);
             fuHouseRepository.save(house);
         }
+        return flag;
     }
 }

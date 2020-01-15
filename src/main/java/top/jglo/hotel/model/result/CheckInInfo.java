@@ -14,7 +14,7 @@ public class CheckInInfo {
 
     private int houseId;
 
-    private List<Integer> userIdList;
+    private List<String> userIdList;
 
     private String endTime;
 
@@ -42,11 +42,11 @@ public class CheckInInfo {
         this.houseId = houseId;
     }
 
-    public List<Integer> getUserIdList() {
+    public List<String> getUserIdList() {
         return userIdList;
     }
 
-    public void setUserIdList(List<Integer> userIdList) {
+    public void setUserIdList(List<String> userIdList) {
         this.userIdList = userIdList;
     }
 }
