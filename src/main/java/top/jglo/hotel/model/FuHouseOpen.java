@@ -2,6 +2,7 @@ package top.jglo.hotel.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,15 @@ public class FuHouseOpen {
     private String endTime;
     private String commitTime;
     private Integer workerId;
+    private List<FuUser> user;
+    @OneToMany
+    @JoinColumn(name = "id",referencedColumnName = "user_id")
+    public List<FuUser> getUser() {
+        return user;
+    }
+    public void setUser(List<FuUser> user) {
+        this.user = user;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

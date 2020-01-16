@@ -52,6 +52,16 @@ public class HouseController {
     @Resource
     private FuHouseOpenRepository fuHouseOpenRepository;
 
+    @PostMapping("showHouseUserInfo")
+    @ApiOperation(value = "显示一个房间的入住情况", notes = "显示一个房间的入住人情况，输入 房间ID")
+    @ResponseBody
+    public ServerResult showHouseUserInfo(@RequestBody FuHouse house) {
+        ServerResult result=new ServerResult();
+        List<FuHouseOpen> houseOpenList=fuHouseOpenRepository.findByHouseId(house.getId());
+        result.setData(houseOpenList);
+        return result;
+    }
+
     @PostMapping("checkIn")
     @ApiOperation(value = "直接入住（check in）", notes = "直接入住（check in），房间ID不用输入 自动分配，输入 房型ID, 最晚退房时间yyyy-MM-dd HH:mm:ss，入住人ID列表")
     @ResponseBody

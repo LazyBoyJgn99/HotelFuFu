@@ -35,6 +35,16 @@ public class HouseService {
     public List<FuHouse> getCleanHouseByClassId(int classId){
         return fuHouseRepository.findByStatusAndClassId(1,classId);
     }
+
+    /**
+     * check in
+     * @param userIdCardList
+     * @param commitTime
+     * @param endTime
+     * @param workerId
+     * @param house
+     * @return
+     */
     public String checkIn(List<String> userIdCardList,String commitTime,String endTime,int workerId,FuHouse house){
         String flag="check in成功";
         int i=0;

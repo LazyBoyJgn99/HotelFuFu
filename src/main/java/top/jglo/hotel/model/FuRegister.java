@@ -1,6 +1,7 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -9,15 +10,15 @@ public class FuRegister {
     private int id;
     private int userId;
     private int houseClassId;
-    private String commitTime;
-    private String startTime;
-    private String endTime;
+    private Timestamp commitTime;
+    private Timestamp startTime;
+    private Timestamp endTime;
     private Integer status;
-    private String startDate;
-    private String endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
+    private Integer hotelId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -49,31 +50,31 @@ public class FuRegister {
 
     @Basic
     @Column(name = "commit_time")
-    public String getCommitTime() {
+    public Timestamp getCommitTime() {
         return commitTime;
     }
 
-    public void setCommitTime(String commitTime) {
+    public void setCommitTime(Timestamp commitTime) {
         this.commitTime = commitTime;
     }
 
     @Basic
     @Column(name = "start_time")
-    public String getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "end_time")
-    public String getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 
@@ -89,22 +90,32 @@ public class FuRegister {
 
     @Basic
     @Column(name = "start_date")
-    public String getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "end_date")
-    public String getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
+    }
+
+    @Basic
+    @Column(name = "hotel_id")
+    public Integer getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(Integer hotelId) {
+        this.hotelId = hotelId;
     }
 
     @Override
@@ -120,11 +131,12 @@ public class FuRegister {
                 Objects.equals(endTime, that.endTime) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate);
+                Objects.equals(endDate, that.endDate) &&
+                Objects.equals(hotelId, that.hotelId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, houseClassId, commitTime, startTime, endTime, status, startDate, endDate);
+        return Objects.hash(id, userId, houseClassId, commitTime, startTime, endTime, status, startDate, endDate, hotelId);
     }
 }

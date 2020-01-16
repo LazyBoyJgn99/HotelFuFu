@@ -13,6 +13,7 @@ import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.model.result.WorkerInfo;
 import top.jglo.hotel.repository.FuPowerRepository;
 import top.jglo.hotel.repository.FuRoleRepository;
+import top.jglo.hotel.repository.FuUserRepository;
 import top.jglo.hotel.repository.FuWorkerRepository;
 import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.util.MD5;
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * @author gkirito
  */
 
-@Api(tags = "管理员控制层")
+@Api(tags = "管理员/用户 控制层")
 @CrossOrigin
 @Controller
 @RequestMapping(value = {"admin"})
@@ -46,6 +47,8 @@ public class WorkerController {
     private RedisTools redisTools;
     @Resource
     private TokenService tokenService;
+    @Resource
+    private FuUserRepository fuUserRepository;
 
     @ApiOperation("token验证")
     @PostMapping("token")
