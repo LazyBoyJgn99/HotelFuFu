@@ -1,7 +1,6 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -10,12 +9,12 @@ public class FuRegister {
     private int id;
     private int userId;
     private int houseClassId;
-    private Timestamp commitTime;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private String commitTime;
+    private String startTime;
+    private String endTime;
     private Integer status;
-    private Timestamp startDate;
-    private Timestamp endDate;
+    private String startDate;
+    private String endDate;
     private Integer hotelId;
 
     @Id
@@ -50,31 +49,31 @@ public class FuRegister {
 
     @Basic
     @Column(name = "commit_time")
-    public Timestamp getCommitTime() {
+    public String getCommitTime() {
         return commitTime;
     }
 
-    public void setCommitTime(Timestamp commitTime) {
+    public void setCommitTime(String commitTime) {
         this.commitTime = commitTime;
     }
 
     @Basic
     @Column(name = "start_time")
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
     @Basic
     @Column(name = "end_time")
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -90,21 +89,21 @@ public class FuRegister {
 
     @Basic
     @Column(name = "start_date")
-    public Timestamp getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "end_date")
-    public Timestamp getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
