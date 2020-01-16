@@ -22,11 +22,10 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
             "WHERE (r.hotelId=?1 or ?1 is null or ?1 ='') "+
             "and (r.houseClassId=?2 or ?2 is null or ?2 ='') " +
             "and (r.status=?3 or ?3 is null or ?3 ='') " +
-            "and (r.commitTime>?4 or ?4 is null or ?4 ='') " +
-            "and (r.commitTime<?5 or ?5 is null or ?5 ='') " +
+            "and (r.commitTime>=?4 or ?4 is null or ?4 ='') " +
+            "and (r.commitTime<=?5 or ?5 is null or ?5 ='') " +
             "and (r.startDate<=?6 or ?6 is null or ?6 ='') " +
             "and (r.endDate>=?6 or ?6 is null or ?6 ='') ")
     List<FuRegister> findByFindInfo(int hotelId, int houseClassId, int status, String commitStartTime, String commitEndTime, String liveDate);
-
 
 }
