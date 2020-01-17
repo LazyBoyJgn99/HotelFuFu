@@ -34,7 +34,7 @@ public class EquipController {
     @PostMapping("getEquipList")
     @AuthToken
     @ResponseBody
-    public ServerResult getequipList(HttpServletRequest request) {
+    public ServerResult getEquipList(HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
         List<FuEquip> equipList=fuEquipRepository.findByHotelId(hotelId);
@@ -45,7 +45,7 @@ public class EquipController {
     @ApiOperation(value = "给酒店添加/修改设备", notes = "给酒店添加设备，equip类")
     @ResponseBody
     @AuthToken
-    public ServerResult saveequip(@RequestBody FuEquip equip,HttpServletRequest request) {
+    public ServerResult savEquip(@RequestBody FuEquip equip,HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
         equip.setHotelId(hotelId);
@@ -56,7 +56,7 @@ public class EquipController {
     @PostMapping(value = {"deleteEquip"})
     @ApiOperation(value = "删除设备", notes = "删除设备，equip类中的id")
     @ResponseBody
-    public ServerResult deleteequip(@RequestBody FuEquip equip) {
+    public ServerResult deleteEquip(@RequestBody FuEquip equip) {
         ServerResult result=new ServerResult();
         equip=fuEquipRepository.findOne(equip.getId());
         equip.setHotelId(-equip.getHotelId());

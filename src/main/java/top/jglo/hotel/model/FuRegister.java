@@ -1,6 +1,7 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +17,27 @@ public class FuRegister {
     private String startDate;
     private String endDate;
     private Integer hotelId;
+    private List<FuUser> user;
+    private List<FuHouseClass> houseClass;
+
+    @OneToMany
+    @JoinColumn(name = "id",referencedColumnName = "user_id")
+    public List<FuUser> getUser() {
+        return user;
+    }
+    public void setUser(List<FuUser> user) {
+        this.user = user;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "id",referencedColumnName = "house_class_id")
+    public List<FuHouseClass> getHouseClass() {
+        return houseClass;
+    }
+    public void setHouseClass(List<FuHouseClass> houseClass) {
+        this.houseClass = houseClass;
+    }
+
 
     @Id
     @Column(name = "id")
