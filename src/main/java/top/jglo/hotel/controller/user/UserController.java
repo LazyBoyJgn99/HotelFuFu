@@ -54,7 +54,9 @@ public class UserController {
         ServerResult result=new ServerResult();
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
+        System.out.println("接收到的数据："+target);
         FuUser user=faceEngineTest.findUser(target,fuUserList);
+        System.out.println("参数之后的数据："+target);
         loginService.userLogin(user,result);
         result.setData(user);
         return result;

@@ -594,14 +594,17 @@ public class FaceEngineTest22 {
         return similar;
     }
     public FuUser findUser(byte[] face,List<FuUser> userList)  {
+        System.out.println("findUser方法开始:"+face);
         FuUser user=new FuUser();
         user.setId(0);
         user.setFaceDetail(face);
+        System.out.println("user类中:"+user.getFaceDetail());
         int n=useEngine();
         FaceEngine faceEngine=engineList.get(n).getFaceEngine();
         FaceFeature faceFeature1 = new FaceFeature();
         FaceFeature faceFeature2 = new FaceFeature();
         faceFeature1.setFeatureData(face);
+        System.out.println("Feature中:"+faceFeature1.getFeatureData());
         for(int i=0;i<userList.size();i++){
             faceFeature2.setFeatureData(userList.get(i).getFaceDetail());
             FaceSimilar faceSimilar = new FaceSimilar();
@@ -612,6 +615,7 @@ public class FaceEngineTest22 {
                 return userList.get(i);
             }
         }
+        System.out.println("findUser方法结束:"+face);
         System.out.println("归还引擎资源，剩余：" + backEngine(n));
         return user;
     }
