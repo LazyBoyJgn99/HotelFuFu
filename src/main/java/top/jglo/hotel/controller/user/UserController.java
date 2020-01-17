@@ -54,13 +54,13 @@ public class UserController {
         ServerResult result=new ServerResult();
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
-        System.out.println("接收到的数据：");
-        System.out.println(Arrays.toString(target));
+//        System.out.println("接收到的数据：");
+//        System.out.println(Arrays.toString(target));
         FuUser user=faceEngineTest.findUser(target,fuUserList);
         loginService.userLogin(user,result);
         result.setData(user);
-        System.out.println("最后输出的数据：");
-        System.out.println(Arrays.toString(user.getFaceDetail()));
+//        System.out.println("最后输出的数据：");
+//        System.out.println(Arrays.toString(user.getFaceDetail()));
         return result;
     }
 }

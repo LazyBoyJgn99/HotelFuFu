@@ -78,7 +78,7 @@ public class ExController {
     }
 
     @ApiOperation("测试token接口")
-    @PostMapping("tokentest")
+    @PostMapping("tokenTest")
     @AuthToken
     @ResponseBody
     public ServerResult test(Integer id, HttpServletRequest request) {
