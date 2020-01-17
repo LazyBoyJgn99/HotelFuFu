@@ -31,7 +31,7 @@ public class ExController {
     @Resource
     private RedisTools redisTools;
 
-    @PostMapping(value = {"test1"})
+    @RequestMapping(value = {"test1"})
     @ApiOperation(value = "测试1", notes = "采用RequestParam的形式", produces = "application/json,application/xml")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id号", required = true, dataType = "int", paramType = "query"),
@@ -44,7 +44,7 @@ public class ExController {
         return result;
     }
 
-    @PostMapping(value = {"test2"})
+    @RequestMapping(value = {"test2"})
     @ApiOperation(value = "测试2", notes = "采用RequestBody的形式", produces = "application/json,application/xml")
     @ResponseBody
     public ServerResult addWorker(@ApiParam(value = "user类") @RequestBody ServerResult result) {
@@ -52,7 +52,7 @@ public class ExController {
     }
 
 
-    @PostMapping(value = {"login"})
+    @RequestMapping(value = {"login"})
     @ApiOperation(value = "登录测试", notes = "登录demo", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String", paramType = "query"),
