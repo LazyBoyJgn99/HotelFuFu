@@ -24,33 +24,14 @@ import java.util.List;
  * @author gkirito
  */
 
-@Api(tags = "房间控制层")
+@Api(tags = "硬件控制层-door-大鹏")
 @CrossOrigin
 @Controller
-@RequestMapping(value = {"house"})
+@RequestMapping(value = {"door"})
 public class DoorController {
 
-//    @Resource
-//    private FuWorkerRepository fuWorkerRepository;
-    @Resource
-    private FuHouseClassImgRepository fuHouseClassImgRepository;
-    @Resource
-    private FuHouseClassPriceRepository fuHouseClassPriceRepository;
-    @Resource
-    private FuHouseClassRepository fuHouseClassRepository;
-    @Resource
-    private FuHouseRepository fuHouseRepository;
-    @Resource
-    private TokenService tokenService;
-    @Resource
-    private HouseService houseService;
     @Resource
     private FileUtil fileUtil;
-    @Resource
-    private FuHouseOpenRepository fuHouseOpenRepository;
-
-
-
     /**
      *
      * 文件上传
