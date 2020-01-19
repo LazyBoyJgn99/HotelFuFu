@@ -49,7 +49,7 @@ public class FileUtil {
         System.out.println(f.getAbsolutePath());
         File file = new File(f.toURI());
 
-        SFTPUtil sftp = new SFTPUtil("root", "Jgn061213!", "39.106.56.132", 22);
+        SFTPUtil sftp = new SFTPUtil("root", "Jgn061213", "39.106.56.132", 22);
         sftp.login();
         InputStream is = new FileInputStream(file);
         //改变大小
