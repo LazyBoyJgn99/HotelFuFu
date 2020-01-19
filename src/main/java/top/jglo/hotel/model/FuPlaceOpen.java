@@ -1,12 +1,13 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "fu_place_open", schema = "HotelFuFu", catalog = "")
-public class FuPlaceOpen {
+public class FuPlaceOpen implements Serializable {
     private int id;
     private int placeId;
     private int userId;

@@ -1,11 +1,12 @@
 package top.jglo.hotel.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "fu_role_power_relation", schema = "HotelFuFu", catalog = "")
-public class FuRolePowerRelation {
+public class FuRolePowerRelation implements Serializable {
     private int id;
     private Integer roleId;
     private Integer powerId;
