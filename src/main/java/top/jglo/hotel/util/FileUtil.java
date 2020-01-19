@@ -25,7 +25,7 @@ public class FileUtil {
         // 输出文件的新name 就是指上传后的文件名称
         System.out.println("getName:"+multipartFile.getName());
         // 输出源文件名称 就是指上传前的文件名称
-        System.out.println("Oriname:"+multipartFile.getOriginalFilename());
+        System.out.println("OriginName:"+multipartFile.getOriginalFilename());
         // 创建文件
         f = new File(multipartFile.getOriginalFilename());
         try (InputStream in  = multipartFile.getInputStream(); OutputStream os = new FileOutputStream(f)){
@@ -49,7 +49,7 @@ public class FileUtil {
         System.out.println(f.getAbsolutePath());
         File file = new File(f.toURI());
 
-        SFTPUtil sftp = new SFTPUtil("root", "Jgnzxcvbnm,666!", "39.106.56.132", 22);
+        SFTPUtil sftp = new SFTPUtil("root", "Jgn061213!", "39.106.56.132", 22);
         sftp.login();
         InputStream is = new FileInputStream(file);
         //改变大小
