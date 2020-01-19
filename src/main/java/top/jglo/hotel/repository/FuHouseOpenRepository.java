@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import top.jglo.hotel.model.FuHouse;
 import top.jglo.hotel.model.FuHouseOpen;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -19,11 +20,11 @@ public interface FuHouseOpenRepository extends JpaRepository<FuHouseOpen,Integer
     List<FuHouseOpen> findByStatus(int status);
 
     List<FuHouseOpen> findByHouseId(int houseId);
-
+    @Transactional
     @Modifying
     @Query("UPDATE FuHouseOpen p set p.status=2 WHERE p.status=1 AND p.houseId=?1")
     void returnByHouse(int houseId);
-
+    @Transactional
     @Modifying
     @Query("UPDATE FuHouseOpen p set p.status=2 WHERE p.status=1 AND p.userId=?1")
     void returnByUser(int userId);
