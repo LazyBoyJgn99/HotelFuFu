@@ -16,4 +16,6 @@ public interface FuUserRepository extends JpaRepository<FuUser,Integer> { //idåº
     FuUser findById(int id);
 
     FuUser findByCardId(String cardId);
+
+    FuUser findByPhone(String phone);
 }

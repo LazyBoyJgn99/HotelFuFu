@@ -63,4 +63,18 @@ public class UserController {
 //        System.out.println(Arrays.toString(user.getFaceDetail()));
         return result;
     }
+    @PostMapping(value = {"loginByPhone"})
+    @ApiOperation(value = "用户手机号登录", notes = "输入手机号，手机号登录", produces = "")
+    @ResponseBody
+    public ServerResult loginByPhone(@RequestParam String phone)  {
+        ServerResult result=new ServerResult();
+        FuUser user=fuUserRepository.findByPhone(phone);
+        if(user==null){
+            result.setMessage("用户不存在");
+        }else {
+            result.setData(user);
+            result.setMessage("登录成功");
+        }
+        return result;
+    }
 }

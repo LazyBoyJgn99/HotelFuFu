@@ -9,10 +9,13 @@ import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.FuEquip;
 import top.jglo.hotel.model.FuRegister;
 import top.jglo.hotel.model.FuService;
+import top.jglo.hotel.model.FuUserRegisterRelation;
 import top.jglo.hotel.model.result.RegisterFindInfo;
+import top.jglo.hotel.model.result.RegisterInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEquipRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
+import top.jglo.hotel.repository.FuUserRegisterRelationRepository;
 import top.jglo.hotel.service.TokenService;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ public class RegisterController {
 
     @Resource
     private FuRegisterRepository fuRegisterRepository;
+    @Resource
+    private FuUserRegisterRelationRepository fuUserRegisterRelationRepository;
     @Resource
     private TokenService tokenService;
     @ApiOperation("根据日期获取当天开始的订单列表")
@@ -60,11 +65,20 @@ public class RegisterController {
     @ApiOperation(value = "给酒店添加/修改订单", notes = "给酒店添加/修改订单，register类")
     @ResponseBody
     @AuthToken
-    public ServerResult saveRegister(@RequestBody FuRegister register,HttpServletRequest request) {
+    public ServerResult saveRegister(@RequestBody RegisterInfo registerInfo, HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
+        FuRegister register=registerInfo.getRegister();
         register.setHotelId(hotelId);
         register=fuRegisterRepository.save(register);
+        List<Integer> userIdList=registerInfo.getUserIdList();
+        int registerId=register.getId();
+        for (Integer anUserIdList : userIdList) {
+            FuUserRegisterRelation userRegisterRelation = new FuUserRegisterRelation();
+            userRegisterRelation.setRegisterId(registerId);
+            userRegisterRelation.setUserId(anUserIdList);
+            fuUserRegisterRelationRepository.save(userRegisterRelation);
+        }
         result.setData(register);
         return result;
     }
