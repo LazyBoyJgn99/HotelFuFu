@@ -8,16 +8,25 @@ import com.arcsoft.face.enums.ImageFormat;
 import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import top.jglo.hotel.annotation.AuthToken;
+import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.FuUser;
+import top.jglo.hotel.model.FuUserHoldUserRelation;
+import top.jglo.hotel.model.FuWorker;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
+import top.jglo.hotel.repository.FuUserHoldUserRelationRepository;
 import top.jglo.hotel.repository.FuUserRepository;
 import top.jglo.hotel.service.LoginService;
+import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.FaceEngineUtil;
+import top.jglo.hotel.util.RedisTools;
+import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,11 +50,17 @@ public class UserController {
     @Resource
     private FuUserRepository fuUserRepository;
     @Resource
-    private FuEngineRepository fuEngineRepository;
+    private FuUserHoldUserRelationRepository fuUserHoldUserRelationRepository;
     @Resource
     private FaceEngineTest22 faceEngineTest;
     @Resource
     private LoginService loginService;
+    @Resource
+    private RedisTools redisTools;
+    @Resource
+    private TokenGenerator tokenGenerator;
+    @Resource
+    private TokenService tokenService;
 
     @PostMapping(value = {"login"})
     @ApiOperation(value = "用户登录", notes = "输入target,特征值比较，如果登录成功，返回的message是token,如果没有此人，直接注册", produces = "人脸识别")
@@ -64,7 +79,7 @@ public class UserController {
         return result;
     }
     @PostMapping(value = {"loginByPhone"})
-    @ApiOperation(value = "用户手机号登录", notes = "输入手机号，手机号登录", produces = "")
+    @ApiOperation(value = "用户手机号登录", notes = "输入手机号，手机号登录")
     @ResponseBody
     public ServerResult loginByPhone(@RequestParam String phone)  {
         ServerResult result=new ServerResult();
@@ -72,9 +87,88 @@ public class UserController {
         if(user==null){
             result.setMessage("用户不存在");
         }else {
+            String id ;
+            String token ;
+            id=String.valueOf(user.getId());
+            token = "user"+tokenGenerator.generate(id);
+            //获取到登录信息，从数据库获取到账号信息，或者像微信端发起请求得到session_key和openid
+            //开始将信息加密，生成token，并存入redis
+            //存入redis。分别存入username为key，token为value，token为key，username为value，并设置一样的过期时间，最后设置key为
+            //token+username，value为当前时间，方便检查过期
+            redisTools.set(token,id);
+            redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
             result.setData(user);
-            result.setMessage("登录成功");
+            result.setMessage(token);
         }
+        return result;
+    }
+    @ApiOperation("查看绑定的用户")
+    @PostMapping("showBindUser")
+    @AuthToken
+    @ResponseBody
+    public ServerResult showBindUser(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        List<FuUser> fuUserList=fuUserHoldUserRelationRepository.findUserByUserId(id);
+        result.setData(fuUserList);
+        return result;
+    }
+    @ApiOperation("解除绑定用户")
+    @PostMapping("unBindUser")
+    @AuthToken
+    @ResponseBody
+    public ServerResult unBindUser(HttpServletRequest request,@RequestParam int holdId) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        FuUserHoldUserRelation fuUserHoldUserRelation=fuUserHoldUserRelationRepository.findByUserIdAndHoldUserId(id,holdId);
+        fuUserHoldUserRelation.setUserId(-fuUserHoldUserRelation.getUserId());
+        fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
+        result.setData(fuUserHoldUserRelation);
+        result.setMessage("删除成功");
+        return result;
+    }
+    @ApiOperation("添加绑定的用户")
+    @PostMapping("bindUser")
+    @AuthToken
+    @ResponseBody
+    public ServerResult bindUser(HttpServletRequest request,@RequestParam String cardId) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        int holdId=fuUserRepository.findByCardId(cardId).getId();
+        FuUserHoldUserRelation fuUserHoldUserRelation=new FuUserHoldUserRelation();
+        fuUserHoldUserRelation.setUserId(id);
+        fuUserHoldUserRelation.setHoldUserId(holdId);
+        fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
+        result.setData(fuUserHoldUserRelation);
+        return result;
+    }
+    @ApiOperation("根据身份证号查看用户信息")
+    @PostMapping("showUserInfoByCardId")
+    @ResponseBody
+    public ServerResult showUserInfoByCardId(@RequestParam String cardId) {
+        ServerResult result=new ServerResult();
+        FuUser user=fuUserRepository.findByCardId(cardId);
+        result.setData(user);
+        return result;
+    }
+    @ApiOperation("根据手机号查看用户信息")
+    @PostMapping("showUserInfoByPhone")
+    @ResponseBody
+    public ServerResult showUserInfoByPhone(@RequestParam String phone) {
+        ServerResult result=new ServerResult();
+        FuUser user=fuUserRepository.findByPhone(phone);
+        result.setData(user);
+        return result;
+    }
+    @ApiOperation("查看个人用户信息")
+    @PostMapping("showUserInfo")
+    @AuthToken
+    @ResponseBody
+    public ServerResult showUserInfo(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        FuUser user=fuUserRepository.findOne(id);
+        result.setData(user);
         return result;
     }
 }
