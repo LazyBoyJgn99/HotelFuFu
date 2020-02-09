@@ -134,7 +134,7 @@ public class FaceEngineTest22 {
         //引擎配置
         EngineConfiguration engineConfiguration = new EngineConfiguration();
         engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
-        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_90_ONLY);
+        engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_ALL_OUT);
 
         //功能配置
         FunctionConfiguration functionConfiguration = new FunctionConfiguration();
