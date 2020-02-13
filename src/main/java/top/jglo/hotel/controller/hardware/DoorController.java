@@ -37,11 +37,21 @@ public class DoorController {
      * 文件上传
      */
     @ResponseBody
-    @PostMapping("saveFile")
-    public ServerResult comImgUpdate(@RequestParam("file") MultipartFile multipartFile,@RequestParam String name) throws Exception {
+    @PostMapping("saveFileWithName")
+    public ServerResult saveFileWithName(@RequestParam("file") MultipartFile multipartFile,@RequestParam String name) throws Exception {
         fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","xdp",name+".jpg");
         return new ServerResult("OK,路径：/usr/share/nginx/image/HotelFuFu/xdp/"+name+".jpg 用sftp下载下来校验");
     }
-
+    /**
+     *
+     * 文件上传
+     */
+    @ResponseBody
+    @PostMapping("saveFile")
+    public ServerResult saveFile(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        String name=multipartFile.getName();
+        fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","xdp",name+".jpg");
+        return new ServerResult("OK,路径：/usr/share/nginx/image/HotelFuFu/xdp/"+name+".jpg 用sftp下载下来校验");
+    }
 
 }
