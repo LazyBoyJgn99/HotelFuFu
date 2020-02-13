@@ -70,14 +70,23 @@ public class UserController {
         ServerResult result=new ServerResult();
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
-//        System.out.println("接收到的数据：");
-//        System.out.println(Arrays.toString(target));
         byte[] targetInfo =Base64.getDecoder().decode(target);
         FuUser user=faceEngineTest.findUser(targetInfo,fuUserList);
         loginService.userLogin(user,result);
+
+        String id ;
+        String token ;
+        id=String.valueOf(user.getId());
+        token = "user"+tokenGenerator.generate(id);
+        //获取到登录信息，从数据库获取到账号信息，或者像微信端发起请求得到session_key和openid
+        //开始将信息加密，生成token，并存入redis
+        //存入redis。分别存入username为key，token为value，token为key，username为value，并设置一样的过期时间，最后设置key为
+        //token+username，value为当前时间，方便检查过期
+        redisTools.set(token,id);
+        redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
         result.setData(user);
-//        System.out.println("最后输出的数据：");
-//        System.out.println(Arrays.toString(user.getFaceDetail()));
+        result.setMessage(token);
+
         return result;
     }
     @PostMapping(value = {"loginByPhone"})
@@ -173,5 +182,29 @@ public class UserController {
         result.setData(user);
         return result;
     }
-    
+    @ApiOperation("修改个人用户信息")
+    @PostMapping("saveUserInfo")
+    @AuthToken
+    @ResponseBody
+    public ServerResult saveUserInfo(HttpServletRequest request,@RequestBody FuUser user) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        FuUser myUser=fuUserRepository.findOne(id);
+        if(user.getCardId()!=null){
+            myUser.setCardId(user.getCardId());
+        }
+        if(user.getSex()!=null){
+            myUser.setSex(user.getSex());
+        }
+        if(user.getName()!=null){
+            myUser.setName(user.getName());
+        }
+        if(user.getPhone()!=null){
+            myUser.setPhone(user.getPhone());
+        }
+        fuUserRepository.save(myUser);
+        result.setData(myUser);
+        return result;
+    }
+
 }
