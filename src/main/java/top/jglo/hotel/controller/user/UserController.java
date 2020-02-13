@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -65,13 +66,14 @@ public class UserController {
     @PostMapping(value = {"login"})
     @ApiOperation(value = "用户登录", notes = "输入target,特征值比较，如果登录成功，返回的message是token,如果没有此人，直接注册", produces = "人脸识别")
     @ResponseBody
-    public ServerResult login(@RequestParam byte[] target)  {
+    public ServerResult login(@RequestParam String target)  {
         ServerResult result=new ServerResult();
         //获取所有人脸信息，循环比较
         List<FuUser> fuUserList=fuUserRepository.findAll();
 //        System.out.println("接收到的数据：");
 //        System.out.println(Arrays.toString(target));
-        FuUser user=faceEngineTest.findUser(target,fuUserList);
+        byte[] targetInfo =Base64.getDecoder().decode(target);
+        FuUser user=faceEngineTest.findUser(targetInfo,fuUserList);
         loginService.userLogin(user,result);
         result.setData(user);
 //        System.out.println("最后输出的数据：");
@@ -171,4 +173,5 @@ public class UserController {
         result.setData(user);
         return result;
     }
+    
 }
