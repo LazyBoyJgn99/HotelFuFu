@@ -10,16 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.consts.TokenConstant;
-import top.jglo.hotel.model.FuHotel;
-import top.jglo.hotel.model.FuUser;
-import top.jglo.hotel.model.FuUserHoldUserRelation;
-import top.jglo.hotel.model.FuWorker;
+import top.jglo.hotel.model.*;
 import top.jglo.hotel.model.result.HotelInfo;
 import top.jglo.hotel.model.result.ServerResult;
-import top.jglo.hotel.repository.FuEngineRepository;
-import top.jglo.hotel.repository.FuHotelRepository;
-import top.jglo.hotel.repository.FuUserHoldUserRelationRepository;
-import top.jglo.hotel.repository.FuUserRepository;
+import top.jglo.hotel.repository.*;
 import top.jglo.hotel.service.LoginService;
 import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.test.FaceEngineTest22;
@@ -51,6 +45,12 @@ import java.util.concurrent.*;
 @RequestMapping(value = {"user"})
 public class UserController {
 
+    @Resource
+    private FuRegisterRepository fuRegisterRepository;
+    @Resource
+    private FuHouseClassRepository fuHouseClassRepository;
+    @Resource
+    private FuHouseRepository fuHouseRepository;
     @Resource
     private FuUserRepository fuUserRepository;
     @Resource
@@ -211,7 +211,7 @@ public class UserController {
         result.setData(myUser);
         return result;
     }
-    @ApiOperation("显示酒店信息")
+    @ApiOperation(value = "显示酒店信息", notes = "根据经纬度，酒店名字，价格查询")
     @PostMapping("showHotelInfo")
     @ResponseBody
     public ServerResult showHotelInfo(@RequestBody HotelInfo hotelInfo) {
@@ -228,6 +228,25 @@ public class UserController {
 
         }
         result.setData(hotelList);
+        return result;
+    }
+    @ApiOperation(value = "获取房型列表", notes = "输入酒店ID，查询房型列表")
+    @PostMapping("getHouseClassList")
+    @ResponseBody
+    public ServerResult getHouseClassList(@RequestParam int hotelId) {
+        ServerResult result=new ServerResult();
+        List<FuHouseClass> houseClassList=fuHouseClassRepository.findByHotelId(hotelId);
+        result.setData(houseClassList);
+        return result;
+    }
+    @ApiOperation(value = "查询房型的可预定数量", notes = "输入房型ID和日期，YYYY-MM-dd")
+    @PostMapping("findHouseNum")
+    @ResponseBody
+    public ServerResult findHouseNum(@RequestParam int houseClassId,@RequestParam String date) {
+        ServerResult result=new ServerResult();
+        int num=fuHouseRepository.countByClassId(houseClassId);
+        int usingNum=fuRegisterRepository.countByStartDateAndHouseClassId(date,houseClassId);
+        result.setData(num-usingNum);
         return result;
     }
 }

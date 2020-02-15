@@ -28,4 +28,6 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
             "and (r.endDate>=?6 or ?6 is null or ?6 ='') ")
     List<FuRegister> findByFindInfo(int hotelId, int houseClassId, int status, String commitStartTime, String commitEndTime, String liveDate);
 
+    @Query(value = "select COUNT(r) FROM FuRegister r where r.houseClassId=?2 and r.startDate <=?1 and r.endDate>?1")
+    int countByStartDateAndHouseClassId(String date,int houseClassId);
 }

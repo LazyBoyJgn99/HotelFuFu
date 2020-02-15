@@ -17,4 +17,6 @@ public interface FuHouseRepository extends JpaRepository<FuHouse,Integer> { //id
     List<FuHouse> findByHotelId(int hotelId);
 
     List<FuHouse> findByStatusAndClassId(int status,int classId);
+
+    int countByClassId(int classId);
 }
