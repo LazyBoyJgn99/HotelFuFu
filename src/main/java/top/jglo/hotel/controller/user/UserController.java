@@ -10,11 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.consts.TokenConstant;
+import top.jglo.hotel.model.FuHotel;
 import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.FuUserHoldUserRelation;
 import top.jglo.hotel.model.FuWorker;
+import top.jglo.hotel.model.result.HotelInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEngineRepository;
+import top.jglo.hotel.repository.FuHotelRepository;
 import top.jglo.hotel.repository.FuUserHoldUserRelationRepository;
 import top.jglo.hotel.repository.FuUserRepository;
 import top.jglo.hotel.service.LoginService;
@@ -50,6 +53,8 @@ public class UserController {
 
     @Resource
     private FuUserRepository fuUserRepository;
+    @Resource
+    private FuHotelRepository fuHotelRepository;
     @Resource
     private FuUserHoldUserRelationRepository fuUserHoldUserRelationRepository;
     @Resource
@@ -206,5 +211,23 @@ public class UserController {
         result.setData(myUser);
         return result;
     }
+    @ApiOperation("显示酒店信息")
+    @PostMapping("showHotelInfo")
+    @ResponseBody
+    public ServerResult showHotelInfo(@RequestBody HotelInfo hotelInfo) {
+        ServerResult result=new ServerResult();
+        List<FuHotel> hotelList;
+        if(hotelInfo.getName()!=null){
+            hotelList=fuHotelRepository.findByLikeName("%"+hotelInfo.getName()+"%");
+        }else if(hotelInfo.getLat()!=null){
+            hotelList=fuHotelRepository.findByAddr(hotelInfo.getLng(),hotelInfo.getLat());
+        }else if(hotelInfo.getPrice()!=null){
+            hotelList=fuHotelRepository.findAll();
+        }else {
+            hotelList=fuHotelRepository.findAll();
 
+        }
+        result.setData(hotelList);
+        return result;
+    }
 }

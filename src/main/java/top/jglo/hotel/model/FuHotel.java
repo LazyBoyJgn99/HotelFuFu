@@ -12,6 +12,8 @@ public class FuHotel implements Serializable {
     private String ip;
     private String star;
     private String name;
+    private Double lng;
+    private Double lat;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,5 +81,25 @@ public class FuHotel implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, address, ip, star, name);
+    }
+
+    @Basic
+    @Column(name = "lng")
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    @Basic
+    @Column(name = "lat")
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 }
