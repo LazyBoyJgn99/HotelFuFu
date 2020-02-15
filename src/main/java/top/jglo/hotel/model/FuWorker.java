@@ -15,6 +15,7 @@ public class FuWorker implements Serializable {
     private String phone;
     private String username;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

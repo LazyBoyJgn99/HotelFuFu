@@ -9,12 +9,10 @@ import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.FuPower;
 import top.jglo.hotel.model.FuRole;
 import top.jglo.hotel.model.FuWorker;
+import top.jglo.hotel.model.FuWorkerRoleRelation;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.model.result.WorkerInfo;
-import top.jglo.hotel.repository.FuPowerRepository;
-import top.jglo.hotel.repository.FuRoleRepository;
-import top.jglo.hotel.repository.FuUserRepository;
-import top.jglo.hotel.repository.FuWorkerRepository;
+import top.jglo.hotel.repository.*;
 import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.util.MD5;
 import top.jglo.hotel.util.RedisTools;
@@ -35,6 +33,9 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = {"admin"})
 public class WorkerController {
 
+
+    @Resource
+    private FuWorkerRoleRelationRepository fuWorkerRoleRelationRepository;
     @Resource
     private FuWorkerRepository fuWorkerRepository;
     @Resource
@@ -195,7 +196,20 @@ public class WorkerController {
         worker.setHotelId(hotelId);
         worker.setPwd(MD5.MD5(worker.getPwd()));
         worker=fuWorkerRepository.save(worker);
+        FuWorkerRoleRelation workerRoleRelation=new FuWorkerRoleRelation();
+        workerRoleRelation.setWorkerId(worker.getId());
+        workerRoleRelation.setRoleId(10);
+        fuWorkerRoleRelationRepository.save(workerRoleRelation);
         result.setData(worker);
+        return result;
+    }
+    @PostMapping(value = {"saveWorkerRole"})
+    @ApiOperation(value = "修改员工的角色", notes = "修改员工的角色，fuWorkerRoleRelation类")
+    @ResponseBody
+    public ServerResult saveWorkerRole(@RequestBody FuWorkerRoleRelation workerRoleRelation,HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        workerRoleRelation=fuWorkerRoleRelationRepository.save(workerRoleRelation);
+        result.setData(workerRoleRelation);
         return result;
     }
     @PostMapping(value = {"deleteWorker"})
