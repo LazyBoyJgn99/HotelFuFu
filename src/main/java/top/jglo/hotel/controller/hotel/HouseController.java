@@ -242,6 +242,7 @@ public class HouseController {
      */
     @ResponseBody
     @PostMapping("saveFile")
+    @ApiOperation(value = "上传/修改房型图片", notes = "上传/修改房型图片")
     @AuthToken
     public void comImgUpdate(HttpServletRequest request,@RequestParam("file") MultipartFile multipartFile,@RequestParam int houseClassId,@RequestParam int id) throws Exception {
         int hotelId=tokenService.getHotelId(request);
@@ -257,7 +258,20 @@ public class HouseController {
         //        "first.jpg"
         fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","house/"+hotelId+"/"+houseClassId,id+".jpg");
     }
+    /**
+     *
+     * 文件上传
+     */
     @ResponseBody
+    @PostMapping("saveHotelFile")
+    @ApiOperation(value = "上传/修改酒店图片", notes = "上传/修改酒店图片")
+    @AuthToken
+    public void saveHotelFile(HttpServletRequest request,@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        int hotelId=tokenService.getHotelId(request);
+        fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","house/"+hotelId,"index.jpg");
+    }
+    @ResponseBody
+    @ApiOperation(value = "删除房型图片", notes = "删除房型图片")
     @PostMapping("deleteFile")
     public void deleteFile(@RequestParam int id)  {
         FuHouseClassImg houseClassImg=fuHouseClassImgRepository.findOne(id);

@@ -186,10 +186,14 @@ public class WorkerController {
         return result;
     }
     @PostMapping(value = {"saveWorker"})
+    @AuthToken
     @ApiOperation(value = "给酒店添加/修改员工", notes = "给酒店添加/修改员工，worker类")
     @ResponseBody
-    public ServerResult saveWorker(@RequestBody FuWorker worker) {
+    public ServerResult saveWorker(@RequestBody FuWorker worker,HttpServletRequest request) {
         ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        worker.setHotelId(hotelId);
+        worker.setPwd(MD5.MD5(worker.getPwd()));
         worker=fuWorkerRepository.save(worker);
         result.setData(worker);
         return result;

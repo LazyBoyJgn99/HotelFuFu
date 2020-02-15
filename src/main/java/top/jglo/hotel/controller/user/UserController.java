@@ -1,17 +1,12 @@
 package top.jglo.hotel.controller.user;
 
 
-import com.arcsoft.face.FaceFeature;
-import com.arcsoft.face.FaceInfo;
-import com.arcsoft.face.FaceSimilar;
-import com.arcsoft.face.enums.ImageFormat;
 import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.*;
-import top.jglo.hotel.model.result.CheckInInfo;
 import top.jglo.hotel.model.result.HotelInfo;
 import top.jglo.hotel.model.result.RegisterInfo;
 import top.jglo.hotel.model.result.ServerResult;
@@ -20,17 +15,12 @@ import top.jglo.hotel.service.HouseService;
 import top.jglo.hotel.service.LoginService;
 import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.test.FaceEngineTest22;
-import top.jglo.hotel.util.BinaryConversion;
 import top.jglo.hotel.util.DateUtil;
-import top.jglo.hotel.util.FaceEngineUtil;
 import top.jglo.hotel.util.RedisTools;
 import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.*;
@@ -49,6 +39,8 @@ import java.util.concurrent.*;
 @RequestMapping(value = {"user"})
 public class UserController {
 
+    @Resource
+    private FuPlaceRepository fuPlaceRepository;
     @Resource
     private HouseService houseService;
     @Resource
@@ -258,7 +250,7 @@ public class UserController {
         return result;
     }
     @PostMapping(value = {"saveRegister"})
-    @ApiOperation(value = "添加/修改订单", notes = "添加/修改订单，register类,需要填写HotelId，UserId，UserList，StartTime，EndTime")
+    @ApiOperation(value = "添加/修改订单", notes = "添加/修改订单，register类,需要填写HotelId，UserId，UserList，StartTime，EndTime，houseClassId")
     @AuthToken
     @ResponseBody
     public ServerResult saveRegister(@RequestBody RegisterInfo registerInfo,HttpServletRequest request) {
@@ -330,7 +322,7 @@ public class UserController {
         return result;
     }
     @PostMapping("findMyHotel")
-    @ApiOperation(value = "查询用户当前入住的酒店ID", notes = "")
+    @ApiOperation(value = "查询用户当前入住的酒店ID")
     @ResponseBody
     @AuthToken
     public ServerResult findMyHotel(HttpServletRequest request) {
@@ -340,6 +332,20 @@ public class UserController {
         FuRegister register=fuRegisterRepository.findByStartDateAndUserId(nowDate,id);
         int hotelId=register.getHotelId();
         result.setData(hotelId);
+        return result;
+    }
+    @PostMapping("showPlaceList")
+    @ApiOperation(value = "显示区域列表")
+    @ResponseBody
+    @AuthToken
+    public ServerResult showPlaceList(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        String nowDate=DateUtil.getDate();
+        FuRegister register=fuRegisterRepository.findByStartDateAndUserId(nowDate,id);
+        int hotelId=register.getHotelId();
+        List<FuPlace> placeList=fuPlaceRepository.findByHotelId(hotelId);
+        result.setData(placeList);
         return result;
     }
 }
