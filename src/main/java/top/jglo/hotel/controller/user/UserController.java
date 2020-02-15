@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.*;
+import top.jglo.hotel.model.result.CheckInInfo;
 import top.jglo.hotel.model.result.HotelInfo;
+import top.jglo.hotel.model.result.RegisterInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
+import top.jglo.hotel.service.HouseService;
 import top.jglo.hotel.service.LoginService;
 import top.jglo.hotel.service.TokenService;
 import top.jglo.hotel.test.FaceEngineTest22;
 import top.jglo.hotel.util.BinaryConversion;
+import top.jglo.hotel.util.DateUtil;
 import top.jglo.hotel.util.FaceEngineUtil;
 import top.jglo.hotel.util.RedisTools;
 import top.jglo.hotel.util.token.TokenGenerator;
@@ -46,6 +50,8 @@ import java.util.concurrent.*;
 public class UserController {
 
     @Resource
+    private HouseService houseService;
+    @Resource
     private FuRegisterRepository fuRegisterRepository;
     @Resource
     private FuHouseClassRepository fuHouseClassRepository;
@@ -57,6 +63,8 @@ public class UserController {
     private FuHotelRepository fuHotelRepository;
     @Resource
     private FuUserHoldUserRelationRepository fuUserHoldUserRelationRepository;
+    @Resource
+    private FuUserRegisterRelationRepository fuUserRegisterRelationRepository;
     @Resource
     private FaceEngineTest22 faceEngineTest;
     @Resource
@@ -247,6 +255,73 @@ public class UserController {
         int num=fuHouseRepository.countByClassId(houseClassId);
         int usingNum=fuRegisterRepository.countByStartDateAndHouseClassId(date,houseClassId);
         result.setData(num-usingNum);
+        return result;
+    }
+    @PostMapping(value = {"saveRegister"})
+    @ApiOperation(value = "添加/修改订单", notes = "添加/修改订单，register类")
+    @AuthToken
+    @ResponseBody
+    public ServerResult saveRegister(@RequestBody RegisterInfo registerInfo,HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        FuRegister register=registerInfo.getRegister();
+        register.setUserId(id);
+        register=fuRegisterRepository.save(register);
+        List<Integer> userIdList=registerInfo.getUserIdList();
+        int registerId=register.getId();
+        for (Integer anUserIdList : userIdList) {
+            FuUserRegisterRelation userRegisterRelation = new FuUserRegisterRelation();
+            userRegisterRelation.setRegisterId(registerId);
+            userRegisterRelation.setUserId(anUserIdList);
+            fuUserRegisterRelationRepository.save(userRegisterRelation);
+        }
+        result.setData(register);
+        return result;
+    }
+    @PostMapping(value = {"findRegisterList"})
+    @ApiOperation(value = "查询订单列表", notes = "查询订单列表，register类")
+    @AuthToken
+    @ResponseBody
+    public ServerResult findRegisterList(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        List<FuRegister> registerList =fuRegisterRepository.findByUserId(id);
+        result.setData(registerList);
+        return result;
+    }
+    @PostMapping(value = {"cancelRegister"})
+    @ApiOperation(value = "取消订单", notes = "取消订单，订单ID")
+    @ResponseBody
+    public ServerResult cancelRegister(@RequestParam int registerId) {
+        ServerResult result=new ServerResult();
+        FuRegister register=fuRegisterRepository.findOne(registerId);
+        register.setStatus(2);
+        register=fuRegisterRepository.save(register);
+        result.setData(register);
+        result.setMessage("取消成功");
+        return result;
+    }
+    @PostMapping("checkIn")
+    @ApiOperation(value = "直接入住（check in）", notes = "直接入住（check in），房间ID不用输入 自动分配，输入 房型ID, 最晚退房时间yyyy-MM-dd HH:mm:ss，入住人ID列表")
+    @ResponseBody
+    @AuthToken
+    public ServerResult checkIn( HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        int workerId=-1;
+        String nowDate=DateUtil.getDate();
+        FuRegister register=fuRegisterRepository.findByStartDateAndUserId(nowDate,id);
+        int houseClassId= register.getHouseClassId();
+        List<FuHouse> houseList=fuHouseRepository.findByStatusAndClassId(1,houseClassId);
+        if(houseList.size()>0){
+            List<Integer> userIdList =fuUserRegisterRelationRepository.findUserIdByRegisterId(register.getId());
+            FuHouse house=houseList.get(0);
+            String commitTime = DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
+            result.setMessage(houseService.checkInByIdList(userIdList,commitTime,register.getEndTime(),workerId,house));
+            result.setData(house);
+        }else {
+            result.setMessage("暂无可用房间");
+        }
         return result;
     }
 }

@@ -45,7 +45,7 @@ public class HouseService {
      * @param house
      * @return
      */
-    public String checkIn(List<String> userIdCardList,String commitTime,String endTime,int workerId,FuHouse house){
+    public String checkInByCardList(List<String> userIdCardList,String commitTime,String endTime,int workerId,FuHouse house){
         String flag="check in成功";
         int i=0;
         for (String anUserIdCardList : userIdCardList) {
@@ -67,6 +67,43 @@ public class HouseService {
             fuHouseOpen.setEndTime(endTime);
             //用户ID
             fuHouseOpen.setUserId(user.getId());
+            //操作人ID
+            fuHouseOpen.setWorkerId(workerId);
+            //状态 0就绪 1限定时间 2结束
+            fuHouseOpen.setStatus(1);
+            //房间ID
+            fuHouseOpen.setHouseId(house.getId());
+            fuHouseOpenRepository.save(fuHouseOpen);
+            //状态 0在住 1干净 2脏房 3停售
+            house.setStatus(0);
+            fuHouseRepository.save(house);
+        }
+        return flag;
+    }
+    /**
+     * check in
+     * @param userIdList
+     * @param commitTime
+     * @param endTime
+     * @param workerId
+     * @param house
+     * @return
+     */
+    public String checkInByIdList(List<Integer> userIdList,String commitTime,String endTime,int workerId,FuHouse house){
+        String flag="check in成功";
+        int i=0;
+        for (Integer userId : userIdList) {
+            i++;
+            //0在住1干净2脏房3停售
+            FuHouseOpen fuHouseOpen = new FuHouseOpen();
+            //提交时间
+            fuHouseOpen.setCommitTime(commitTime);
+            //开始时间
+            fuHouseOpen.setStartTime(commitTime);
+            //结束时间
+            fuHouseOpen.setEndTime(endTime);
+            //用户ID
+            fuHouseOpen.setUserId(userId);
             //操作人ID
             fuHouseOpen.setWorkerId(workerId);
             //状态 0就绪 1限定时间 2结束

@@ -75,7 +75,7 @@ public class HouseController {
             List<String> userIdList =checkInInfo.getUserIdList();
             FuHouse house=houseList.get(0);
             String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-            result.setMessage(houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
+            result.setMessage(houseService.checkInByCardList(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
             result.setData(house);
         }else {
             result.setMessage("暂无可用房间");
@@ -95,7 +95,7 @@ public class HouseController {
         FuHouse house=fuHouseRepository.findOne(houseId);
         if(house.getStatus()==1){
             String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-            result.setMessage(houseService.checkIn(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
+            result.setMessage(houseService.checkInByCardList(userIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
         }else {
             result.setMessage("该房间不可分配");
         }
@@ -113,7 +113,7 @@ public class HouseController {
         List<String> userCardIdList =checkInInfo.getUserIdList();
         FuHouse house=fuHouseRepository.findOne(houseId);
         String commitTime=DateUtil.formatTimestamp(DateUtil.getNowTimestamp(),"yyyy-MM-dd HH:mm:ss");
-        result.setMessage(houseService.checkIn(userCardIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
+        result.setMessage(houseService.checkInByCardList(userCardIdList,commitTime,checkInInfo.getEndTime(),workerId,house));
 
         result.setData(house);
         return result;

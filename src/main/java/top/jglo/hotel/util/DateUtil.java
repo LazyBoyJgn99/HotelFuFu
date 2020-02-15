@@ -13,6 +13,18 @@ public class DateUtil {
         return time.intValue();
     }
     /**
+     * 日期
+     *
+     * @return
+     */
+    public static String getDate() {
+        Date date = new Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        String datetime=f.format(date);
+        System.out.println(datetime);
+        return datetime;
+    }
+    /**
      * 星期
      *
      * @return
