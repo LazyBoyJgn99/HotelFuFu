@@ -228,7 +228,7 @@ public class HouseController {
         return result;
     }
     @PostMapping(value = {"deletePrice"})
-    @ApiOperation(value = "给房型删除房间", notes = "给房型删除房间，class_price类的id")
+    @ApiOperation(value = "删除价格", notes = "删除价格，class_price类的id")
     @ResponseBody
     public ServerResult deletePrice(@RequestBody FuHouseClassPrice houseClassPrice) {
         ServerResult result=new ServerResult();
