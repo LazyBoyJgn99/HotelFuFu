@@ -17,6 +17,18 @@ public class DateUtil {
      *
      * @return
      */
+    public static String getTime() {
+        Date date = new Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String datetime=f.format(date);
+        System.out.println(datetime);
+        return datetime;
+    }
+    /**
+     * 日期
+     *
+     * @return
+     */
     public static String getDate() {
         Date date = new Date();
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");

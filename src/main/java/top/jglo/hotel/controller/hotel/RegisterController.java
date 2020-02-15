@@ -17,6 +17,7 @@ import top.jglo.hotel.repository.FuEquipRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
 import top.jglo.hotel.repository.FuUserRegisterRelationRepository;
 import top.jglo.hotel.service.TokenService;
+import top.jglo.hotel.util.DateUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,8 @@ public class RegisterController {
         int hotelId=tokenService.getHotelId(request);
         FuRegister register=registerInfo.getRegister();
         register.setHotelId(hotelId);
+        register.setCommitTime(DateUtil.getTime());
+        register.setStatus(0);
         register=fuRegisterRepository.save(register);
         List<Integer> userIdList=registerInfo.getUserIdList();
         int registerId=register.getId();
