@@ -223,6 +223,21 @@ public class UserController {
         result.setData(myUser);
         return result;
     }
+    @ApiOperation(value = "添加用户", notes = "添加用户，自动设置为联系人")
+    @PostMapping("addUser")
+    @AuthToken
+    @ResponseBody
+    public ServerResult addUser(HttpServletRequest request,@RequestBody FuUser user) {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        user=fuUserRepository.save(user);
+        FuUserHoldUserRelation userHoldUserRelation=new FuUserHoldUserRelation();
+        userHoldUserRelation.setUserId(id);
+        userHoldUserRelation.setHoldUserId(user.getId());
+        fuUserHoldUserRelationRepository.save(userHoldUserRelation);
+        result.setData(user);
+        return result;
+    }
     @ApiOperation(value = "显示酒店信息", notes = "根据经纬度，酒店名字，价格查询")
     @PostMapping("showHotelInfo")
     @ResponseBody
