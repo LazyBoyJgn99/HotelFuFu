@@ -232,7 +232,7 @@ public class UserController {
     public ServerResult showUserInfo(HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int id=tokenService.getId(request);
-        FuUser user=fuUserRepository.findOne(id);
+        FuUser user=fuUserRepository.findById(id);
         result.setData(user);
         return result;
     }
