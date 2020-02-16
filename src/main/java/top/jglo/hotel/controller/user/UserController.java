@@ -94,6 +94,44 @@ public class UserController {
 
         return result;
     }
+    @PostMapping(value = {"saveFaceDetail"})
+    @ApiOperation(value = "更新人脸信息", notes = "输入target,特征值更新")
+    @AuthToken
+    @ResponseBody
+    public ServerResult saveFaceDetail(HttpServletRequest request,@RequestParam String target)  {
+        ServerResult result=new ServerResult();
+        int id=tokenService.getId(request);
+        byte[] targetInfo =Base64.getDecoder().decode(target);
+        FuUser user=fuUserRepository.findById(id);
+        user.setFaceDetail(targetInfo);
+        user=fuUserRepository.save(user);
+        result.setData(user);
+        return result;
+    }
+    @PostMapping(value = {"loginByCardId"})
+    @ApiOperation(value = "用户身份证登录", notes = "扫描身份证，身份证号登录")
+    @ResponseBody
+    public ServerResult loginByCardId(@RequestParam String cardId)  {
+        ServerResult result=new ServerResult();
+        FuUser user=fuUserRepository.findByCardId(cardId);
+        if(user==null){
+            result.setMessage("用户不存在");
+        }else {
+            String id ;
+            String token ;
+            id=String.valueOf(user.getId());
+            token = "user"+tokenGenerator.generate(id);
+            //获取到登录信息，从数据库获取到账号信息，或者像微信端发起请求得到session_key和openid
+            //开始将信息加密，生成token，并存入redis
+            //存入redis。分别存入username为key，token为value，token为key，username为value，并设置一样的过期时间，最后设置key为
+            //token+username，value为当前时间，方便检查过期
+            redisTools.set(token,id);
+            redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+            result.setData(user);
+            result.setMessage(token);
+        }
+        return result;
+    }
     @PostMapping(value = {"loginByPhone"})
     @ApiOperation(value = "用户手机号登录", notes = "输入手机号，手机号登录")
     @ResponseBody
@@ -158,7 +196,10 @@ public class UserController {
             FuUserHoldUserRelation fuUserHoldUserRelation=new FuUserHoldUserRelation();
             fuUserHoldUserRelation.setUserId(id);
             fuUserHoldUserRelation.setHoldUserId(holdId);
-            fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
+            FuUserHoldUserRelation fuUserHoldUserRelation1 =fuUserHoldUserRelationRepository.findByUserIdAndHoldUserId(id,holdId);
+            if(fuUserHoldUserRelation1!=null){
+                fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
+            }
             result.setData(fuUserHoldUserRelation);
         }else {
             result.setMessage("该身份未注册，请先注册");
@@ -208,6 +249,13 @@ public class UserController {
             result.setMessage("用户不存在");
         }
         if(user.getCardId()!=null){
+            FuUser oldUser=fuUserRepository.findByCardId(user.getCardId());
+            if(oldUser!=null){
+                if(oldUser.getId()!=id){
+                    result.setMessage("改身份证已经被注册");
+                    return result;
+                }
+            }
             myUser.setCardId(user.getCardId());
         }
         if(user.getSex()!=null){
