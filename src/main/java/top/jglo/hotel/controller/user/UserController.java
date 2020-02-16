@@ -126,6 +126,8 @@ public class UserController {
         ServerResult result=new ServerResult();
         int id=tokenService.getId(request);
         List<FuUser> fuUserList=fuUserHoldUserRelationRepository.findUserByUserId(id);
+        FuUser my=fuUserRepository.findOne(id);
+        fuUserList.add(my);
         result.setData(fuUserList);
         return result;
     }
@@ -150,12 +152,18 @@ public class UserController {
     public ServerResult bindUser(HttpServletRequest request,@RequestParam String cardId) {
         ServerResult result=new ServerResult();
         int id=tokenService.getId(request);
-        int holdId=fuUserRepository.findByCardId(cardId).getId();
-        FuUserHoldUserRelation fuUserHoldUserRelation=new FuUserHoldUserRelation();
-        fuUserHoldUserRelation.setUserId(id);
-        fuUserHoldUserRelation.setHoldUserId(holdId);
-        fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
-        result.setData(fuUserHoldUserRelation);
+        FuUser holdUser=fuUserRepository.findByCardId(cardId);
+        if(holdUser!=null){
+            int holdId=holdUser.getId();
+            FuUserHoldUserRelation fuUserHoldUserRelation=new FuUserHoldUserRelation();
+            fuUserHoldUserRelation.setUserId(id);
+            fuUserHoldUserRelation.setHoldUserId(holdId);
+            fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
+            result.setData(fuUserHoldUserRelation);
+        }else {
+            result.setMessage("该身份未注册，请先注册");
+        }
+
         return result;
     }
     @ApiOperation("根据身份证号查看用户信息")
@@ -250,7 +258,7 @@ public class UserController {
         return result;
     }
     @PostMapping(value = {"saveRegister"})
-    @ApiOperation(value = "添加/修改订单", notes = "添加/修改订单，register类,需要填写HotelId，UserId，UserList，StartTime，EndTime，houseClassId")
+    @ApiOperation(value = "添加/修改订单", notes = "添加/修改订单，register类,需要填写HotelId，UserList，StartTime，EndTime，houseClassId")
     @AuthToken
     @ResponseBody
     public ServerResult saveRegister(@RequestBody RegisterInfo registerInfo,HttpServletRequest request) {
