@@ -202,7 +202,11 @@ public class UserController {
     public ServerResult saveUserInfo(HttpServletRequest request,@RequestBody FuUser user) {
         ServerResult result=new ServerResult();
         int id=tokenService.getId(request);
-        FuUser myUser=fuUserRepository.findOne(id);
+        FuUser myUser=fuUserRepository.findById(id);
+        result.setMessage("用户id："+id);
+        if(myUser==null){
+            result.setMessage("用户不存在");
+        }
         if(user.getCardId()!=null){
             myUser.setCardId(user.getCardId());
         }
