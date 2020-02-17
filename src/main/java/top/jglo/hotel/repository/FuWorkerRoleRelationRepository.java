@@ -15,6 +15,6 @@ import java.util.List;
  */
 @Repository
 public interface FuWorkerRoleRelationRepository extends JpaRepository<FuWorkerRoleRelation,Integer> { //id序列化,传入id的类型
-
+    FuWorkerRoleRelation findByWorkerId(int workerId);
 
 }

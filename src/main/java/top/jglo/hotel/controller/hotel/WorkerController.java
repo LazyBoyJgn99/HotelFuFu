@@ -196,18 +196,24 @@ public class WorkerController {
         worker.setHotelId(hotelId);
         worker.setPwd(MD5.MD5(worker.getPwd()));
         worker=fuWorkerRepository.save(worker);
-        FuWorkerRoleRelation workerRoleRelation=new FuWorkerRoleRelation();
-        workerRoleRelation.setWorkerId(worker.getId());
-        workerRoleRelation.setRoleId(10);
-        fuWorkerRoleRelationRepository.save(workerRoleRelation);
+        FuWorkerRoleRelation workerRoleRelation =fuWorkerRoleRelationRepository.findByWorkerId(worker.getId());
+        if(workerRoleRelation==null){
+            workerRoleRelation.setWorkerId(worker.getId());
+            workerRoleRelation.setRoleId(10);
+            fuWorkerRoleRelationRepository.save(workerRoleRelation);
+        }
         result.setData(worker);
         return result;
     }
     @PostMapping(value = {"saveWorkerRole"})
     @ApiOperation(value = "修改员工的角色", notes = "修改员工的角色，fuWorkerRoleRelation类")
     @ResponseBody
-    public ServerResult saveWorkerRole(@RequestBody FuWorkerRoleRelation workerRoleRelation,HttpServletRequest request) {
+    public ServerResult saveWorkerRole(@RequestBody FuWorkerRoleRelation workerRoleRelation) {
         ServerResult result=new ServerResult();
+        FuWorkerRoleRelation oldWorkerRoleRelation =fuWorkerRoleRelationRepository.findByWorkerId(workerRoleRelation.getWorkerId());
+        if(oldWorkerRoleRelation!=null){
+            workerRoleRelation.setId(oldWorkerRoleRelation.getId());
+        }
         workerRoleRelation=fuWorkerRoleRelationRepository.save(workerRoleRelation);
         result.setData(workerRoleRelation);
         return result;
