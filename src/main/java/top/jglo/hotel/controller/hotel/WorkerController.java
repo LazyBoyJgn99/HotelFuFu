@@ -194,7 +194,13 @@ public class WorkerController {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
         worker.setHotelId(hotelId);
-        worker.setPwd(MD5.MD5(worker.getPwd()));
+        String pwd=worker.getPwd();
+        int l=20;
+        if(pwd.length()>l){
+            worker.setPwd(pwd);
+        }else {
+            worker.setPwd(MD5.MD5(pwd));
+        }
         worker=fuWorkerRepository.save(worker);
         FuWorkerRoleRelation workerRoleRelation =fuWorkerRoleRelationRepository.findByWorkerId(worker.getId());
         if(workerRoleRelation==null){
