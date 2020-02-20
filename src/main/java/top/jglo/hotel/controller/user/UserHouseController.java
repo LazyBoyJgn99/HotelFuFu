@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.*;
 import top.jglo.hotel.model.result.CheckInInfo;
+import top.jglo.hotel.model.result.EquipCtrlInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
 import top.jglo.hotel.service.HouseService;
@@ -22,6 +23,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
+
+import static top.jglo.hotel.util.HttpUtil.httpRequest;
+import static top.jglo.hotel.util.HttpUtil.httpRequestJson;
 
 /**
  * @author gkirito
@@ -58,6 +62,17 @@ public class UserHouseController {
         result.setData(hotelServer);
         return result;
     }
-
-
+    @PostMapping("ctrl")
+    @ApiOperation(value = "控制设备", notes = "控制设备")
+    @ResponseBody
+    public ServerResult ctrl(@RequestBody EquipCtrlInfo equipCtrlInfo) {
+        ServerResult result=new ServerResult();
+        String request=httpRequestJson(equipCtrlInfo.getUrl(),"POST","{\n\t\"entity_id\":\""+equipCtrlInfo.getEntity_id()+"\"\n}","Bearer "+equipCtrlInfo.getBearer());
+        result.setData(request);
+        return result;
+    }
+    public static void main(String[] args) {
+        String request=httpRequest("http://192.168.1.235:8123/api/services/switch/turn_off","POST","{\n\t\"entity_id\":\"switch.wall_switch_ln_left_158d000353827e\"\n}");
+        System.out.println(request);
+    }
 }

@@ -10,6 +10,7 @@ public class FuHotelServer {
     private String ip;
     private Integer port;
     private Integer hotelId;
+    private String bearer;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,5 +67,15 @@ public class FuHotelServer {
     @Override
     public int hashCode() {
         return Objects.hash(id, ip, port, hotelId);
+    }
+
+    @Basic
+    @Column(name = "bearer")
+    public String getBearer() {
+        return bearer;
+    }
+
+    public void setBearer(String bearer) {
+        this.bearer = bearer;
     }
 }
