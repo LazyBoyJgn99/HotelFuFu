@@ -40,6 +40,7 @@ public class ExController {
     @ResponseBody
     public ServerResult findUser(@RequestParam int id, @RequestParam String pwd) {
         ServerResult result=new ServerResult();
+        System.out.println(id+","+pwd);
         result.setMessage(id+","+pwd);
         return result;
     }
