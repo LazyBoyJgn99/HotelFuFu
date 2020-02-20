@@ -67,6 +67,7 @@ public class UserHouseController {
     @ResponseBody
     public ServerResult ctrl(@RequestBody EquipCtrlInfo equipCtrlInfo) {
         ServerResult result=new ServerResult();
+        System.out.println(equipCtrlInfo.toString());
         String request=httpRequestJson(equipCtrlInfo.getUrl(),"POST","{\n\t\"entity_id\":\""+equipCtrlInfo.getEntity_id()+"\"\n}","Bearer "+equipCtrlInfo.getBearer());
         result.setData(request);
         return result;

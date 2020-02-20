@@ -34,4 +34,13 @@ public class EquipCtrlInfo {
     public void setBearer(String bearer) {
         this.bearer = bearer;
     }
+
+    @Override
+    public String toString() {
+        return "EquipCtrlInfo{" +
+                "url='" + url + '\'' +
+                ", entity_id='" + entity_id + '\'' +
+                ", bearer='" + bearer + '\'' +
+                '}';
+    }
 }
