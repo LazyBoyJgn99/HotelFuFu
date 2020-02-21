@@ -67,14 +67,13 @@ public class UserHouseController {
     @ResponseBody
     public ServerResult ctrl(@RequestBody EquipCtrlInfo equipCtrlInfo) {
         ServerResult result=new ServerResult();
-        System.out.println(equipCtrlInfo.toString());
-//        String request=httpRequestJson(equipCtrlInfo.getUrl(),"POST","{\n\t\"entity_id\":\""+equipCtrlInfo.getEntity_id()+"\"\n}","Bearer "+equipCtrlInfo.getBearer());
-        String request=httpRequestJson("http://192.168.1.235:8123/api/services/switch/turn_off","POST","{\n\t\"entity_id\":\"switch.wall_switch_ln_left_158d000353827e\"\n}","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0OTM0ZTc5NTlmNDU0MDkxYmIzNWJlMjQxODIyMTdlZiIsImlhdCI6MTU4MjIxNzkyMSwiZXhwIjoxODk3NTc3OTIxfQ.kW7zegaPuaxir4bpivHInBCQX3ULLjfmmJZ4Nfe8O90");
+//        System.out.println(equipCtrlInfo.toString());
+        String request=httpRequestJson(equipCtrlInfo.getUrl(),"POST","{\n\t\"entity_id\":\""+equipCtrlInfo.getEntityId()+"\"\n}","Bearer "+equipCtrlInfo.getBearer());
         result.setData(request);
         return result;
     }
     public static void main(String[] args) {
-        String request=httpRequestJson("http://192.168.1.235:8123/api/services/switch/turn_off","POST","{\n\t\"entity_id\":\"switch.wall_switch_ln_left_158d000353827e\"\n}","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0OTM0ZTc5NTlmNDU0MDkxYmIzNWJlMjQxODIyMTdlZiIsImlhdCI6MTU4MjIxNzkyMSwiZXhwIjoxODk3NTc3OTIxfQ.kW7zegaPuaxir4bpivHInBCQX3ULLjfmmJZ4Nfe8O90");
+        String request=httpRequestJson("http://lj.jinjp.top:9909/api/services/switch/turn_off","POST","{\n\t\"entity_id\":\""+"switch.wall_switch_ln_left_158d000353827e"+"\"\n}","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0OTM0ZTc5NTlmNDU0MDkxYmIzNWJlMjQxODIyMTdlZiIsImlhdCI6MTU4MjIxNzkyMSwiZXhwIjoxODk3NTc3OTIxfQ.kW7zegaPuaxir4bpivHInBCQX3ULLjfmmJZ4Nfe8O90");
         System.out.println(request);
     }
 }

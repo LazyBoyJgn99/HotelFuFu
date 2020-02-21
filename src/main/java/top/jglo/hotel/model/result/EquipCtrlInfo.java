@@ -7,7 +7,7 @@ public class EquipCtrlInfo {
 
     private String url;
 
-    private String entity_id;
+    private String entityId;
 
     private String bearer;
 
@@ -19,12 +19,12 @@ public class EquipCtrlInfo {
         this.url = url;
     }
 
-    public String getEntity_id() {
-        return entity_id;
+    public String getEntityId() {
+        return entityId;
     }
 
-    public void setEntity_id(String entity_id) {
-        this.entity_id = entity_id;
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
     public String getBearer() {
@@ -39,7 +39,7 @@ public class EquipCtrlInfo {
     public String toString() {
         return "EquipCtrlInfo{" +
                 "url='" + url + '\'' +
-                ", entity_id='" + entity_id + '\'' +
+                ", entityId='" + entityId + '\'' +
                 ", bearer='" + bearer + '\'' +
                 '}';
     }
