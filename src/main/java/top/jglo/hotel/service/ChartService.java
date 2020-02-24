@@ -1,5 +1,6 @@
 package top.jglo.hotel.service;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Service;
 import top.jglo.hotel.model.FuHouse;
 import top.jglo.hotel.model.FuHouseOpen;
@@ -77,6 +78,11 @@ public class ChartService {
     }
 
     public List<ChartInfo> findHouseSales(int hotelId) {
-        return fuRegisterRepository.findHouseSales(hotelId);
+        List<ChartInfo> chartInfoList=new ArrayList<>();
+        for (String str:fuRegisterRepository.findHouseSales(hotelId) )
+        {
+            chartInfoList.add(JSON.parseObject(str,ChartInfo.class));
+        }
+        return chartInfoList;
     }
 }
