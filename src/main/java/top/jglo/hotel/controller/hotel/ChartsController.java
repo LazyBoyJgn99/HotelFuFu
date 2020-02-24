@@ -62,7 +62,7 @@ public class ChartsController {
     @PostMapping("getYearSales")
     @AuthToken
     @ResponseBody
-    public ServerResult getSeasonSales(HttpServletRequest request,@RequestParam String endYear,@RequestParam String startYear) {
+    public ServerResult getYearSales(HttpServletRequest request,@RequestParam String endYear,@RequestParam String startYear) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
         List<ChartInfo> chartInfoList=chartService.getYearSales(startYear,endYear,hotelId);

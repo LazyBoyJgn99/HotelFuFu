@@ -51,8 +51,8 @@ public class ChartService {
                 num=0;
             }
             sum+=num;
-            if(i%4==0){
-                chartInfoList.add(new ChartInfo(season[i/4-1],String.valueOf(sum)));
+            if(i%3==0){
+                chartInfoList.add(new ChartInfo(season[i/3-1],String.valueOf(sum)));
                 sum=0;
             }
         }
@@ -64,7 +64,7 @@ public class ChartService {
         for(int y=Integer.valueOf(startYear);y<=Integer.valueOf(endYear);y++){
             int sum=0;
             for(int i=1;i<=12;i++){
-                Integer num= fuRegisterRepository.findMonSales(startYear+"-"+i+"-1",hotelId);
+                Integer num= fuRegisterRepository.findMonSales(y+"-"+i+"-1",hotelId);
                 if(num==null){
                     num=0;
                 }
