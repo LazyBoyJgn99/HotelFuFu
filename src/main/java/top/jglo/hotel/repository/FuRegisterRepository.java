@@ -36,7 +36,7 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
     @Query(value = "select r FROM FuRegister r where r.userId=?2 and r.startDate <=?1 and r.endDate>?1 and r.status<2")
     FuRegister findByStartDateAndUserId(String date,int userId);
 
-    @Query(nativeQuery = true,value = "SET @adate = ?1;   " +
+    @Query(nativeQuery = true,value =
             "SELECT sum(price) FROM fu_register r2," +
             "(SELECT p.price,r.id,max(p.`status`) FROM fu_house_class_price p ,fu_register r ,(SELECT " +
             "@num:=@num+1 num, " +
@@ -47,9 +47,9 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
             "(SELECT 1 UNION SELECT 2 ) xc3, " +
             "(select @num:=-1) num_t " +
             "WHERE " +
-            "@num < (SELECT DAYOFMONTH(LAST_DAY(@adate)) - 1)) as dada " +
+            "@num < (SELECT DAYOFMONTH(LAST_DAY(?1)) - 1)) as dada " +
             "WHERE p.class_id=r.house_class_id " +
-            "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=@adate or p.`status`=0) " +
+            "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=?1 or p.`status`=0) " +
             "AND r.start_time<dada.product_date " +
             "AND r.end_time>=dada.product_date " +
             "GROUP BY r.id ) AS db1 " +
