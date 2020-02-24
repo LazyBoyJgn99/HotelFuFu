@@ -52,9 +52,9 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
             "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=dada.product_date or p.`status`=0) " +
             "AND r.start_time<dada.product_date " +
             "AND r.end_time>=dada.product_date " +
+            "AND r.hotel_id=?2  " +
             "GROUP BY r.id ) AS db1 " +
             "WHERE db1.id=r2.id ")
-    int findMonSales(String date);
-
+    Integer findMonSales(String date,int hotelId);
 
 }
