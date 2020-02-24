@@ -31,7 +31,7 @@ import static top.jglo.hotel.util.HttpUtil.httpRequestJson;
  * @author gkirito
  */
 
-@Api(tags = "房间控制层")
+@Api(tags = "房间控制层-允锦")
 @CrossOrigin
 @Controller
 @RequestMapping(value = {"uHouse"})
@@ -67,7 +67,7 @@ public class UserHouseController {
     @ResponseBody
     public ServerResult ctrl(@RequestBody EquipCtrlInfo equipCtrlInfo) {
         ServerResult result=new ServerResult();
-//        System.out.println(equipCtrlInfo.toString());
+        System.out.println(equipCtrlInfo.toString());
         String request=httpRequestJson(equipCtrlInfo.getUrl(),"POST","{\n\t\"entity_id\":\""+equipCtrlInfo.getEntityId()+"\"\n}","Bearer "+equipCtrlInfo.getBearer());
         result.setData(request);
         return result;
