@@ -69,4 +69,15 @@ public class ChartsController {
         result.setData(chartInfoList);
         return result;
     }
+    @ApiOperation(value = "房型销售量", notes = "无需输入")
+    @PostMapping("findHouseSales")
+    @AuthToken
+    @ResponseBody
+    public ServerResult findHouseSales(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        List<ChartInfo> chartInfoList=chartService.findHouseSales(hotelId);
+        result.setData(chartInfoList);
+        return result;
+    }
 }

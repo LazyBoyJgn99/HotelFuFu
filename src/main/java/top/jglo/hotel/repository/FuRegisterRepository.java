@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import top.jglo.hotel.model.FuRegister;
 import top.jglo.hotel.model.FuRole;
+import top.jglo.hotel.model.result.ChartInfo;
 
 import java.util.List;
 
@@ -53,8 +54,18 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
             "AND r.start_time<dada.product_date " +
             "AND r.end_time>=dada.product_date " +
             "AND r.hotel_id=?2  " +
+            "AND r.status=2  " +
             "GROUP BY r.id ) AS db1 " +
             "WHERE db1.id=r2.id ")
     Integer findMonSales(String date,int hotelId);
 
+
+
+    @Query(nativeQuery = true,value =
+            "SELECT c.`name` as `key`,COUNT(*) as `value` " +
+                    "    FROM fu_house_class c,fu_register r " +
+                    "    WHERE r.house_class_id=c.id " +
+                    "    AND r.hotel_id=?1 " +
+                    "    GROUP BY c.id")
+    List<ChartInfo> findHouseSales(int hotelId);
 }

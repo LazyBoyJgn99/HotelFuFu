@@ -75,4 +75,8 @@ public class ChartService {
         }
         return chartInfoList;
     }
+
+    public List<ChartInfo> findHouseSales(int hotelId) {
+        return fuRegisterRepository.findHouseSales(hotelId);
+    }
 }
