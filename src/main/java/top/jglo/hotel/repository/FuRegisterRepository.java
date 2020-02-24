@@ -39,13 +39,13 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
     @Query(nativeQuery = true,value =
             "SELECT sum(price) FROM fu_register r2," +
             "(SELECT p.price,r.id,max(p.`status`) FROM fu_house_class_price p ,fu_register r ,(SELECT " +
-            "@num/*'*/:=/*'*/@num+1 num, " +
+            "@num \\:= @num+1 num, " +
             "DATE_ADD(DATE_FORMAT(@adate, '%Y-%m-%d'),INTERVAL @num DAY) as product_date " +
             "FROM " +
             "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 ) xc1, " +
             "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) xc2, " +
             "(SELECT 1 UNION SELECT 2 ) xc3, " +
-            "(select @num/*'*/:=/*'*/-1) num_t " +
+            "(select @num \\:= -1) num_t " +
             "WHERE " +
             "@num < (SELECT DAYOFMONTH(LAST_DAY(?1)) - 1)) as dada " +
             "WHERE p.class_id=r.house_class_id " +
