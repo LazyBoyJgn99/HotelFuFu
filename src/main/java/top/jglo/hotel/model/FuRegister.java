@@ -20,7 +20,16 @@ public class FuRegister implements Serializable {
     private Integer hotelId;
     private List<FuUser> user;
     private List<FuHouseClass> houseClass;
+    private List<FuHotel> hotel;
 
+    @OneToMany
+    @JoinColumn(name = "id",referencedColumnName = "hotel_id")
+    public List<FuHotel> getHotel() {
+        return hotel;
+    }
+    public void setHotel(List<FuHotel> hotel) {
+        this.hotel = hotel;
+    }
     @OneToMany
     @JoinColumn(name = "id",referencedColumnName = "user_id")
     public List<FuUser> getUser() {
@@ -41,7 +50,6 @@ public class FuRegister implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
