@@ -62,12 +62,14 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
 
 
     @Query(nativeQuery = true,value =
-            "SELECT c.`name` as `key`,COUNT(*) as `value` " +
+            "SELECT c.`name` as `key`," +
+                    "CAST(COUNT(1)as char) as `value` " +
                     "    FROM fu_house_class c,fu_register r " +
                     "    WHERE r.house_class_id=c.id " +
                     "    AND r.hotel_id=?1 " +
                     "    GROUP BY c.id")
     List<Object[]> findHouseSales(int hotelId);
+
     @Query(nativeQuery = true,value =
             "SELECT c.`name` as `key`,COUNT(*) as `value` " +
                     "    FROM fu_house_class c,fu_register r " +
