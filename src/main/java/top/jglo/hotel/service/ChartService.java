@@ -79,10 +79,10 @@ public class ChartService {
         return chartInfoList;
     }
 
-    public List<ChartIntInfo> findHouseSales(int hotelId) {
-        ChartIntInfo chartInfo=new ChartIntInfo();
+    public List<ChartInfo> findHouseSales(int hotelId) {
+        ChartInfo chartInfo=new ChartInfo();
         List<Object[]> objects=fuRegisterRepository.findHouseSales(hotelId);
-        List<ChartIntInfo>  chartInfoList=EntityUtil.castEntity(objects,ChartIntInfo.class,chartInfo);
+        List<ChartInfo>  chartInfoList=EntityUtil.castEntity(objects,ChartInfo.class,chartInfo);
         return chartInfoList;
     }
     public List<Object> findHouseSalesO(int hotelId) {
