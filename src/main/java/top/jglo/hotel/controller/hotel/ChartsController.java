@@ -82,7 +82,7 @@ public class ChartsController {
         return result;
     }
     @ApiOperation(value = "房型销售量", notes = "无需输入")
-    @PostMapping("findHouseSales")
+    @PostMapping("findHouseSalesO")
     @AuthToken
     @ResponseBody
     public ServerResult findHouseSalesO(HttpServletRequest request) {
