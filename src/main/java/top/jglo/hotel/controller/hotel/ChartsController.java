@@ -77,7 +77,7 @@ public class ChartsController {
     public ServerResult findHouseSales(HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
-        List<ChartIntInfo> chartInfoList=chartService.findHouseSales(hotelId);
+        List<ChartInfo> chartInfoList=chartService.findHouseSales(hotelId);
         result.setData(chartInfoList);
         return result;
     }
