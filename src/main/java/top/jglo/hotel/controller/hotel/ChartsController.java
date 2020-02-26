@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.FuEquip;
 import top.jglo.hotel.model.result.ChartInfo;
+import top.jglo.hotel.model.result.ChartIntInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEquipRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
@@ -76,7 +77,7 @@ public class ChartsController {
     public ServerResult findHouseSales(HttpServletRequest request) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
-        List<ChartInfo> chartInfoList=chartService.findHouseSales(hotelId);
+        List<ChartIntInfo> chartInfoList=chartService.findHouseSales(hotelId);
         result.setData(chartInfoList);
         return result;
     }

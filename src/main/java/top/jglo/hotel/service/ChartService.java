@@ -6,6 +6,7 @@ import top.jglo.hotel.model.FuHouse;
 import top.jglo.hotel.model.FuHouseOpen;
 import top.jglo.hotel.model.FuUser;
 import top.jglo.hotel.model.result.ChartInfo;
+import top.jglo.hotel.model.result.ChartIntInfo;
 import top.jglo.hotel.repository.FuHouseOpenRepository;
 import top.jglo.hotel.repository.FuHouseRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
@@ -78,12 +79,10 @@ public class ChartService {
         return chartInfoList;
     }
 
-    public List<ChartInfo> findHouseSales(int hotelId) {
-        ChartInfo chartInfo=new ChartInfo();
-
-        List<ChartInfo>  chartInfoList=EntityUtil.castEntity(fuRegisterRepository.findHouseSales(hotelId),ChartInfo.class,chartInfo);
-
-
+    public List<ChartIntInfo> findHouseSales(int hotelId) {
+        ChartIntInfo chartInfo=new ChartIntInfo();
+        List<Object[]> objects=fuRegisterRepository.findHouseSales(hotelId);
+        List<ChartIntInfo>  chartInfoList=EntityUtil.castEntity(objects,ChartIntInfo.class,chartInfo);
         return chartInfoList;
     }
 }
