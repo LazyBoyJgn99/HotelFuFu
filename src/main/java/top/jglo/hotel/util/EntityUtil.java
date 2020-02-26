@@ -54,6 +54,7 @@ public class EntityUtil {
                 System.out.println("o");
                 System.out.println(o.toString());
                 Constructor<T> constructor = clazz.getConstructor(c2);
+                System.out.println("constructor");
                 returnList.add(constructor.newInstance(o));
             }
         } catch (Exception ex) {
