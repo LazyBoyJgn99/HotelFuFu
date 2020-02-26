@@ -7,12 +7,12 @@ public class ChartIntInfo {
 
     private String key;
 
-    private Integer value;
+    private int value;
 
     public ChartIntInfo() {
 
     }
-    public ChartIntInfo(String key, Integer value) {
+    public ChartIntInfo(String key, int value) {
         this.key = key;
         this.value = value;
     }
@@ -25,11 +25,11 @@ public class ChartIntInfo {
         this.key = key;
     }
 
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(int value) {
         this.value = value;
     }
 }
