@@ -26,11 +26,18 @@ public class EntityUtil {
         if (list.isEmpty()) {
             return returnList;
         }
+        System.out.println("list");
+        System.out.println(list.toString());
         //获取每个数组集合的元素个数
         Object[] co = list.get(0);
-
+        System.out.println("co");
+        System.out.println(co.toString());
         //获取当前实体类的属性名、属性值、属性类别
         List<Map> attributeInfoList = getFiledsInfo(model);
+        System.out.println("attributeInfoList");
+        System.out.println(attributeInfoList.toString());
+        System.out.println("attributeInfoList.size");
+        System.out.println(attributeInfoList.size());
         //创建属性类别数组
         Class[] c2 = new Class[attributeInfoList.size()];
         //如果数组集合元素个数与实体类属性个数不一致则发生错误
