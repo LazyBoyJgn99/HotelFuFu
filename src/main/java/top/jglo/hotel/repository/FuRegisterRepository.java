@@ -67,5 +67,5 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
                     "    WHERE r.house_class_id=c.id " +
                     "    AND r.hotel_id=?1 " +
                     "    GROUP BY c.id")
-    List<String> findHouseSales(int hotelId);
+    List<Object[]> findHouseSales(int hotelId);
 }

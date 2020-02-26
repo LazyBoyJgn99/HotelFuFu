@@ -12,6 +12,9 @@ public class ChartInfo {
 
     private String value;
 
+    public ChartInfo() {
+
+    }
     public ChartInfo(String key, String value) {
         this.key = key;
         this.value = value;

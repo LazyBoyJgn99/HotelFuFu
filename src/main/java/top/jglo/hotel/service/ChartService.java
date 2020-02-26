@@ -10,6 +10,7 @@ import top.jglo.hotel.repository.FuHouseOpenRepository;
 import top.jglo.hotel.repository.FuHouseRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
 import top.jglo.hotel.repository.FuUserRepository;
+import top.jglo.hotel.util.EntityUtil;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -78,11 +79,11 @@ public class ChartService {
     }
 
     public List<ChartInfo> findHouseSales(int hotelId) {
-        List<ChartInfo> chartInfoList=new ArrayList<>();
-        for (String str:fuRegisterRepository.findHouseSales(hotelId) )
-        {
-            chartInfoList.add(JSON.parseObject(str,ChartInfo.class));
-        }
+        ChartInfo chartInfo=new ChartInfo();
+
+        List<ChartInfo>  chartInfoList=EntityUtil.castEntity(fuRegisterRepository.findHouseSales(hotelId),ChartInfo.class,chartInfo);
+
+
         return chartInfoList;
     }
 }
