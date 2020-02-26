@@ -47,9 +47,12 @@ public class EntityUtil {
         //确定构造方法
         for (int i = 0; i < attributeInfoList.size(); i++) {
             c2[i] = (Class) attributeInfoList.get(i).get("type");
+            System.out.println(c2[i]);
         }
         try {
             for (Object[] o : list) {
+                System.out.println("o");
+                System.out.println(o.toString());
                 Constructor<T> constructor = clazz.getConstructor(c2);
                 returnList.add(constructor.newInstance(o));
             }
