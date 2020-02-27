@@ -13,15 +13,6 @@ public class FuPlace implements Serializable {
     private String content;
     private Integer capacity;
     private Integer peopleNum;
-    private String num;
-
-    public String getNum() {
-        return num;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
