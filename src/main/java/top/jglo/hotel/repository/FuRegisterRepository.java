@@ -38,25 +38,25 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
     FuRegister findByStartDateAndUserId(String date,int userId);
 
     @Query(nativeQuery = true,value =
-            "SELECT sum(price) FROM fu_register r2," +
-            "(SELECT p.price,r.id,max(p.`status`) FROM fu_house_class_price p ,fu_register r ,(SELECT " +
-            "@num \\:= @num+1 num, " +
-            "DATE_ADD(DATE_FORMAT(?1, '%Y-%m-%d'),INTERVAL @num DAY) as product_date " +
-            "FROM " +
-            "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 ) xc1, " +
-            "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) xc2, " +
-            "(SELECT 1 UNION SELECT 2 ) xc3, " +
-            "(select @num \\:= -1) num_t " +
-            "WHERE " +
-            "@num < (SELECT DAYOFMONTH(LAST_DAY(?1)) - 1)) as dada " +
-            "WHERE p.class_id=r.house_class_id " +
-            "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=dada.product_date or p.`status`=0) " +
-            "AND r.start_time<dada.product_date " +
-            "AND r.end_time>=dada.product_date " +
-            "AND r.hotel_id=?2  " +
-            "AND r.status=1  " +
-            "GROUP BY r.id ) AS db1 " +
-            "WHERE db1.id=r2.id ")
+            "SELECT sum(price) FROM fu_house_class_price p1 ,  " +
+                    "(SELECT p.class_id as cid,r.id,max(p.`status`) as s,dada.product_date FROM fu_house_class_price p ,fu_register r ,(SELECT  " +
+                    "@num\\:=@num+1 num,  " +
+                    "DATE_ADD(DATE_FORMAT(?1, '%Y-%m-%d'),INTERVAL @num DAY) as product_date  " +
+                    "FROM  " +
+                    "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) xc1,  " +
+                    "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) xc2,  " +
+                    "(SELECT 1 UNION SELECT 2 ) xc3,  " +
+                    "(select @num\\:=-1) num_t  " +
+                    "WHERE  " +
+                    "@num < (SELECT DAYOFMONTH(LAST_DAY(?1)) - 1)) as dada  " +
+                    "WHERE p.class_id=r.house_class_id   " +
+                    "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=dada.product_date or p.`status`=0)  " +
+                    "AND r.start_time<dada.product_date   " +
+                    "AND r.end_time>=dada.product_date   " +
+                    "AND r.hotel_id=?2   " +
+                    "AND r.`status`=1   " +
+                    "GROUP BY r.id ,product_date) da1  " +
+                    "WHERE p1.`status`=da1.s AND p1.class_id=da1.cid ")
     Integer findMonSales(String date,int hotelId);
 
 
@@ -71,10 +71,23 @@ public interface FuRegisterRepository extends JpaRepository<FuRegister,Integer> 
     List<Object[]> findHouseSales(int hotelId);
 
     @Query(nativeQuery = true,value =
-            "SELECT c.`name` as `key`,COUNT(*) as `value` " +
-                    "    FROM fu_house_class c,fu_register r " +
-                    "    WHERE r.house_class_id=c.id " +
-                    "    AND r.hotel_id=?1 " +
-                    "    GROUP BY c.id")
-    List<Object> findHouseSalesO(int hotelId);
+            "SELECT product_date,CAST(sum(price)as char) FROM fu_house_class_price p1 , " +
+                    "(SELECT p.class_id as cid,r.id,max(p.`status`) as s,dada.product_date FROM fu_house_class_price p ,fu_register r ,(SELECT " +
+                    "@num\\:=@num-1 num, " +
+                    "DATE_ADD(DATE_FORMAT(  ?1, '%Y-%m-%d'),INTERVAL @num DAY) as product_date " +
+                    "FROM " +
+                    "(SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7) xc1, " +
+                    "(select @num\\:=1) num_t " +
+                    ") as dada  " +
+                    "WHERE p.class_id=r.house_class_id  " +
+                    "AND (p.week_con=WEEKDAY(dada.product_date) or p.day_con=dada.product_date or p.`status`=0) " +
+                    "AND r.start_time<dada.product_date  " +
+                    "AND r.end_time>=dada.product_date  " +
+                    "AND r.hotel_id=?2  " +
+                    "AND r.`status`=1 " +
+                    "GROUP BY r.id ,product_date) da1 " +
+                    "WHERE p1.`status`=da1.s AND p1.class_id=da1.cid  " +
+                    "GROUP BY product_date")
+    List<Object[]> findWeekSales(String date,int hotelId);
+
 }

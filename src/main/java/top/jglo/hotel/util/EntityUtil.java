@@ -26,18 +26,18 @@ public class EntityUtil {
         if (list.isEmpty()) {
             return returnList;
         }
-        System.out.println("list");
-        System.out.println(list.toString());
+//        System.out.println("list");
+//        System.out.println(list.toString());
         //获取每个数组集合的元素个数
         Object[] co = list.get(0);
-        System.out.println("co");
-        System.out.println(co.toString());
+//        System.out.println("co");
+//        System.out.println(co.toString());
         //获取当前实体类的属性名、属性值、属性类别
         List<Map> attributeInfoList = getFiledsInfo(model);
-        System.out.println("attributeInfoList");
-        System.out.println(attributeInfoList.toString());
-        System.out.println("attributeInfoList.size");
-        System.out.println(attributeInfoList.size());
+//        System.out.println("attributeInfoList");
+//        System.out.println(attributeInfoList.toString());
+//        System.out.println("attributeInfoList.size");
+//        System.out.println(attributeInfoList.size());
         //创建属性类别数组
         Class[] c2 = new Class[attributeInfoList.size()];
         //如果数组集合元素个数与实体类属性个数不一致则发生错误
@@ -47,14 +47,11 @@ public class EntityUtil {
         //确定构造方法
         for (int i = 0; i < attributeInfoList.size(); i++) {
             c2[i] = (Class) attributeInfoList.get(i).get("type");
-            System.out.println(c2[i]);
         }
         try {
             for (Object[] o : list) {
-                System.out.println("o");
-                System.out.println(o.toString());
+
                 Constructor<T> constructor = clazz.getConstructor(c2);
-                System.out.println("constructor");
                 returnList.add(constructor.newInstance(o));
             }
         } catch (Exception ex) {

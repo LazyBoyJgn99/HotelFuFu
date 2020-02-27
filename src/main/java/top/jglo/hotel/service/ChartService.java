@@ -85,8 +85,11 @@ public class ChartService {
         List<ChartInfo>  chartInfoList=EntityUtil.castEntity(objects,ChartInfo.class,chartInfo);
         return chartInfoList;
     }
-    public List<Object> findHouseSalesO(int hotelId) {
-
-        return fuRegisterRepository.findHouseSalesO(hotelId);
+    public List<ChartInfo> findWeekSales(String date,int hotelId) {
+        ChartInfo chartInfo=new ChartInfo();
+        List<Object[]> objects=fuRegisterRepository.findWeekSales( date ,hotelId);
+        List<ChartInfo>  chartInfoList=EntityUtil.castEntity(objects,ChartInfo.class,chartInfo);
+        return chartInfoList;
     }
+
 }

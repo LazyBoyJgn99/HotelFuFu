@@ -81,14 +81,16 @@ public class ChartsController {
         result.setData(chartInfoList);
         return result;
     }
-    @ApiOperation(value = "房型销售量", notes = "无需输入")
-    @PostMapping("findHouseSalesO")
+    @ApiOperation(value = "最近一周销售量", notes = "日期")
+    @PostMapping("findWeekSales")
     @AuthToken
     @ResponseBody
-    public ServerResult findHouseSalesO(HttpServletRequest request) {
+    public ServerResult findWeekSales(HttpServletRequest request,@RequestParam String date) {
         ServerResult result=new ServerResult();
         int hotelId=tokenService.getHotelId(request);
-        result.setData(chartService.findHouseSalesO(hotelId));
+        List<ChartInfo> chartInfoList=chartService.findWeekSales(date,hotelId);
+        result.setData(chartInfoList);
         return result;
     }
+
 }
