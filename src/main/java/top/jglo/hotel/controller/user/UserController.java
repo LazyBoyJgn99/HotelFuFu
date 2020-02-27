@@ -8,6 +8,7 @@ import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.*;
 import top.jglo.hotel.model.result.HotelInfo;
+import top.jglo.hotel.model.result.PlaceNum;
 import top.jglo.hotel.model.result.RegisterInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
@@ -21,6 +22,7 @@ import top.jglo.hotel.util.token.TokenGenerator;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.*;
@@ -421,6 +423,25 @@ public class UserController {
         int hotelId=register.getHotelId();
         List<FuPlace> placeList=fuPlaceRepository.findByHotelId(hotelId);
         result.setData(placeList);
+        return result;
+    }
+    @ApiOperation("获取区域列表人流量")
+    @PostMapping("getPlaceNum")
+    @ResponseBody
+    public ServerResult getPlaceListNum(@RequestParam int hotelId) {
+        ServerResult result=new ServerResult();
+        List<FuPlace> placeList=fuPlaceRepository.findByHotelId(hotelId);
+        List<PlaceNum> placeNumList=new ArrayList<>();
+        for (FuPlace place:placeList
+        ) {
+            String num=redisTools.get("place"+place.getId());
+            if(num==null){
+                num="0";
+            }
+            PlaceNum placeNum=new PlaceNum(place,num);
+            placeNumList.add(placeNum);
+        }
+        result.setData(placeNumList);
         return result;
     }
 }

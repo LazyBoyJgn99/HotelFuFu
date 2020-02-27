@@ -78,7 +78,7 @@ public class PlaceController {
         ServerResult result=new ServerResult();
         String token="place"+place.getId();
         String numStr=redisTools.get(token);
-        Integer num=0;
+        Integer num=1;
         if(numStr!=null){
             num=Integer.valueOf(numStr)+1;
         }
@@ -105,7 +105,7 @@ public class PlaceController {
         return result;
     }
     @ApiOperation("获取区域列表人流量")
-    @PostMapping("getPlaceListNum")
+    @PostMapping("getPlaceNum")
     @AuthToken
     @ResponseBody
     public ServerResult getPlaceListNum(HttpServletRequest request) {
