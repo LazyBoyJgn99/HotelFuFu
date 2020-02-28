@@ -27,6 +27,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static top.jglo.hotel.util.HttpUtil.httpRequest;
+import static top.jglo.hotel.util.HttpUtil.httpRequestJson;
+
 //import com.arcsoft.face.toolkit.ImageInfo;
 
 //import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
@@ -442,6 +445,17 @@ public class UserController {
             placeNumList.add(placeNum);
         }
         result.setData(placeNumList);
+        return result;
+    }
+    @ApiOperation("getReverseGeocodingUrl")
+    @PostMapping("getReverseGeocodingUrl")
+    @ResponseBody
+    public ServerResult getReverseGeocodingUrl(@RequestParam String lat,@RequestParam String lng) {
+        ServerResult result=new ServerResult();
+        String ak  ="VqxXPaCOqp3apmcTM7Rr9R3N4z24iMGF";
+        String request=httpRequest("http://api.map.baidu.com/reverse_geocoding/v3/?ak="+ak+"&output=json&coordtype=wgs84ll&location="+lat
+                +","+lng+"&extensions_town=true","GET","");
+        result.setData(request);
         return result;
     }
 }
