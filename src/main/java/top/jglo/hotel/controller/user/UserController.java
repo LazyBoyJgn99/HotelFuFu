@@ -202,7 +202,7 @@ public class UserController {
             fuUserHoldUserRelation.setUserId(id);
             fuUserHoldUserRelation.setHoldUserId(holdId);
             FuUserHoldUserRelation fuUserHoldUserRelation1 =fuUserHoldUserRelationRepository.findByUserIdAndHoldUserId(id,holdId);
-            if(fuUserHoldUserRelation1!=null){
+            if(fuUserHoldUserRelation1==null){
                 fuUserHoldUserRelation=fuUserHoldUserRelationRepository.save(fuUserHoldUserRelation);
             }
             result.setData(fuUserHoldUserRelation);
