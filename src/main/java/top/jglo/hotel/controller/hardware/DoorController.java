@@ -53,5 +53,14 @@ public class DoorController {
         fileUtil.upLoadFile(multipartFile,"/usr/share/nginx/image/HotelFuFu","xdp",name+".jpg");
         return new ServerResult("OK,路径：/usr/share/nginx/image/HotelFuFu/xdp/"+name+".jpg 用sftp下载下来校验");
     }
+    /**
+     *
+     * 获取身份证
+     */
+    @ResponseBody
+    @PostMapping("getIdCard")
+    public ServerResult getIdCard(@RequestParam int equipId,@RequestParam String idCard) throws Exception {
+        return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard);
+    }
 
 }
