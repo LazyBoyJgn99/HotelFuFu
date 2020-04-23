@@ -55,12 +55,24 @@ public class DoorController {
     }
     /**
      *
-     * 获取身份证
+     * 获取设备号，身份证号
      */
+    @ApiOperation(value = "获取身份证", notes = "设备号，身份证号")
     @ResponseBody
     @PostMapping("getIdCard")
     public ServerResult getIdCard(@RequestParam int equipId,@RequestParam String idCard) throws Exception {
         return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard);
+    }
+
+    /**
+     *
+     * 获取设备号，身份证号，房间号
+     */
+    @ApiOperation(value = "获取身份证", notes = "设备号，身份证号，房间号")
+    @ResponseBody
+    @PostMapping("getIdCard_2")
+    public ServerResult getIdCard_2(@RequestParam int equipId,@RequestParam String idCard,@RequestParam String roomId) throws Exception {
+        return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard+",roomId:"+roomId);
     }
 
 }
