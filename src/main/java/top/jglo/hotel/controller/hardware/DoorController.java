@@ -75,4 +75,14 @@ public class DoorController {
         return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard+",roomId:"+roomId);
     }
 
+    /**
+     *
+     * 进出门
+     */
+    @ApiOperation(value = "进出门", notes = "设备号，+1或-1")
+    @ResponseBody
+    @PostMapping("peopleInOut")
+    public ServerResult propleInOut(@RequestParam int equipId,@RequestParam int value) throws Exception {
+        return new ServerResult("OK,equipId:"+equipId+",区域人数加"+value);
+    }
 }
