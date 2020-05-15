@@ -109,6 +109,9 @@ public class ChartsController {
         List<FuPlace> placeList = fuPlaceRepository.findByHotelId(hotelId);
         for (FuPlace place:placeList) {
             String numStr = redisTools.get("place"+place.getId());
+            if(numStr==null){
+                numStr="0";
+            }
             place.setPeopleNum(Integer.valueOf(numStr));
         }
         result.setData(placeList);
