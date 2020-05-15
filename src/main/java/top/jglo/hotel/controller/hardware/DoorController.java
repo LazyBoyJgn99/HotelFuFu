@@ -6,19 +6,17 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.jglo.hotel.annotation.AuthToken;
+import top.jglo.hotel.consts.TokenConstant;
 import top.jglo.hotel.model.*;
-import top.jglo.hotel.model.result.CheckInInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.*;
-import top.jglo.hotel.service.HouseService;
-import top.jglo.hotel.service.TokenService;
-import top.jglo.hotel.util.DateUtil;
+
 import top.jglo.hotel.util.FileUtil;
+import top.jglo.hotel.util.RedisTools;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author gkirito
@@ -30,6 +28,10 @@ import java.util.List;
 @RequestMapping(value = {"door"})
 public class DoorController {
 
+    @Resource
+    private FuEquipRepository fuEquipRepository;
+    @Resource
+    public RedisTools redisTools;
     @Resource
     private FileUtil fileUtil;
     /**
@@ -60,7 +62,7 @@ public class DoorController {
     @ApiOperation(value = "获取身份证", notes = "设备号，身份证号")
     @ResponseBody
     @PostMapping("getIdCard")
-    public ServerResult getIdCard(@RequestParam int equipId,@RequestParam String idCard) throws Exception {
+    public ServerResult getIdCard(@RequestParam int equipId,@RequestParam String idCard)  {
         return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard);
     }
 
@@ -70,8 +72,8 @@ public class DoorController {
      */
     @ApiOperation(value = "获取身份证", notes = "设备号，身份证号，房间号")
     @ResponseBody
-    @PostMapping("getIdCard_2")
-    public ServerResult getIdCard_2(@RequestParam int equipId,@RequestParam String idCard,@RequestParam String roomId) throws Exception {
+    @PostMapping("getIdCard2")
+    public ServerResult getIdCard2(@RequestParam int equipId,@RequestParam String idCard,@RequestParam String roomId)  {
         return new ServerResult("OK,equipId:"+equipId+",idCard:"+idCard+",roomId:"+roomId);
     }
 
@@ -89,10 +91,41 @@ public class DoorController {
      *
      * 进出门
      */
-    @ApiOperation(value = "进出门", notes = "设备号，+1或-1")
+    @ApiOperation(value = "进门", notes = "设备号")
     @ResponseBody
-    @PostMapping("peopleInOut")
-    public ServerResult propleInOut(@RequestParam String equipId,@RequestParam String value) throws Exception {
-        return new ServerResult("OK,equipId:"+equipId+",区域人数加"+value);
+    @PostMapping("peopleIn")
+    public ServerResult peopleIn(@RequestParam String equipId)  {
+        FuEquip equip = fuEquipRepository.findByEquipUid(equipId);
+        Integer placeId = equip.getPlaceId();
+        String token="place"+placeId;
+        String numStr=redisTools.get(token);
+        int num=1;
+        if(numStr!=null){
+            num=Integer.valueOf(numStr)+1;
+        }
+        redisTools.set(token,String.valueOf(num));
+        redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME*24, TimeUnit.SECONDS);
+        return new ServerResult("OK,equipId:"+equipId+",区域人数:"+num);
+    }
+    /**
+     *
+     * 进出门
+     */
+    @ApiOperation(value = "出门", notes = "设备号")
+    @ResponseBody
+    @PostMapping("peopleOut")
+    public ServerResult peopleOut(@RequestParam String equipId)  {
+        FuEquip equip = fuEquipRepository.findByEquipUid(equipId);
+        Integer placeId = equip.getPlaceId();
+        String token="place"+placeId;
+        String numStr=redisTools.get(token);
+        String zero="0";
+        int num=0;
+        if(numStr!=null&&!zero.equals(numStr)){
+            num=Integer.valueOf(numStr)-1;
+        }
+        redisTools.set(token,String.valueOf(num));
+        redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME*24, TimeUnit.SECONDS);
+        return new ServerResult("OK,equipId:"+equipId+",区域人数:"+num);
     }
 }

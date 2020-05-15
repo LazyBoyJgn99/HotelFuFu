@@ -7,13 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import top.jglo.hotel.annotation.AuthToken;
 import top.jglo.hotel.model.FuEquip;
+import top.jglo.hotel.model.FuPlace;
 import top.jglo.hotel.model.result.ChartInfo;
 import top.jglo.hotel.model.result.ChartIntInfo;
 import top.jglo.hotel.model.result.ServerResult;
 import top.jglo.hotel.repository.FuEquipRepository;
+import top.jglo.hotel.repository.FuPlaceRepository;
 import top.jglo.hotel.repository.FuRegisterRepository;
 import top.jglo.hotel.service.ChartService;
 import top.jglo.hotel.service.TokenService;
+import top.jglo.hotel.util.RedisTools;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,10 @@ import static top.jglo.hotel.util.HttpUtil.httpRequestJson;
 @RequestMapping(value = {"charts"})
 public class ChartsController {
 
+    @Resource
+    public RedisTools redisTools;
+    @Resource
+    private FuPlaceRepository fuPlaceRepository;
     @Resource
     private ChartService chartService;
     @Resource
@@ -92,5 +99,19 @@ public class ChartsController {
         result.setData(chartInfoList);
         return result;
     }
-
+    @ApiOperation(value = "区域人流量", notes = "日期")
+    @PostMapping("placeNum")
+    @AuthToken
+    @ResponseBody
+    public ServerResult placeNum(HttpServletRequest request) {
+        ServerResult result=new ServerResult();
+        int hotelId=tokenService.getHotelId(request);
+        List<FuPlace> placeList = fuPlaceRepository.findByHotelId(hotelId);
+        for (FuPlace place:placeList) {
+            String numStr = redisTools.get("place"+place.getId());
+            place.setPeopleNum(Integer.valueOf(numStr));
+        }
+        result.setData(placeList);
+        return result;
+    }
 }

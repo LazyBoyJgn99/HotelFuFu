@@ -15,4 +15,6 @@ import java.util.List;
 public interface FuEquipRepository extends JpaRepository<FuEquip,Integer> { //id序列化,传入id的类型
 
     List<FuEquip> findByHotelId(int hotelId);
+
+    FuEquip findByEquipUid(String equipUId);
 }

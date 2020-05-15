@@ -49,7 +49,7 @@ public class RedisTools {
         return redisTemplate.dump(key);
     }
 
-    /**
+    /**r
      * 是否存在key
      */
     public Boolean hasKey(String key) {
