@@ -119,13 +119,13 @@ public class DoorController {
         Integer placeId = equip.getPlaceId();
         String token="place"+placeId;
         String numStr=redisTools.get(token);
-        String zero="0";
-        int num=0;
-        if(numStr!=null&&!zero.equals(numStr)){
-            num=Integer.valueOf(numStr)-1;
+        String zero = "0";
+        int num = 0;
+        if(numStr != null&&!zero.equals(numStr)){
+            num = Integer.valueOf(numStr)-1;
         }
         redisTools.set(token,String.valueOf(num));
         redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME*24, TimeUnit.SECONDS);
-        return new ServerResult("OK,equipId:"+equipId+",区域人数:"+num);
+        return new ServerResult("OK,equipId:"+equipId+",区域人数:" + num);
     }
 }
