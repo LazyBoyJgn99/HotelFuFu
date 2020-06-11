@@ -55,6 +55,8 @@ public class UserController {
     @Resource
     private FuHouseRepository fuHouseRepository;
     @Resource
+    private FuHouseOpenRepository fuHouseOpenRepository;
+    @Resource
     private FuUserRepository fuUserRepository;
     @Resource
     private FuHotelRepository fuHotelRepository;
@@ -97,6 +99,34 @@ public class UserController {
         result.setData(user);
         result.setMessage(token);
 
+        return result;
+    }
+    @PostMapping(value = {"getRoom"})
+    @ApiOperation(value = "用户人脸识别查看房间ID", notes = "输入target,特征值比较，返回该用户的房间信息，并且存入电梯数据库", produces = "人脸识别")
+    @ResponseBody
+    public ServerResult getRoom(@RequestParam String target,@RequestParam String equipId)  {
+        ServerResult result=new ServerResult();
+        //获取所有人脸信息，循环比较
+        List<FuUser> fuUserList=fuUserRepository.findAll();
+        byte[] targetInfo =Base64.getDecoder().decode(target);
+        FuUser user=faceEngineTest.findUser(targetInfo,fuUserList);
+        if(user == null){
+            result.setMessage("人脸识别失败，没有找到对应用户");
+        }else {
+            FuHouseOpen houseOpen = fuHouseOpenRepository.findByUserIdAndStatus(user.getId(),1);
+            int houseId = houseOpen.getHouseId();
+            FuHouse house = fuHouseRepository.findOne(houseId);
+            String houseNameList = redisTools.get("equip" + equipId);
+            if(houseNameList == null){
+                houseNameList = house.getName();
+            }else{
+                houseNameList = houseNameList + "," + house.getName();
+            }
+            redisTools.set("equip" + equipId,houseNameList);
+            redisTools.expire("equip" + equipId, TokenConstant.TOKEN_EXPIRE_TIME/60, TimeUnit.SECONDS);
+            result.setData(house);
+            result.setMessage("人脸识别成功");
+        }
         return result;
     }
     @PostMapping(value = {"saveFaceDetail"})

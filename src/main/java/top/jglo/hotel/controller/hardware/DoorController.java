@@ -128,4 +128,15 @@ public class DoorController {
         redisTools.expire(token, TokenConstant.TOKEN_EXPIRE_TIME*24, TimeUnit.SECONDS);
         return new ServerResult("OK,equipId:"+equipId+",区域人数:" + num);
     }
+    /**
+     *
+     * 获取电梯开放层数
+     */
+    @ApiOperation(value = "获取电梯开放层数", notes = "设备号")
+    @ResponseBody
+    @PostMapping("getEquipOpenList")
+    public String getEquipOpenList(@RequestParam String equipId)  {
+        String houseNameList = redisTools.get("equip" + equipId);
+        return houseNameList;
+    }
 }

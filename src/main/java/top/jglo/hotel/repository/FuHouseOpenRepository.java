@@ -29,5 +29,7 @@ public interface FuHouseOpenRepository extends JpaRepository<FuHouseOpen,Integer
     @Query("UPDATE FuHouseOpen p set p.status=2 WHERE p.status=1 AND p.userId=?1")
     void returnByUser(int userId);
 
+    FuHouseOpen findByUserIdAndStatus(int userId,int Status);
+
 
 }
